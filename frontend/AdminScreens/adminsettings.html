@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Settings — EcoCycle Admin</title>
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="admin.css"/>
+  <style>
+    /* Settings page uses its own layout (no .layout wrapper) */
+    body { overflow: hidden; }
+
+    .settings-page-wrap {
+      display: flex;
+      height: 100vh;
+      padding-top: var(--header-h);
+    }
+
+    /* Sidebar for settings shares same .sidebar class but needs fixed positioning reset */
+    .settings-sidebar {
+      position: fixed;
+      left: 0; top: var(--header-h); bottom: 0;
+      width: var(--sidebar-w);
+      background: var(--sidebar-bg);
+      border-right: 1px solid var(--border);
+      overflow-y: auto;
+      padding: 16px 12px;
+      z-index: 100;
+    }
+    .settings-sidebar::-webkit-scrollbar { width: 4px; }
+    .settings-sidebar::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+
+    .settings-inner {
+      margin-left: var(--sidebar-w);
+      display: flex;
+      flex: 1;
+      height: calc(100vh - var(--header-h));
+      overflow: hidden;
+    }
+
+    .settings-content {
+      overflow-y: auto;
+    }
+    .settings-content::-webkit-scrollbar { width: 4px; }
+    .settings-content::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+  </style>
+</head>
+<body>
+<!-- ── TOPBAR ─────────────────────────────────────────────── -->
+<header class="topbar">
+  <div class="topbar-brand">
+    <div class="brand-icon">
+      <svg width="22" height="22" fill="none" stroke="white" stroke-width="2.2"
+           stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+        <path d="M7 19H4.815a1.83 1.83 0 0 1-1.57-.881 1.785 1.785 0 0 1-.004-1.784L7.196 9.5"/>
+        <path d="M11 19h8.203a1.83 1.83 0 0 0 1.556-.89 1.784 1.784 0 0 0 0-1.775l-1.226-2.12"/>
+        <path d="m14 16-3 3 3 3"/>
+        <path d="M8.293 13.596 7.196 9.5 3.1 10.598"/>
+        <path d="m9.344 5.811 1.093-1.892A1.83 1.83 0 0 1 11.985 3a1.784 1.784 0 0 1 1.546.888l3.943 6.843"/>
+        <path d="m13.378 9.633 4.096 1.098 1.097-4.096"/>
+      </svg>
+    </div>
+    <div>
+      <div class="ecocycle-wordmark"><span class="eco">Eco</span>Cycle</div>
+      <div class="ecocycle-sub">Informal Pickers Management</div>
+    </div>
+  </div>
+
+  <div class="topbar-right">
+    <span class="badge-admin">Admin</span>
+      <button class="topbar-logout" onclick="window.location.href='../AuthScreens/login.html'"></button>
+      <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+        <path d="m16 17 5-5-5-5"/><path d="M21 12H9"/><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+      </svg>
+      Logout
+    </button>
+  </div>
+</header>
+
+<div class="settings-page-wrap">
+
+  <!-- LEFT: Main sidebar (page nav) -->
+  <aside class="settings-sidebar">
+    <nav>
+      <a class="nav-item" href="admin-dashboard.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+             stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/>
+          <rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/>
+        </svg>Dashboard
+      </a>
+      <a class="nav-item" href="pricemanagementpage.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+             stroke-linecap="round" stroke-linejoin="round">
+          <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
+          <circle cx="9" cy="7" r="4"/>
+          <line x1="19" x2="19" y1="8" y2="14"/><line x1="22" x2="16" y1="11" y2="11"/>
+        </svg>Price Management
+      </a>
+      <a class="nav-item" href="viewtransactions.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+             stroke-linecap="round" stroke-linejoin="round">
+          <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
+          <path d="M16 3.128a4 4 0 0 1 0 7.744"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/>
+          <circle cx="9" cy="7" r="4"/>
+        </svg>View Transactions
+      </a>
+      <a class="nav-item" href="AdminIncomeBoard.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+             stroke-linecap="round" stroke-linejoin="round">
+          <line x1="12" x2="12" y1="1" y2="23"/>
+          <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+        </svg>Income Board
+      </a>
+      <a class="nav-item" href="AdminEnvironmentalBoard.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+             stroke-linecap="round" stroke-linejoin="round">
+          <path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/>
+          <path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/>
+        </svg>Environmental Dashboard
+      </a>
+      <a class="nav-item active" href="adminsettings.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+             stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="3"/>
+          <path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/>
+        </svg>Settings
+      </a>
+    </nav>
+  </aside>
+
+  <!-- RIGHT: Settings inner (settings-nav + content) -->
+  <div class="settings-inner">
+
+    <!-- Settings nav column -->
+    <div class="settings-nav">
+      <div class="settings-nav-title">Settings</div>
+      <div class="settings-nav-sub">Soweto Region · Admin</div>
+
+      <div class="settings-section-lbl">Account</div>
+      <div class="settings-nav-item active" onclick="showSection('profile')">
+        <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        Profile
+      </div>
+      <div class="settings-nav-item" onclick="showSection('security')">
+        <svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+        Security
+      </div>
+      <div class="settings-nav-item" onclick="showSection('notifications')">
+        <svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 01-3.46 0"/></svg>
+        Notifications
+        <span class="notif-badge">3</span>
+      </div>
+
+      <div class="settings-section-lbl">My Region</div>
+      <div class="settings-nav-item" onclick="showSection('region')">
+        <svg viewBox="0 0 24 24"><polygon points="3 11 22 2 13 21 11 13 3 11"/></svg>
+        Region Settings
+      </div>
+      <div class="settings-nav-item" onclick="showSection('pickers')">
+        <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+        My Pickers
+      </div>
+
+      <div class="settings-section-lbl">App</div>
+      <div class="settings-nav-item" onclick="showSection('appearance')">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4"/></svg>
+        Appearance
+      </div>
+      <div class="settings-nav-item" onclick="showSection('language')">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>
+        Language & Region
+      </div>
+      <div class="settings-nav-item" onclick="showSection('privacy')">
+        <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        Privacy & Data
+      </div>
+
+      <div class="settings-section-lbl">System (Restricted)</div>
+      <div class="settings-nav-item locked">
+        <svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v16"/></svg>
+        Admin Management
+        <span class="lock-lbl">SA Only</span>
+      </div>
+      <div class="settings-nav-item locked">
+        <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/></svg>
+        Audit Logs
+        <span class="lock-lbl">SA Only</span>
+      </div>
+      <div class="settings-nav-item locked">
+        <svg viewBox="0 0 24 24"><polygon points="10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/></svg>
+        Danger Zone
+        <span class="lock-lbl">SA Only</span>
+      </div>
+    </div>
+
+    <!-- Settings content -->
+    <div class="settings-content" id="settingsContent">
+
+      <!-- Profile (default) -->
+      <div id="section-profile">
+        <div class="content-header">
+          <h2>Profile Settings</h2>
+          <p>Manage your personal information and picker details</p>
+        </div>
+
+        <div class="access-notice">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#F59E0B" stroke-width="2">
+            <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/>
+            <line x1="12" y1="16" x2="12.01" y2="16"/>
+          </svg>
+          <div class="access-notice-text">
+            <strong>Regional Admin Account</strong> — You have access to manage the <strong>Soweto region</strong> only.
+            Some settings are restricted to Super Admins. Contact your Super Admin to modify system-level configurations.
+          </div>
+        </div>
+
+        <div class="settings-card">
+          <div class="settings-card-header">
+            <div class="settings-card-icon green">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#2E7D32" stroke-width="2">
+                <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/>
+              </svg>
+            </div>
+            <div>
+              <div class="settings-card-title">Profile Photo & Name</div>
+              <div class="settings-card-desc">Your public identity within Ecocycle</div>
+            </div>
+          </div>
+          <div class="profile-block">
+            <div class="profile-avatar">SN</div>
+            <div class="profile-info">
+              <div class="profile-name">Sipho Nkosi</div>
+              <div class="profile-role">Regional Administrator · Soweto</div>
+              <div style="margin-top:6px;display:flex;gap:6px;align-items:center">
+                <span class="region-badge">
+                  <svg viewBox="0 0 24 24"><polygon points="3 11 22 2 13 21 11 13 3 11"/></svg>
+                  Soweto Region
+                </span>
+                <span style="font-size:11px;color:var(--text-soft)">Admin ID: #AD-0012</span>
+              </div>
+            </div>
+            <button class="change-photo-btn">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z"/>
+                <circle cx="12" cy="13" r="4"/>
+              </svg>
+              Change Photo
+            </button>
+          </div>
+          <div class="settings-row">
+            <div class="settings-row-left">
+              <div class="settings-row-label">Full Name</div>
+              <div class="settings-row-hint">As it appears on your official record</div>
+            </div>
+            <div class="settings-row-right">
+              <input class="settings-input" type="text" value="Sipho Nkosi"/>
+            </div>
+          </div>
+          <div class="settings-row">
+            <div class="settings-row-left">
+              <div class="settings-row-label">Phone Number</div>
+              <div class="settings-row-hint">Used for notifications and account recovery</div>
+            </div>
+            <div class="settings-row-right">
+              <input class="settings-input" type="tel" value="+27 71 234 5678"/>
+            </div>
+          </div>
+          <div class="settings-row">
+            <div class="settings-row-left">
+              <div class="settings-row-label">Email Address</div>
+              <div class="settings-row-hint">Login email · contact Super Admin to change</div>
+            </div>
+            <div class="settings-row-right">
+              <input class="settings-input" type="email" value="sipho@ecocycle.co.za" style="opacity:0.6" readonly/>
+            </div>
+          </div>
+          <div class="settings-row">
+            <div class="settings-row-left"></div>
+            <div class="settings-row-right">
+              <button class="btn btn-ghost">Cancel</button>
+              <button class="btn btn-primary" style="margin-left:8px">Save Changes</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="settings-card">
+          <div class="settings-card-header">
+            <div class="settings-card-icon grey">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#888" stroke-width="2">
+                <rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/>
+              </svg>
+            </div>
+            <div>
+              <div class="settings-card-title">Your Role & Access</div>
+              <div class="settings-card-desc">Read-only · Managed by Super Admin</div>
+            </div>
+          </div>
+          <div class="settings-row locked-row">
+            <div class="settings-row-left"><div class="settings-row-label">Role</div><div class="settings-row-hint">Regional admin — Soweto only</div></div>
+            <div class="settings-row-right"><span style="background:var(--primary-pale);color:var(--primary);font-size:11px;font-weight:600;padding:3px 10px;border-radius:20px">Admin</span></div>
+          </div>
+          <div class="settings-row locked-row">
+            <div class="settings-row-left"><div class="settings-row-label">Access Scope</div></div>
+            <div class="settings-row-right" style="font-size:13px;color:var(--text-mid);font-weight:600">Soweto Only</div>
+          </div>
+          <div class="settings-row locked-row">
+            <div class="settings-row-left"><div class="settings-row-label">Can Create Admins</div></div>
+            <div class="settings-row-right" style="font-size:13px;color:var(--text-soft)">✗ No</div>
+          </div>
+          <div class="settings-row locked-row">
+            <div class="settings-row-left"><div class="settings-row-label">Can Delete Data</div></div>
+            <div class="settings-row-right" style="font-size:13px;color:var(--text-soft)">✗ No</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Security -->
+      <div id="section-security" style="display:none">
+        <div class="content-header"><h2>Security</h2><p>Password, two-factor authentication, and login sessions</p></div>
+        <div class="settings-card">
+          <div class="settings-card-header">
+            <div class="settings-card-icon green"><svg viewBox="0 0 24 24" fill="none" stroke="#2E7D32" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg></div>
+            <div><div class="settings-card-title">Security Settings</div><div class="settings-card-desc">Keep your admin account safe</div></div>
+          </div>
+          <div class="settings-row"><div class="settings-row-left"><div class="settings-row-label">Two-Factor Authentication</div><div class="settings-row-hint">Adds an extra layer of security</div></div><div class="settings-row-right"><label class="toggle"><input type="checkbox" checked/><span class="toggle-slider"></span></label></div></div>
+          <div class="settings-row"><div class="settings-row-left"><div class="settings-row-label">Login Alerts</div><div class="settings-row-hint">Email me when someone logs in</div></div><div class="settings-row-right"><label class="toggle"><input type="checkbox" checked/><span class="toggle-slider"></span></label></div></div>
+          <div class="settings-row"><div class="settings-row-left"><div class="settings-row-label">Change Password</div></div><div class="settings-row-right"><button class="btn btn-ghost">Update Password</button></div></div>
+          <div class="settings-row"><div class="settings-row-left"><div class="settings-row-label">Active Sessions</div><div class="settings-row-hint">2 devices currently signed in</div></div><div class="settings-row-right"><button class="btn btn-ghost" style="font-size:12px">View Sessions</button></div></div>
+        </div>
+      </div>
+
+      <!-- Notifications -->
+      <div id="section-notifications" style="display:none">
+        <div class="content-header"><h2>Notifications</h2><p>How you receive alerts for your region</p></div>
+        <div class="settings-card">
+          <div class="settings-card-header">
+            <div class="settings-card-icon amber"><svg viewBox="0 0 24 24" fill="none" stroke="#F59E0B" stroke-width="2"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 01-3.46 0"/></svg></div>
+            <div><div class="settings-card-title">Notification Preferences</div><div class="settings-card-desc">3 unread notifications</div></div>
+          </div>
+          <div class="settings-row"><div class="settings-row-left"><div class="settings-row-label">New Picker Registrations</div><div class="settings-row-hint">Alert when a new picker joins my region</div></div><div class="settings-row-right"><label class="toggle"><input type="checkbox" checked/><span class="toggle-slider"></span></label></div></div>
+          <div class="settings-row"><div class="settings-row-left"><div class="settings-row-label">Large Transaction Alerts</div><div class="settings-row-hint">Flag unusual volume for review</div></div><div class="settings-row-right"><label class="toggle"><input type="checkbox" checked/><span class="toggle-slider"></span></label></div></div>
+          <div class="settings-row"><div class="settings-row-left"><div class="settings-row-label">Weekly Region Summary</div><div class="settings-row-hint">Email digest every Monday morning</div></div><div class="settings-row-right"><label class="toggle"><input type="checkbox"/><span class="toggle-slider"></span></label></div></div>
+          <div class="settings-row"><div class="settings-row-left"><div class="settings-row-label">Environmental Target Updates</div><div class="settings-row-hint">Progress toward monthly recycling goal</div></div><div class="settings-row-right"><label class="toggle"><input type="checkbox" checked/><span class="toggle-slider"></span></label></div></div>
+        </div>
+      </div>
+
+      <!-- Region Settings -->
+      <div id="section-region" style="display:none">
+        <div class="content-header"><h2>Region Settings</h2><p>Configure preferences for the Soweto region</p></div>
+        <div class="settings-card">
+          <div class="settings-card-header">
+            <div class="settings-card-icon green"><svg viewBox="0 0 24 24" fill="none" stroke="#2E7D32" stroke-width="2"><polygon points="3 11 22 2 13 21 11 13 3 11"/></svg></div>
+            <div><div class="settings-card-title">Soweto Region</div><div class="settings-card-desc">Region-specific configuration</div></div>
+          </div>
+          <div class="settings-row"><div class="settings-row-left"><div class="settings-row-label">Region Name</div><div class="settings-row-hint">Display name on reports</div></div><div class="settings-row-right"><input class="settings-input" type="text" value="Soweto" readonly style="opacity:0.7"/><span style="font-size:11px;color:var(--text-soft);margin-left:8px">SA Only</span></div></div>
+          <div class="settings-row"><div class="settings-row-left"><div class="settings-row-label">Monthly Recycling Target</div><div class="settings-row-hint">kg goal set by Super Admin</div></div><div class="settings-row-right"><input class="settings-input" type="text" value="5,400 kg" readonly style="opacity:0.7"/><span style="font-size:11px;color:var(--text-soft);margin-left:8px">SA Only</span></div></div>
+          <div class="settings-row"><div class="settings-row-left"><div class="settings-row-label">Default Pickup Schedule</div><div class="settings-row-hint">Preferred collection days</div></div><div class="settings-row-right"><select class="settings-select"><option>Mon, Wed, Fri</option><option>Tue, Thu</option><option>Daily</option></select></div></div>
+          <div class="settings-row"><div class="settings-row-left"><div class="settings-row-label">SMS Notifications to Pickers</div><div class="settings-row-hint">Send reminder messages on collection days</div></div><div class="settings-row-right"><label class="toggle"><input type="checkbox" checked/><span class="toggle-slider"></span></label></div></div>
+          <div class="settings-row"><div class="settings-row-left"></div><div class="settings-row-right"><button class="btn btn-ghost">Cancel</button><button class="btn btn-primary" style="margin-left:8px">Save</button></div></div>
+        </div>
+      </div>
+
+      <!-- My Pickers -->
+      <div id="section-pickers" style="display:none">
+        <div class="content-header"><h2>My Pickers</h2><p>Manage the 64 registered pickers in the Soweto region</p></div>
+        <div class="settings-card">
+          <div class="settings-card-header">
+            <div class="settings-card-icon green"><svg viewBox="0 0 24 24" fill="none" stroke="#2E7D32" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></div>
+            <div style="flex:1"><div class="settings-card-title">Soweto Pickers</div><div class="settings-card-desc">64 total · 58 active this week</div></div>
+            <button class="btn btn-primary" style="font-size:12px">+ Register New</button>
+          </div>
+          <div class="picker-list">
+            <div class="picker-row"><div class="picker-av">SN</div><div class="picker-info"><div class="picker-name-t">Sipho Ndlovu</div><div class="picker-id-t">#WP-0047 · Joined Jan 2024</div></div><span class="picker-status active">● Active</span><button class="icon-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button></div>
+            <div class="picker-row"><div class="picker-av">TM</div><div class="picker-info"><div class="picker-name-t">Thandi Mokoena</div><div class="picker-id-t">#WP-0052 · Joined Mar 2024</div></div><span class="picker-status active">● Active</span><button class="icon-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button></div>
+            <div class="picker-row"><div class="picker-av">BK</div><div class="picker-info"><div class="picker-name-t">Bongani Khumalo</div><div class="picker-id-t">#WP-0031 · Joined Oct 2023</div></div><span class="picker-status active">● Active</span><button class="icon-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button></div>
+            <div class="picker-row"><div class="picker-av">NP</div><div class="picker-info"><div class="picker-name-t">Nomsa Petersen</div><div class="picker-id-t">#WP-0068 · Joined Jun 2024</div></div><span class="picker-status inactive">○ Inactive</span><button class="icon-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button></div>
+          </div>
+          <div style="padding:14px 24px;border-top:1px solid var(--border)">
+            <button class="btn btn-ghost" style="font-size:12px;width:100%">View All 64 Pickers →</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Appearance -->
+      <div id="section-appearance" style="display:none">
+        <div class="content-header"><h2>Appearance</h2><p>Customize your dashboard view</p></div>
+        <div class="settings-card">
+          <div class="settings-card-header"><div class="settings-card-icon green"><svg viewBox="0 0 24 24" fill="none" stroke="#2E7D32" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4"/></svg></div><div><div class="settings-card-title">Display Preferences</div></div></div>
+          <div class="settings-row"><div class="settings-row-left"><div class="settings-row-label">Dashboard Theme</div></div><div class="settings-row-right"><select class="settings-select"><option selected>Ecocycle Green</option><option>Dark Mode</option></select></div></div>
+          <div class="settings-row"><div class="settings-row-left"><div class="settings-row-label">Show Weekly Chart by Default</div></div><div class="settings-row-right"><label class="toggle"><input type="checkbox" checked/><span class="toggle-slider"></span></label></div></div>
+        </div>
+      </div>
+
+      <!-- Language -->
+      <div id="section-language" style="display:none">
+        <div class="content-header"><h2>Language & Region</h2><p>Localisation preferences</p></div>
+        <div class="settings-card">
+          <div class="settings-card-header"><div class="settings-card-icon green"><svg viewBox="0 0 24 24" fill="none" stroke="#2E7D32" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg></div><div><div class="settings-card-title">Language Settings</div></div></div>
+          <div class="settings-row"><div class="settings-row-left"><div class="settings-row-label">Language</div></div><div class="settings-row-right"><select class="settings-select"><option selected>English (South Africa)</option><option>Zulu</option><option>Xhosa</option><option>Afrikaans</option><option>Sotho</option></select></div></div>
+          <div class="settings-row"><div class="settings-row-left"><div class="settings-row-label">Date Format</div></div><div class="settings-row-right"><select class="settings-select"><option selected>DD/MM/YYYY</option><option>YYYY-MM-DD</option></select></div></div>
+          <div class="settings-row"><div class="settings-row-left"></div><div class="settings-row-right"><button class="btn btn-primary">Save</button></div></div>
+        </div>
+      </div>
+
+      <!-- Privacy -->
+      <div id="section-privacy" style="display:none">
+        <div class="content-header"><h2>Privacy & Data</h2><p>Your data and privacy preferences</p></div>
+        <div class="settings-card">
+          <div class="settings-card-header"><div class="settings-card-icon green"><svg viewBox="0 0 24 24" fill="none" stroke="#2E7D32" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><div><div class="settings-card-title">Data & Privacy</div></div></div>
+          <div class="settings-row"><div class="settings-row-left"><div class="settings-row-label">Usage Analytics</div><div class="settings-row-hint">Help improve Ecocycle with anonymous data</div></div><div class="settings-row-right"><label class="toggle"><input type="checkbox" checked/><span class="toggle-slider"></span></label></div></div>
+          <div class="settings-row"><div class="settings-row-left"><div class="settings-row-label">Download My Data</div></div><div class="settings-row-right"><button class="btn btn-ghost" style="font-size:12px">Request Export</button></div></div>
+          <div class="settings-row"><div class="settings-row-left"><div class="settings-row-label">Connected Apps</div></div><div class="settings-row-right"><button class="btn btn-ghost" style="font-size:12px">Manage</button></div></div>
+        </div>
+      </div>
+
+    </div><!-- /settings-content -->
+  </div><!-- /settings-inner -->
+</div><!-- /settings-page-wrap -->
+
+<script>
+function showSection(id) {
+  document.querySelectorAll('[id^="section-"]').forEach(el => el.style.display = 'none');
+  const el = document.getElementById('section-' + id);
+  if (el) el.style.display = 'block';
+  document.querySelectorAll('.settings-nav-item:not(.locked)').forEach(item => {
+    item.classList.remove('active');
+    const oc = item.getAttribute('onclick') || '';
+    if (oc.includes(`'${id}'`)) item.classList.add('active');
+  });
+}
+</script>
+</body>
+</html>

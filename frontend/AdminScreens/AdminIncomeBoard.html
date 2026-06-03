@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Income Board — EcoCycle</title>
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet"/>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <style>
+    :root {
+      --primary: #2E7D32;
+      --primary-accent: #b5ddb6;
+      --primary-pale: #E8F5E9;
+      --bg: #f5ede0;
+      --surface: #ffffff;
+      --border: #e8e4dc;
+      --text-dark: #1a1a1a;
+      --text-mid: #4a4a44;
+      --text-soft: #7a7a70;
+      --sidebar-w: 230px;
+      --topbar-h: 60px;
+    }
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text-dark); min-height: 100vh; }
+
+    /* TOPBAR */
+    .topbar {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+      height: var(--topbar-h);
+      background: #fff; border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 24px;
+    }
+    .topbar-brand { display: flex; align-items: center; gap: 10px; }
+    .brand-icon {
+      width: 36px; height: 36px; border-radius: 10px;
+      background: linear-gradient(135deg, #3a9e3f, #1f6b23);
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 3px 8px rgba(46,125,50,0.3);
+    }
+    .ecocycle-wordmark { font-family: 'Sora', sans-serif; font-size: 1.1rem; font-weight: 800; color: var(--text-dark); letter-spacing: -0.03em; line-height: 1; }
+    .ecocycle-wordmark .eco { color: var(--primary); }
+    .ecocycle-sub { font-size: 0.68rem; color: var(--text-soft); margin-top: 2px; }
+    .topbar-right { display: flex; align-items: center; gap: 10px; }
+    .badge-admin {
+      font-size: 11px; font-weight: 700;
+      background: var(--primary-pale); color: var(--primary);
+      border: 1px solid var(--primary-accent);
+      padding: 4px 10px; border-radius: 20px;
+    }
+    .topbar-logout {
+      display: flex; align-items: center; gap: 6px;
+      font-size: 13px; font-weight: 500;
+      border: 1px solid var(--border); border-radius: 9px;
+      padding: 7px 13px; background: none; cursor: pointer;
+      color: var(--text-soft); font-family: 'DM Sans', sans-serif;
+      transition: all .15s;
+    }
+    .topbar-logout:hover { color: var(--primary); border-color: var(--primary-accent); background: var(--primary-pale); }
+
+    /* LAYOUT */
+    .layout { display: flex; padding-top: var(--topbar-h); min-height: 100vh; }
+
+    /* SIDEBAR */
+    .sidebar {
+      width: var(--sidebar-w);
+      background: #fff; border-right: 1px solid var(--border);
+      position: fixed; top: var(--topbar-h); bottom: 0; left: 0;
+      padding: 20px 12px; overflow-y: auto; z-index: 100;
+    }
+    .nav-item {
+      display: flex; align-items: center; gap: 10px;
+      padding: 10px 14px; border-radius: 10px;
+      font-size: 0.875rem; font-weight: 500;
+      color: var(--text-soft); cursor: pointer; margin-bottom: 2px;
+      transition: all .18s; text-decoration: none;
+    }
+    .nav-item svg { width: 18px; height: 18px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; flex-shrink: 0; }
+    .nav-item:hover { background: var(--primary-pale); color: var(--primary); }
+    .nav-item.active { background: var(--primary); color: #fff; font-weight: 600; }
+    .nav-item.active svg { stroke: #fff; }
+
+    /* MAIN */
+    .main-content {
+      margin-left: var(--sidebar-w);
+      flex: 1; padding: 28px 32px;
+    }
+    .page-title { font-family: 'Sora', sans-serif; font-size: 24px; font-weight: 800; letter-spacing: -0.5px; margin-bottom: 4px; }
+    .page-sub { font-size: 13px; color: var(--text-soft); margin-bottom: 24px; }
+
+    /* STATS ROW */
+    .stats-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 22px; }
+    .stat-card {
+      background: #fff; border: 1px solid var(--border);
+      border-radius: 14px; padding: 18px 20px;
+      display: flex; align-items: center; justify-content: space-between;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+    }
+    .stat-card h4 { font-size: 11px; font-weight: 600; color: var(--text-soft); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; }
+    .stat-card .value { font-family: 'Sora', sans-serif; font-size: 22px; font-weight: 800; color: var(--text-dark); letter-spacing: -0.5px; line-height: 1; margin-bottom: 4px; }
+    .stat-card .caption { font-size: 11px; color: var(--text-soft); }
+    .stat-icon {
+      width: 40px; height: 40px; border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .stat-icon svg { width: 20px; height: 20px; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+    .stat-icon.green  { background: var(--primary-pale); }
+    .stat-icon.green svg { stroke: var(--primary); }
+    .stat-icon.blue   { background: #E3F2FD; }
+    .stat-icon.blue svg { stroke: #1565C0; }
+    .stat-icon.purple { background: #F3E5F5; }
+    .stat-icon.purple svg { stroke: #6A1B9A; }
+    .stat-icon.amber  { background: #FFF8E1; }
+    .stat-icon.amber svg { stroke: #E65100; }
+
+    /* CHARTS */
+    .charts-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 22px; }
+    .section-card {
+      background: #fff; border: 1px solid var(--border);
+      border-radius: 14px; padding: 20px 22px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+    }
+    .section-title { font-size: 14px; font-weight: 700; color: var(--text-dark); margin-bottom: 16px; }
+    .section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+    .chart-wrap { height: 220px; position: relative; }
+
+    /* TRANSACTIONS */
+    .activity-item {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 13px 0; border-bottom: 1px solid var(--border);
+    }
+    .activity-item:last-child { border-bottom: none; }
+    .activity-left h4 { font-size: 13px; font-weight: 600; color: var(--text-dark); margin-bottom: 2px; }
+    .activity-left p { font-size: 12px; color: var(--text-soft); }
+    .amount { font-family: 'Sora', sans-serif; font-size: 14px; font-weight: 700; color: var(--primary); }
+  </style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-brand">
+    <div class="brand-icon">
+      <svg width="20" height="20" fill="none" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+        <path d="M7 19H4.815a1.83 1.83 0 0 1-1.57-.881 1.785 1.785 0 0 1-.004-1.784L7.196 9.5"/>
+        <path d="M11 19h8.203a1.83 1.83 0 0 0 1.556-.89 1.784 1.784 0 0 0 0-1.775l-1.226-2.12"/>
+        <path d="m14 16-3 3 3 3"/><path d="M8.293 13.596 7.196 9.5 3.1 10.598"/>
+        <path d="m9.344 5.811 1.093-1.892A1.83 1.83 0 0 1 11.985 3a1.784 1.784 0 0 1 1.546.888l3.943 6.843"/>
+        <path d="m13.378 9.633 4.096 1.098 1.097-4.096"/>
+      </svg>
+    </div>
+    <div>
+      <div class="ecocycle-wordmark"><span class="eco">Eco</span>Cycle</div>
+      <div class="ecocycle-sub">Informal Pickers Management</div>
+    </div>
+  </div>
+  <div class="topbar-right">
+    <span class="badge-admin">Admin</span>
+       <button class="topbar-logout" onclick="window.location.href='../AuthScreens/login.html'"></button>
+      <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+        <path d="m16 17 5-5-5-5"/><path d="M21 12H9"/><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+      </svg>
+      Logout
+    </button>
+  </div>
+</header>
+
+<div class="layout">
+  <aside class="sidebar">
+    <nav>
+      <a class="nav-item" href="admin-dashboard.html">
+        <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+        Dashboard
+      </a>
+      <a class="nav-item" href="pricemanagementpage.html">
+        <svg viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" x2="19" y1="8" y2="14"/><line x1="22" x2="16" y1="11" y2="11"/></svg>
+        Price Management
+      </a>
+      <a class="nav-item" href="viewtransactions.html">
+        <svg viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><path d="M16 3.128a4 4 0 0 1 0 7.744"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><circle cx="9" cy="7" r="4"/></svg>
+        View Transactions
+      </a>
+      <a class="nav-item active" href="AdminIncomeBoard.html">
+        <svg viewBox="0 0 24 24"><line x1="12" x2="12" y1="1" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+        Income Board
+      </a>
+      <a class="nav-item" href="AdminEnvironmentalBoard.html">
+        <svg viewBox="0 0 24 24"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/></svg>
+        Environmental Dashboard
+      </a>
+      <a class="nav-item" href="adminsettings.html">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
+        Settings
+      </a>
+    </nav>
+  </aside>
+
+  <main class="main-content">
+    <h1 class="page-title">Income Board</h1>
+    <p class="page-sub">Monitor all earnings and revenue streams across all centres.</p>
+
+    <div class="stats-row" id="statsRow"></div>
+
+    <div class="charts-row">
+      <div class="section-card">
+        <div class="section-title">Revenue by Centre</div>
+        <div class="chart-wrap"><canvas id="centreChart"></canvas></div>
+      </div>
+      <div class="section-card">
+        <div class="section-title">Revenue by Material</div>
+        <div class="chart-wrap"><canvas id="materialChart"></canvas></div>
+      </div>
+    </div>
+
+    <div class="section-card">
+      <div class="section-header">
+        <div class="section-title" style="margin-bottom:0">Recent Transactions</div>
+        <a href="viewtransactions.html" style="font-size:12px;color:var(--primary);text-decoration:none;font-weight:500">View all →</a>
+      </div>
+      <div id="txList"></div>
+    </div>
+  </main>
+</div>
+
+<script>
+const stats = [
+  {
+    label: 'Monthly Revenue', value: 'R 162,400', caption: 'May 2026', colorClass: 'green',
+    icon: `<svg viewBox="0 0 24 24"><line x1="12" x2="12" y1="1" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>`
+  },
+  {
+    label: 'Weekly Revenue', value: 'R 38,240', caption: 'This week', colorClass: 'blue',
+    icon: `<svg viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>`
+  },
+  {
+    label: 'Avg per Picker', value: 'R 652', caption: 'Based on 247 active', colorClass: 'purple',
+    icon: `<svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>`
+  },
+  {
+    label: 'Pending Payouts', value: 'R 14,820', caption: 'Awaiting approval', colorClass: 'amber',
+    icon: `<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>`
+  },
+];
+
+document.getElementById('statsRow').innerHTML = stats.map(s => `
+  <div class="stat-card">
+    <div class="stat-card-left">
+      <h4>${s.label}</h4>
+      <div class="value">${s.value}</div>
+      <div class="caption">${s.caption}</div>
+    </div>
+    <div class="stat-icon ${s.colorClass}">${s.icon}</div>
+  </div>`).join('');
+
+/* Centre bar chart */
+const cx = document.getElementById('centreChart').getContext('2d');
+new Chart(cx, {
+  type: 'bar',
+  data: {
+    labels: ['JHB Central','Soweto','Pretoria E','Alexandra','Germiston','Tembisa'],
+    datasets: [{
+      label: 'Revenue (R)',
+      data: [42000, 34200, 28500, 21400, 19800, 16500],
+      backgroundColor: ['#2E7D32','#388E3C','#43A047','#66BB6A','#A5D6A7','#C8E6C9'],
+      borderRadius: 6, borderSkipped: false,
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false } },
+    scales: {
+      x: { grid: { display: false }, ticks: { font: { family: 'DM Sans', size: 11 } } },
+      y: { grid: { color: '#F0EDE5' }, ticks: { font: { family: 'DM Sans', size: 11 }, callback: v => 'R ' + v.toLocaleString() } },
+    }
+  }
+});
+
+/* Material donut */
+const mx = document.getElementById('materialChart').getContext('2d');
+new Chart(mx, {
+  type: 'doughnut',
+  data: {
+    labels: ['Plastic','Paper & Card','Glass','Aluminium','Other'],
+    datasets: [{
+      data: [38, 22, 14, 18, 8],
+      backgroundColor: ['#2E7D32','#66BB6A','#A5D6A7','#C8E6C9','#E8F5E9'],
+      borderWidth: 2, borderColor: '#fff',
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { position: 'bottom', labels: { font: { family: 'DM Sans', size: 12 }, boxWidth: 12 } } },
+    cutout: '65%',
+  }
+});
+
+/* Recent transactions */
+const txns = [
+  { picker: 'Sipho Ndlovu',    id: '#WP-0047', material: 'PET Plastic',  kg: 42, amt: 'R 130.20', time: '10:24 AM' },
+  { picker: 'Thandi Mokoena',  id: '#WP-0052', material: 'Cardboard',    kg: 68, amt: 'R 51.00',  time: '10:11 AM' },
+  { picker: 'Bongani Khumalo', id: '#WP-0031', material: 'Aluminium',    kg: 12, amt: 'R 108.00', time: '9:58 AM'  },
+  { picker: 'Nomsa Petersen',  id: '#WP-0068', material: 'HDPE Plastic', kg: 35, amt: 'R 77.00',  time: '9:42 AM'  },
+  { picker: 'Johan van N.',    id: '#WP-0019', material: 'Glass (clear)', kg: 80, amt: 'R 28.00',  time: '9:30 AM'  },
+];
+document.getElementById('txList').innerHTML = txns.map(t => `
+  <div class="activity-item">
+    <div class="activity-left">
+      <h4>${t.picker} <span style="font-weight:400;color:var(--text-soft);font-size:11px">${t.id}</span></h4>
+      <p>${t.material} · ${t.kg} kg · ${t.time}</p>
+    </div>
+    <div class="activity-right"><div class="amount">${t.amt}</div></div>
+  </div>`).join('');
+</script>
+</body>
+</html>
