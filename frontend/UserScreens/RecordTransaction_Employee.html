@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Ecocycle — Record Transaction</title>
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="RecordTransaction_Employee.css">
+</head>
+<body>
+
+<!-- TOPBAR -->
+<header class="topbar">
+  <div class="topbar-brand">
+    <div class="ecocycle-logo">
+      <div class="brand-icon">
+        <svg width="22" height="22" fill="none" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M7 19H4.815a1.83 1.83 0 0 1-1.57-.881 1.785 1.785 0 0 1-.004-1.784L7.196 9.5"/><path d="M11 19h8.203a1.83 1.83 0 0 0 1.556-.89 1.784 1.784 0 0 0 0-1.775l-1.226-2.12"/><path d="m14 16-3 3 3 3"/><path d="M8.293 13.596 7.196 9.5 3.1 10.598"/><path d="m9.344 5.811 1.093-1.892A1.83 1.83 0 0 1 11.985 3a1.784 1.784 0 0 1 1.546.888l3.943 6.843"/><path d="m13.378 9.633 4.096 1.098 1.097-4.096"/></svg>
+      </div>
+      <div>
+        <div class="ecocycle-wordmark"><span class="eco">Eco</span>Cycle</div>
+        <div class="ecocycle-sub">Informal Pickers Management</div>
+      </div>
+    </div>
+  </div>
+      <button class="topbar-logout" onclick="window.location.href='../AuthScreens/login.html'">
+    <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="m16 17 5-5-5-5"/><path d="M21 12H9"/><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/></svg>
+    Logout
+  </button>
+</header>
+
+<div class="layout">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <a class="nav-item" href="EmployeeDashboard.html">
+      <svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></svg>
+      Dashboard
+    </a>
+    <a class="nav-item" href="RegisterUsers.html">
+      <svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" x2="19" y1="8" y2="14"/><line x1="22" x2="16" y1="11" y2="11"/></svg>
+      Register Waste Picker
+    </a>
+    <a class="nav-item" href="ViewRegisteredUser.html">
+      <svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><path d="M16 3.128a4 4 0 0 1 0 7.744"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><circle cx="9" cy="7" r="4"/></svg>
+      Registered Pickers
+    </a>
+    <a class="nav-item active" href="RecordTransaction_Employee.html">
+      <svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" x2="8" y1="13" y2="13"/><line x1="16" x2="8" y1="17" y2="17"/></svg>
+      Record Transaction
+    </a>
+    <a class="nav-item" href="IncomeBoard.html">
+      <svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><line x1="12" x2="12" y1="1" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+      Income Board
+    </a>
+    <a class="nav-item" href="Environmental.html">
+      <svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/></svg>
+      Environmental Dashboard
+    </a>
+ <a class="nav-item" href="RewardsSystems.html">
+  <svg 
+    fill="none" 
+    stroke="currentColor" 
+    stroke-width="2" 
+    stroke-linecap="round" 
+    stroke-linejoin="round" 
+    viewBox="0 0 24 24"
+  >
+    <!-- Trophy / Rewards Icon -->
+    <path d="M8 21h8"></path>
+    <path d="M12 17v4"></path>
+    <path d="M7 4h10v5a5 5 0 0 1-10 0V4z"></path>
+    <path d="M5 6H3a2 2 0 0 0 2 2"></path>
+    <path d="M19 6h2a2 2 0 0 1-2 2"></path>
+  </svg>
+
+  Rewards System
+</a>
+
+<a class="nav-item" href="Settings.html">
+  <svg fill="none" stroke="currentColor" stroke-width="2"
+    stroke-linecap="round" stroke-linejoin="round"
+    viewBox="0 0 24 24">
+
+    <circle cx="12" cy="12" r="3"></circle>
+
+    <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06
+    a2 2 0 0 1 0 2.83
+    2 2 0 0 1-2.83 0l-.06-.06
+    a1.65 1.65 0 0 0-1.82-.33
+    1.65 1.65 0 0 0-1 1.51V21
+    a2 2 0 0 1-2 2
+    2 2 0 0 1-2-2v-.09
+    a1.65 1.65 0 0 0-1-1.51
+    1.65 1.65 0 0 0-1.82.33l-.06.06
+    a2 2 0 0 1-2.83 0
+    2 2 0 0 1 0-2.83l.06-.06
+    a1.65 1.65 0 0 0 .33-1.82
+    1.65 1.65 0 0 0-1.51-1H3
+    a2 2 0 0 1-2-2
+    2 2 0 0 1 2-2h.09
+    a1.65 1.65 0 0 0 1.51-1
+    1.65 1.65 0 0 0-.33-1.82l-.06-.06
+    a2 2 0 0 1 0-2.83
+    2 2 0 0 1 2.83 0l.06.06
+    a1.65 1.65 0 0 0 1.82.33H9
+    a1.65 1.65 0 0 0 1-1.51V3
+    a2 2 0 0 1 2-2
+    2 2 0 0 1 2 2v.09
+    a1.65 1.65 0 0 0 1 1.51
+    1.65 1.65 0 0 0 1.82-.33l.06-.06
+    a2 2 0 0 1 2.83 0
+    2 2 0 0 1 0 2.83l-.06.06
+    a1.65 1.65 0 0 0-.33 1.82V9
+    a1.65 1.65 0 0 0 1.51 1H21
+    a2 2 0 0 1 2 2
+    2 2 0 0 1-2 2h-.09
+    a1.65 1.65 0 0 0-1.51 1z">
+    </path>
+
+  </svg>
+  Settings
+</a>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main">
+    <h1 class="page-title">Record Transaction</h1>
+    <p class="page-sub">Log material collection and calculate picker payout</p>
+
+    <div class="content-grid">
+
+      <!-- ── LEFT: FORM ── -->
+      <div class="form-card">
+        <div class="form-card-title">Transaction Details</div>
+        <div class="form-card-sub">Fill in all fields to record and save the collection</div>
+
+        <form id="transaction-form" novalidate>
+
+          <!-- Waste Picker -->
+          <div class="form-group">
+            <label>Waste Picker <span class="required">*</span></label>
+            <div class="input-wrap select-wrap">
+              <span class="input-icon">
+                <svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+              </span>
+              <select id="picker-select" required>
+                <option value="" disabled selected>Choose a waste picker</option>
+                <option value="WP-001">John Mthembu</option>
+                <option value="WP-002">Sarah Ndlovu</option>
+                <option value="WP-003">David Zuma</option>
+                <option value="WP-004">Maria Khumalo</option>
+                <option value="WP-005">Bongani Nkosi</option>
+                <option value="WP-006">Nomsa Dlamini</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Material Type -->
+          <div class="form-group">
+            <label>Material Type <span class="required">*</span></label>
+            <div class="input-wrap select-wrap">
+              <span class="input-icon">
+                <svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+              </span>
+              <select id="material-select" required>
+                <option value="" disabled selected>Select material type</option>
+                <option value="12">Plastic (PET) — R 12/kg</option>
+                <option value="8">Paper / Cardboard — R 8/kg</option>
+                <option value="25">Metal (Aluminium) — R 25/kg</option>
+                <option value="6">Glass — R 6/kg</option>
+                <option value="10">Plastic (HDPE) — R 10/kg</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Weight + Date row -->
+          <div class="form-row">
+            <div class="form-group" style="margin-bottom:0;">
+              <label>Weight (kg) <span class="required">*</span></label>
+              <div class="input-wrap">
+                <span class="input-icon">
+                  <svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="8" y2="16"/><line x1="8" x2="16" y1="12" y2="12"/></svg>
+                </span>
+                <input type="number" id="quantity-input" placeholder="0.0" step="0.5" min="0" required/>
+              </div>
+            </div>
+            <div class="form-group" style="margin-bottom:0;">
+              <label>Date</label>
+              <div class="input-wrap no-icon">
+                <input type="date" id="date-input" style="padding-left:14px;"/>
+              </div>
+            </div>
+          </div>
+
+          <!-- Zone -->
+          <div class="form-group" style="margin-top:22px;">
+            <label>Collection Zone</label>
+            <div class="input-wrap select-wrap">
+              <span class="input-icon">
+                <svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+              </span>
+              <select id="zone-select">
+                <option value="">Select zone (optional)</option>
+                <option>Zone A — Johannesburg CBD</option>
+                <option>Zone B — Soweto</option>
+                <option>Zone C — Sandton</option>
+                <option>Zone D — Alexandra</option>
+                <option>Zone E — Randburg</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Notes -->
+          <div class="form-group">
+            <label>Notes</label>
+            <div class="input-wrap" style="height:auto;">
+              <textarea id="notes-input" placeholder="Optional notes about this collection..." style="width:100%;padding:14px;border-radius:12px;border:1.5px solid var(--border-input);font-family:'DM Sans',sans-serif;font-size:.9rem;color:var(--text);outline:none;resize:vertical;min-height:80px;background:var(--white);transition:border-color .2s;" onfocus="this.style.borderColor='var(--primary)'" onblur="this.style.borderColor='var(--border-input)'"></textarea>
+            </div>
+          </div>
+
+          <button type="submit" class="btn-submit">
+            <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg>
+            Save Transaction
+          </button>
+          <button type="button" class="btn-secondary" onclick="resetForm()">Clear Form</button>
+
+        </form>
+      </div>
+
+      <!-- ── RIGHT PANEL ── -->
+      <div>
+
+        <!-- Payout Calculator -->
+        <div class="panel-card">
+          <div class="panel-title">Payout Calculator</div>
+          <div class="payout-display">
+            <div class="payout-label">Total Payout</div>
+            <div class="payout-amount" id="payout-amount">R 0.00</div>
+            <div class="payout-detail" id="payout-detail">Select material and enter weight</div>
+          </div>
+          <div class="payout-divider"></div>
+          <div class="payout-row">
+            <span class="pr-label">Material Rate</span>
+            <span class="pr-val" id="pr-rate">—</span>
+          </div>
+          <div class="payout-row">
+            <span class="pr-label">Weight</span>
+            <span class="pr-val" id="pr-weight">— kg</span>
+          </div>
+          <div class="payout-row">
+            <span class="pr-label">Calculated Total</span>
+            <span class="pr-val green" id="pr-total">R 0.00</span>
+          </div>
+        </div>
+
+        <!-- Rate Card -->
+        <div class="panel-card">
+          <div class="panel-title">Current Rate Card</div>
+          <div class="rate-row">
+            <div class="rate-mat"><div class="rate-dot" style="background:#3a9e3f;"></div> Metal (Aluminium)</div>
+            <div class="rate-val">R 25 / kg</div>
+          </div>
+          <div class="rate-row">
+            <div class="rate-mat"><div class="rate-dot" style="background:#6dba4d;"></div> Plastic (PET)</div>
+            <div class="rate-val">R 12 / kg</div>
+          </div>
+          <div class="rate-row">
+            <div class="rate-mat"><div class="rate-dot" style="background:#8dc98f;"></div> Plastic (HDPE)</div>
+            <div class="rate-val">R 10 / kg</div>
+          </div>
+          <div class="rate-row">
+            <div class="rate-mat"><div class="rate-dot" style="background:#b2d9b4;"></div> Paper / Cardboard</div>
+            <div class="rate-val">R 8 / kg</div>
+          </div>
+          <div class="rate-row">
+            <div class="rate-mat"><div class="rate-dot" style="background:#d4ead5;"></div> Glass</div>
+            <div class="rate-val">R 6 / kg</div>
+          </div>
+        </div>
+
+        <!-- Recent Transactions -->
+        <div class="panel-card">
+          <div class="panel-title">Recent Transactions</div>
+          <div id="recent-list">
+            <div class="history-item">
+              <div class="hi-left"><h4>John Mthembu</h4><p>Metal · 12 kg</p></div>
+              <div class="hi-right"><div class="amount">R 300</div><div class="time">2 hours ago</div></div>
+            </div>
+            <div class="history-item">
+              <div class="hi-left"><h4>Sarah Ndlovu</h4><p>Paper · 18 kg</p></div>
+              <div class="hi-right"><div class="amount">R 144</div><div class="time">3 hours ago</div></div>
+            </div>
+            <div class="history-item">
+              <div class="hi-left"><h4>David Zuma</h4><p>Plastic (PET) · 22 kg</p></div>
+              <div class="hi-right"><div class="amount">R 264</div><div class="time">5 hours ago</div></div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast">
+  <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg>
+  <span id="toast-msg">Transaction saved!</span>
+</div>
+
+
+<script src="RecordTransaction_Employee.js"></script>
+
+<script src="EmployeeAppearance.js"></script>
+</body>
+</html>

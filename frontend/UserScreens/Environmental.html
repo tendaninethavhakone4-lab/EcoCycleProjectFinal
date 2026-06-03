@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Ecocycle — Environmental Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet"/>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<link rel="stylesheet" href="Environmental.css"/>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<header class="topbar">
+  <div class="topbar-brand">
+    <div class="ecocycle-logo">
+      <div class="brand-icon">
+        <svg width="22" height="22" fill="none" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M7 19H4.815a1.83 1.83 0 0 1-1.57-.881 1.785 1.785 0 0 1-.004-1.784L7.196 9.5"/><path d="M11 19h8.203a1.83 1.83 0 0 0 1.556-.89 1.784 1.784 0 0 0 0-1.775l-1.226-2.12"/><path d="m14 16-3 3 3 3"/><path d="M8.293 13.596 7.196 9.5 3.1 10.598"/><path d="m9.344 5.811 1.093-1.892A1.83 1.83 0 0 1 11.985 3a1.784 1.784 0 0 1 1.546.888l3.943 6.843"/><path d="m13.378 9.633 4.096 1.098 1.097-4.096"/></svg>
+      </div>
+      <div>
+        <div class="ecocycle-wordmark"><span class="eco">Eco</span>Cycle</div>
+        <div class="ecocycle-sub">Informal Pickers Management</div>
+      </div>
+    </div>
+  </div>
+      <button class="topbar-logout" onclick="window.location.href='../AuthScreens/login.html'">
+    <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="m16 17 5-5-5-5"/><path d="M21 12H9"/><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/></svg>
+    Logout
+  </button>
+</header>
+
+<div class="layout">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <a class="nav-item" href="EmployeeDashboard.html">
+      <svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></svg>
+      Dashboard
+    </a>
+    <a class="nav-item" href="RegisterUsers.html">
+      <svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" x2="19" y1="8" y2="14"/><line x1="22" x2="16" y1="11" y2="11"/></svg>
+      Register Waste Picker
+    </a>
+    <a class="nav-item" href="ViewRegisteredUser.html">
+      <svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><path d="M16 3.128a4 4 0 0 1 0 7.744"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><circle cx="9" cy="7" r="4"/></svg>
+      Registered Pickers
+    </a>
+    <a class="nav-item" href="RecordTransaction_Employee.html">
+      <svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" x2="8" y1="13" y2="13"/><line x1="16" x2="8" y1="17" y2="17"/></svg>
+      Record Transaction
+    </a>
+    <a class="nav-item" href="IncomeBoard.html">
+      <svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><line x1="12" x2="12" y1="1" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+      Income Board
+    </a>
+    <a class="nav-item active" href="Environmental.html">
+      <svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/></svg>
+      Environmental Dashboard
+    </a>
+ <a class="nav-item" href="RewardsSystems.html">
+  <svg 
+    fill="none" 
+    stroke="currentColor" 
+    stroke-width="2" 
+    stroke-linecap="round" 
+    stroke-linejoin="round" 
+    viewBox="0 0 24 24"
+  >
+    <!-- Trophy / Rewards Icon -->
+    <path d="M8 21h8"></path>
+    <path d="M12 17v4"></path>
+    <path d="M7 4h10v5a5 5 0 0 1-10 0V4z"></path>
+    <path d="M5 6H3a2 2 0 0 0 2 2"></path>
+    <path d="M19 6h2a2 2 0 0 1-2 2"></path>
+  </svg>
+
+  Rewards System
+</a>
+
+<a class="nav-item" href="Settings.html">
+  <svg fill="none" stroke="currentColor" stroke-width="2"
+    stroke-linecap="round" stroke-linejoin="round"
+    viewBox="0 0 24 24">
+
+    <circle cx="12" cy="12" r="3"></circle>
+
+    <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06
+    a2 2 0 0 1 0 2.83
+    2 2 0 0 1-2.83 0l-.06-.06
+    a1.65 1.65 0 0 0-1.82-.33
+    1.65 1.65 0 0 0-1 1.51V21
+    a2 2 0 0 1-2 2
+    2 2 0 0 1-2-2v-.09
+    a1.65 1.65 0 0 0-1-1.51
+    1.65 1.65 0 0 0-1.82.33l-.06.06
+    a2 2 0 0 1-2.83 0
+    2 2 0 0 1 0-2.83l.06-.06
+    a1.65 1.65 0 0 0 .33-1.82
+    1.65 1.65 0 0 0-1.51-1H3
+    a2 2 0 0 1-2-2
+    2 2 0 0 1 2-2h.09
+    a1.65 1.65 0 0 0 1.51-1
+    1.65 1.65 0 0 0-.33-1.82l-.06-.06
+    a2 2 0 0 1 0-2.83
+    2 2 0 0 1 2.83 0l.06.06
+    a1.65 1.65 0 0 0 1.82.33H9
+    a1.65 1.65 0 0 0 1-1.51V3
+    a2 2 0 0 1 2-2
+    2 2 0 0 1 2 2v.09
+    a1.65 1.65 0 0 0 1 1.51
+    1.65 1.65 0 0 0 1.82-.33l.06-.06
+    a2 2 0 0 1 2.83 0
+    2 2 0 0 1 0 2.83l-.06.06
+    a1.65 1.65 0 0 0-.33 1.82V9
+    a1.65 1.65 0 0 0 1.51 1H21
+    a2 2 0 0 1 2 2
+    2 2 0 0 1-2 2h-.09
+    a1.65 1.65 0 0 0-1.51 1z">
+    </path>
+
+  </svg>
+  Settings
+</a>
+</aside>
+
+  <!-- MAIN -->
+  <main class="main">
+    <h1 class="page-title">Environmental Dashboard</h1>
+    <p class="page-sub">Tracking our collective impact on the planet</p>
+
+    <!-- HERO -->
+    <div class="env-hero">
+      <div class="hero-left">
+        <div class="hero-badge">
+          <svg width="13" height="13" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/></svg>
+          Live Impact Tracker
+        </div>
+        <div class="hero-title">Making a Real Difference</div>
+        <div class="hero-sub">Every kilogram recycled keeps waste out of landfills and reduces carbon emissions in our communities.</div>
+      </div>
+      <div class="hero-right">
+        <div class="hero-stat">
+          <div class="hs-val">1,248 kg</div>
+          <div class="hs-lbl">Recycled this week</div>
+        </div>
+        <div class="hero-stat">
+          <div class="hs-val">2.1 t</div>
+          <div class="hs-lbl">CO₂ avoided</div>
+        </div>
+        <div class="hero-stat">
+          <div class="hs-val">62</div>
+          <div class="hs-lbl">Trees equivalent</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- IMPACT CARDS -->
+    <div class="impact-row">
+      <div class="impact-card">
+        <div class="impact-left">
+          <h4>Total Waste Diverted</h4>
+          <div class="value">14,830 kg</div>
+          <div class="caption">↑ All-time total</div>
+        </div>
+        <div class="impact-icon">♻️</div>
+      </div>
+      <div class="impact-card">
+        <div class="impact-left">
+          <h4>CO₂ Emissions Avoided</h4>
+          <div class="value">24.6 t</div>
+          <div class="caption">↑ +2.1 t this month</div>
+        </div>
+        <div class="impact-icon">💨</div>
+      </div>
+      <div class="impact-card">
+        <div class="impact-left">
+          <h4>Trees Equivalent Saved</h4>
+          <div class="value">738</div>
+          <div class="caption">↑ +62 this month</div>
+        </div>
+        <div class="impact-icon">🌳</div>
+      </div>
+      <div class="impact-card">
+        <div class="impact-left">
+          <h4>Water Saved</h4>
+          <div class="value">562,000 L</div>
+          <div class="caption">↑ Through recycling</div>
+        </div>
+        <div class="impact-icon">💧</div>
+      </div>
+    </div>
+
+    <!-- CHARTS ROW -->
+    <div class="charts-row">
+      <div class="section-card">
+        <div class="section-header">
+          <div class="section-title">CO₂ Avoided Per Month (tonnes)</div>
+        </div>
+        <div class="chart-wrap"><canvas id="co2Chart"></canvas></div>
+      </div>
+      <div class="section-card">
+        <div class="section-title">Waste Diverted by Type</div>
+        <div class="chart-wrap"><canvas id="wasteDonut"></canvas></div>
+      </div>
+    </div>
+
+    <!-- PROGRESS + COLLECTION TREND -->
+    <div class="progress-section">
+
+      <!-- Annual Goal Progress -->
+      <div class="progress-card">
+        <div class="section-title">Annual Recycling Goal</div>
+        <div class="ring-wrap">
+          <svg class="ring-svg" width="120" height="120" viewBox="0 0 120 120">
+            <circle cx="60" cy="60" r="50" fill="none" stroke="#f0f0f0" stroke-width="12"/>
+            <circle cx="60" cy="60" r="50" fill="none" stroke="#3a9e3f" stroke-width="12"
+              stroke-dasharray="314" stroke-dashoffset="88"
+              stroke-linecap="round"
+              transform="rotate(-90 60 60)"/>
+            <text x="60" y="55" text-anchor="middle" font-family="Sora,sans-serif" font-size="18" font-weight="800" fill="#1a1a1a">72%</text>
+            <text x="60" y="72" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="10" fill="#7a7a7a">of goal</text>
+          </svg>
+          <div class="ring-info">
+            <h3>2025 Target: 20,000 kg</h3>
+            <div class="ring-pct">14,830 kg</div>
+            <p style="font-size:.8rem;color:var(--muted);">collected so far</p>
+            <p style="margin-top:10px;font-size:.82rem;color:var(--text);">
+              <strong style="color:var(--primary);">5,170 kg</strong> remaining to reach the annual goal.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Collection Trend -->
+      <div class="progress-card">
+        <div class="section-title">Weekly Collection Volume (kg)</div>
+        <div class="chart-wrap" style="height:180px;"><canvas id="weeklyBar"></canvas></div>
+      </div>
+    </div>
+
+    <!-- MILESTONES -->
+    <div class="section-card">
+      <div class="section-title">Environmental Milestones</div>
+      <div class="milestones-grid">
+        <div class="milestone achieved">
+          <div class="m-icon">🏆</div>
+          <div class="m-val">5,000 kg</div>
+          <div class="m-lbl">First major recycling milestone reached</div>
+          <div class="m-badge">✓ Achieved — Jan 2025</div>
+        </div>
+        <div class="milestone achieved">
+          <div class="m-icon">⭐</div>
+          <div class="m-val">10,000 kg</div>
+          <div class="m-lbl">10 tonnes diverted from landfill</div>
+          <div class="m-badge">✓ Achieved — Mar 2025</div>
+        </div>
+        <div class="milestone next">
+          <div class="m-icon">🎯</div>
+          <div class="m-val">20,000 kg</div>
+          <div class="m-lbl">Annual target — 5,170 kg remaining</div>
+          <div class="m-badge">In progress · 72%</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MATERIAL IMPACT TABLE -->
+    <div class="section-card">
+      <div class="section-header">
+        <div class="section-title">Environmental Impact by Material</div>
+        <span style="font-size:.8rem;color:var(--muted);">All-time figures</span>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Material</th>
+              <th>Total Collected</th>
+              <th>CO₂ Avoided</th>
+              <th>Water Saved</th>
+              <th>Energy Saved</th>
+              <th>Impact Level</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Metal / Aluminium</strong></td>
+              <td>3,260 kg</td>
+              <td>9.1 tonnes</td>
+              <td>—</td>
+              <td>51,480 kWh</td>
+              <td><span class="badge badge-green">Very High</span></td>
+            </tr>
+            <tr>
+              <td><strong>Plastic (HDPE)</strong></td>
+              <td>4,120 kg</td>
+              <td>6.2 tonnes</td>
+              <td>164,800 L</td>
+              <td>18,540 kWh</td>
+              <td><span class="badge badge-green">High</span></td>
+            </tr>
+            <tr>
+              <td><strong>Plastic (PET)</strong></td>
+              <td>3,870 kg</td>
+              <td>5.4 tonnes</td>
+              <td>154,800 L</td>
+              <td>12,384 kWh</td>
+              <td><span class="badge badge-green">High</span></td>
+            </tr>
+            <tr>
+              <td><strong>Paper / Cardboard</strong></td>
+              <td>2,240 kg</td>
+              <td>2.8 tonnes</td>
+              <td>168,000 L</td>
+              <td>4,256 kWh</td>
+              <td><span class="badge badge-blue">Medium</span></td>
+            </tr>
+            <tr>
+              <td><strong>Glass</strong></td>
+              <td>1,340 kg</td>
+              <td>1.1 tonnes</td>
+              <td>74,400 L</td>
+              <td>1,608 kWh</td>
+              <td><span class="badge badge-purple">Moderate</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+
+<script src = "Environmental.js"></script>
+
+<script src="EmployeeAppearance.js"></script>
+</body>
+</html>

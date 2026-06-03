@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Registered Pickers — EcoCycle</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Sora:wght@600;700;800&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --green:        #3a9e3f;
+      --green-dark:   #1f6b23;
+      --green-light:  #66bb6a;
+      --green-bg:     #e8f5e9;
+      --green-border: #b5ddb6;
+      --red:          #e53935;
+      --amber:        #f59e0b;
+      --bg:           #f5ede0;
+      --white:        #ffffff;
+      --text:         #1a1a1a;
+      --text-2:       #4a4a4a;
+      --text-3:       #7a7a7a;
+      --border:       #e2dfd8;
+      --border-light: #f0ede8;
+      --sidebar-w:    260px;
+      --header-h:     64px;
+    }
+    body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+
+    /* ── TOPBAR ── */
+    .topbar {
+      position: fixed; top: 0; left: 0; right: 0;
+      height: var(--header-h); background: var(--white);
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 24px; z-index: 200;
+    }
+    .topbar-brand { display: flex; align-items: center; gap: 10px; }
+    .brand-icon {
+      width: 40px; height: 40px; border-radius: 11px;
+      background: linear-gradient(135deg, #3a9e3f, #1f6b23);
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 3px 10px rgba(58,158,63,0.35);
+    }
+    .ecocycle-wordmark { font-family: 'Sora', sans-serif; font-size: 1.15rem; font-weight: 800; color: var(--text); letter-spacing: -0.03em; }
+    .ecocycle-wordmark .eco { color: var(--green); }
+    .ecocycle-sub { font-size: 0.7rem; color: var(--text-3); margin-top: 1px; }
+    .topbar-logout {
+      display: flex; align-items: center; gap: 6px;
+      font-size: 13px; font-weight: 500; color: var(--text-3);
+      background: none; border: 1px solid var(--border); border-radius: 8px;
+      padding: 7px 14px; cursor: pointer; font-family: inherit; transition: all 0.15s;
+    }
+    .topbar-logout:hover { color: var(--text); background: var(--bg); }
+
+    /* ── LAYOUT ── */
+    .layout { display: flex; padding-top: var(--header-h); min-height: 100vh; }
+
+    /* ── SIDEBAR ── */
+    .sidebar {
+      width: var(--sidebar-w); background: var(--white);
+      border-right: 1px solid var(--border);
+      position: fixed; top: var(--header-h); bottom: 0; left: 0;
+      padding: 20px 12px; overflow-y: auto; z-index: 100; flex-shrink: 0;
+    }
+    .nav-item {
+      display: flex; align-items: center; gap: 11px;
+      padding: 11px 14px; border-radius: 10px;
+      font-size: 14px; font-weight: 500; color: var(--text-3);
+      cursor: pointer; margin-bottom: 3px;
+      transition: all 0.18s; text-decoration: none;
+    }
+    .nav-item:hover  { background: var(--green-bg); color: var(--green); }
+    .nav-item.active { background: var(--green); color: white; }
+    .nav-item svg    { width: 18px; height: 18px; flex-shrink: 0; }
+
+    /* ── MAIN ── */
+    .main {
+      margin-left: var(--sidebar-w);
+      flex: 1; padding: 32px 32px;
+      min-width: 0; /* Prevents flex child overflow */
+      overflow-x: hidden;
+    }
+
+    /* ── PAGE HEADER ── */
+    .page-header { margin-bottom: 24px; }
+    .page-header h1 { font-family: 'Sora', sans-serif; font-size: 26px; font-weight: 800; color: var(--text); letter-spacing: -0.5px; margin-bottom: 4px; }
+    .page-header p  { font-size: 13px; color: var(--text-3); }
+
+    /* ── STATS ROW ── */
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px; margin-bottom: 24px;
+    }
+    @media (max-width: 900px) { .stats-row { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 580px) { .stats-row { grid-template-columns: 1fr; } }
+
+    .stat-card {
+      background: var(--white); border: 1px solid var(--border-light);
+      border-radius: 14px; padding: 18px 20px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    }
+    .stat-label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-3); margin-bottom: 6px; }
+    .stat-value { font-family: 'Sora', sans-serif; font-size: 26px; font-weight: 800; color: var(--text); letter-spacing: -0.5px; line-height: 1; margin-bottom: 4px; }
+    .stat-sub   { font-size: 12px; color: var(--green); font-weight: 500; }
+
+    /* ── TOOLBAR ── */
+    .toolbar {
+      display: flex; align-items: center; gap: 12px;
+      margin-bottom: 16px; flex-wrap: wrap;
+    }
+    .search-wrap {
+      position: relative; flex: 1; min-width: 180px;
+    }
+    .search-wrap svg { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); width: 15px; height: 15px; color: var(--text-3); pointer-events: none; }
+    .search-input {
+      width: 100%; padding: 10px 12px 10px 36px;
+      border: 1px solid var(--border); border-radius: 10px;
+      font-family: inherit; font-size: 13px; color: var(--text);
+      background: var(--white); outline: none; transition: border-color 0.15s;
+    }
+    .search-input:focus { border-color: var(--green); box-shadow: 0 0 0 3px rgba(58,158,63,0.1); }
+    .search-input::placeholder { color: var(--text-3); }
+
+    .zone-select {
+      padding: 10px 32px 10px 13px; border: 1px solid var(--border);
+      border-radius: 10px; font-family: inherit; font-size: 13px;
+      color: var(--text); background: var(--white); outline: none;
+      appearance: none; cursor: pointer; min-width: 130px;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%237A7A7A' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+      background-repeat: no-repeat; background-position: right 10px center;
+      transition: border-color 0.15s;
+    }
+    .zone-select:focus { border-color: var(--green); }
+
+    .btn-add {
+      display: inline-flex; align-items: center; gap: 7px;
+      background: var(--green); color: white; border: none;
+      border-radius: 10px; padding: 10px 18px;
+      font-family: inherit; font-size: 13px; font-weight: 600;
+      cursor: pointer; white-space: nowrap; transition: background 0.15s;
+    }
+    .btn-add:hover { background: var(--green-dark); }
+    .btn-add svg { width: 15px; height: 15px; }
+
+    /* ── TABLE CARD ── */
+    .table-card {
+      background: var(--white); border: 1px solid var(--border-light);
+      border-radius: 16px; overflow: hidden;
+    }
+    .table-card-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 16px 22px; border-bottom: 1px solid var(--border-light);
+    }
+    .table-card-title { font-family: 'Sora', sans-serif; font-size: 15px; font-weight: 700; color: var(--text); }
+    .picker-count {
+      background: var(--green); color: white;
+      font-size: 11px; font-weight: 700;
+      padding: 3px 10px; border-radius: 20px;
+    }
+
+    /* ── TABLE ── */
+    .table-wrap { width: 100%; overflow-x: auto; }
+    .pickers-table { width: 100%; border-collapse: collapse; min-width: 600px; }
+    .pickers-table th {
+      font-size: 11px; font-weight: 700; color: var(--text-3);
+      text-align: left; padding: 11px 16px;
+      border-bottom: 1px solid var(--border-light);
+      text-transform: uppercase; letter-spacing: 0.5px;
+      white-space: nowrap;
+    }
+    .pickers-table td {
+      padding: 13px 16px; font-size: 13px;
+      border-bottom: 1px solid var(--border-light);
+      color: var(--text-2); vertical-align: middle;
+    }
+    .pickers-table tr:last-child td { border-bottom: none; }
+    .pickers-table tbody tr { transition: background 0.12s; }
+    .pickers-table tbody tr:hover td { background: #faf8f4; }
+
+    /* Picker name cell */
+    .picker-cell { display: flex; align-items: center; gap: 10px; }
+    .picker-avatar {
+      width: 34px; height: 34px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--green-dark), var(--green-light));
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Sora', sans-serif; font-size: 11px; font-weight: 800;
+      color: white; flex-shrink: 0;
+    }
+    .picker-name   { font-weight: 600; color: var(--text); font-size: 13px; }
+    .picker-id     { font-size: 11px; color: var(--text-3); margin-top: 1px; }
+
+    /* Zone pill */
+    .zone-pill {
+      display: inline-flex; align-items: center;
+      background: var(--green-bg); color: var(--green-dark);
+      border: 1px solid var(--green-border);
+      font-size: 11px; font-weight: 600;
+      padding: 3px 10px; border-radius: 20px;
+      white-space: nowrap;
+    }
+
+    /* Status */
+    .status-wrap { display: flex; align-items: center; gap: 6px; white-space: nowrap; }
+    .status-dot  { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+    .status-dot.active   { background: var(--green); }
+    .status-dot.inactive { background: #ccc; }
+    .status-dot.pending  { background: var(--amber); }
+    .status-text { font-size: 12px; font-weight: 600; }
+    .status-text.active   { color: var(--green-dark); }
+    .status-text.inactive { color: var(--text-3); }
+    .status-text.pending  { color: #92400e; }
+
+    /* Actions */
+    .action-btns { display: flex; align-items: center; gap: 6px; }
+    .icon-btn {
+      width: 30px; height: 30px; border-radius: 8px;
+      border: 1px solid var(--border); background: none;
+      cursor: pointer; display: flex; align-items: center; justify-content: center;
+      color: var(--text-3); transition: all 0.15s;
+    }
+    .icon-btn:hover { background: var(--bg); color: var(--text); }
+    .icon-btn.danger:hover { background: #ffebee; color: var(--red); border-color: #ffcdd2; }
+    .icon-btn svg { width: 13px; height: 13px; }
+
+    /* Material tag */
+    .material-tag {
+      display: inline-flex; align-items: center;
+      font-size: 11px; font-weight: 600;
+      padding: 3px 8px; border-radius: 6px;
+      background: var(--border-light); color: var(--text-2);
+      white-space: nowrap;
+    }
+
+    /* Empty state */
+    .empty-state {
+      text-align: center; padding: 48px 24px;
+      color: var(--text-3);
+    }
+    .empty-state svg { width: 40px; height: 40px; margin-bottom: 12px; opacity: 0.4; }
+    .empty-state p { font-size: 14px; }
+
+    /* Toast */
+    .toast {
+      position: fixed; bottom: 24px; right: 24px;
+      background: var(--text); color: white;
+      border-radius: 12px; padding: 12px 18px;
+      display: flex; align-items: center; gap: 10px;
+      font-size: 13px; font-weight: 500;
+      box-shadow: 0 6px 24px rgba(0,0,0,0.18);
+      transform: translateY(80px); opacity: 0;
+      transition: all 0.3s cubic-bezier(0.34,1.56,0.64,1);
+      z-index: 999;
+    }
+    .toast.show { transform: translateY(0); opacity: 1; }
+    .toast-icon  { font-size: 16px; }
+    .toast-title { font-weight: 700; }
+    .toast-msg   { font-size: 12px; opacity: 0.8; }
+
+    /* Modal */
+    .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.35); z-index: 500; display: flex; align-items: center; justify-content: center; padding: 20px; opacity: 0; pointer-events: none; transition: opacity 0.2s; }
+    .modal-overlay.open { opacity: 1; pointer-events: all; }
+    .modal { background: var(--white); border-radius: 16px; padding: 28px; max-width: 440px; width: 100%; box-shadow: 0 8px 40px rgba(0,0,0,0.15); transform: scale(0.95); transition: transform 0.2s; }
+    .modal-overlay.open .modal { transform: scale(1); }
+    .modal h3 { font-family: 'Sora', sans-serif; font-size: 18px; font-weight: 700; margin-bottom: 8px; }
+    .modal p  { font-size: 13px; color: var(--text-3); margin-bottom: 22px; }
+    .modal-btns { display: flex; gap: 10px; justify-content: flex-end; }
+    .btn-ghost   { background: none; border: 1px solid var(--border); color: var(--text-2); border-radius: 8px; padding: 9px 18px; font-family: inherit; font-size: 13px; font-weight: 500; cursor: pointer; }
+    .btn-danger  { background: #ffebee; color: var(--red); border: 1px solid #ffcdd2; border-radius: 8px; padding: 9px 18px; font-family: inherit; font-size: 13px; font-weight: 600; cursor: pointer; }
+    .btn-danger:hover { background: var(--red); color: white; }
+
+    aside::-webkit-scrollbar { width: 4px; }
+    aside::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+  </style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<header class="topbar">
+  <div class="topbar-brand">
+    <div class="brand-icon">
+      <svg width="22" height="22" fill="none" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+        <path d="M7 19H4.815a1.83 1.83 0 0 1-1.57-.881 1.785 1.785 0 0 1-.004-1.784L7.196 9.5"/>
+        <path d="M11 19h8.203a1.83 1.83 0 0 0 1.556-.89 1.784 1.784 0 0 0 0-1.775l-1.226-2.12"/>
+        <path d="m14 16-3 3 3 3"/><path d="M8.293 13.596 7.196 9.5 3.1 10.598"/>
+        <path d="m9.344 5.811 1.093-1.892A1.83 1.83 0 0 1 11.985 3a1.784 1.784 0 0 1 1.546.888l3.943 6.843"/>
+        <path d="m13.378 9.633 4.096 1.098 1.097-4.096"/>
+      </svg>
+    </div>
+    <div>
+      <div class="ecocycle-wordmark"><span class="eco">Eco</span>Cycle</div>
+      <div class="ecocycle-sub">Informal Pickers Management</div>
+    </div>
+  </div>
+      <button class="topbar-logout" onclick="window.location.href='../AuthScreens/login.html'">
+    <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+      <path d="m16 17 5-5-5-5"/><path d="M21 12H9"/><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+    </svg>
+    Logout
+  </button>
+</header>
+
+<div class="layout">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <a class="nav-item" href="EmployeeDashboard.html">
+      <svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></svg>
+      Dashboard
+    </a>
+    <a class="nav-item" href="RegisterUsers.html">
+      <svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" x2="19" y1="8" y2="14"/><line x1="22" x2="16" y1="11" y2="11"/></svg>
+      Register Waste Picker
+    </a>
+    <a class="nav-item active" href="ViewRegisteredUser.html">
+      <svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><path d="M16 3.128a4 4 0 0 1 0 7.744"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><circle cx="9" cy="7" r="4"/></svg>
+      Registered Pickers
+    </a>
+    <a class="nav-item" href="RecordTransaction_Employee.html">
+      <svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" x2="8" y1="13" y2="13"/><line x1="16" x2="8" y1="17" y2="17"/></svg>
+      Record Transaction
+    </a>
+    <a class="nav-item" href="IncomeBoard.html">
+      <svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><line x1="12" x2="12" y1="1" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+      Income Board
+    </a>
+    <a class="nav-item" href="Environmental.html">
+      <svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/></svg>
+      Environmental Dashboard
+    </a>
+    <a class="nav-item" href="RewardsSystems.html">
+      <svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M8 21h8"/><path d="M12 17v4"/><path d="M7 4h10v5a5 5 0 0 1-10 0V4z"/><path d="M5 6H3a2 2 0 0 0 2 2"/><path d="M19 6h2a2 2 0 0 1-2 2"/></svg>
+      Rewards System
+    </a>
+    <a class="nav-item" href="Settings.html">
+      <svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+      Settings
+    </a>
+  </aside>
+
+  <!-- MAIN CONTENT -->
+  <main class="main">
+    <div class="page-header">
+      <h1>Registered Pickers</h1>
+      <p>All waste pickers currently in the system</p>
+    </div>
+
+    <!-- Stats -->
+    <div class="stats-row">
+      <div class="stat-card">
+        <div class="stat-label">Total Pickers</div>
+        <div class="stat-value">5</div>
+        <div class="stat-sub">Registered</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Active This Week</div>
+        <div class="stat-value">4</div>
+        <div class="stat-sub">Submitted collections</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Total Collected</div>
+        <div class="stat-value">521 kg</div>
+        <div class="stat-sub">All time</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Total Paid Out</div>
+        <div class="stat-value">R 1,926</div>
+        <div class="stat-sub">All time</div>
+      </div>
+    </div>
+
+    <!-- Toolbar -->
+    <div class="toolbar">
+      <div class="search-wrap">
+        <svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input class="search-input" type="text" placeholder="Search by name, ID or zone..." oninput="filterTable(this.value)" id="searchInput">
+      </div>
+      <select class="zone-select" onchange="filterZone(this.value)" id="zoneFilter">
+        <option value="">All Zones</option>
+        <option>Soweto Zone 4</option>
+        <option>Alexandra Zone 1</option>
+        <option>Diepsloot Zone 2</option>
+        <option>Midrand Zone 3</option>
+        <option>Germiston Zone 5</option>
+      </select>
+      <button class="btn-add" onclick="toast('➕','Add Picker','Redirecting to registration form...'); window.location.href='RegisterUsers.html'">
+        <svg fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        Add Picker
+      </button>
+    </div>
+
+    <!-- Table -->
+    <div class="table-card">
+      <div class="table-card-header">
+        <span class="table-card-title">Picker Directory</span>
+        <span class="picker-count" id="pickerCount">5 pickers</span>
+      </div>
+      <div class="table-wrap">
+        <table class="pickers-table" id="pickersTable">
+          <thead>
+            <tr>
+              <th>Picker</th>
+              <th>Zone</th>
+              <th>Primary Material</th>
+              <th>Phone</th>
+              <th>Joined</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="tableBody">
+            <!-- Populated by JS -->
+          </tbody>
+        </table>
+        <div class="empty-state" id="emptyState" style="display:none">
+          <svg fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="22" y1="11" x2="16" y2="11"/></svg>
+          <p>No pickers match your search.</p>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast">
+  <span class="toast-icon" id="toastIcon"></span>
+  <div><div class="toast-title" id="toastTitle"></div><div class="toast-msg" id="toastMsg"></div></div>
+</div>
+
+<!-- Confirm Modal -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal">
+    <h3 id="modalTitle">Remove Picker?</h3>
+    <p id="modalMsg">This picker will be removed from the system.</p>
+    <div class="modal-btns">
+      <button class="btn-ghost" onclick="closeModal()">Cancel</button>
+      <button class="btn-danger" id="modalConfirmBtn">Remove</button>
+    </div>
+  </div>
+</div>
+
+
+<script src="ViewRegisteredUser.js"></script>
+
+<script src="EmployeeAppearance.js"></script>
+</body>
+</html>

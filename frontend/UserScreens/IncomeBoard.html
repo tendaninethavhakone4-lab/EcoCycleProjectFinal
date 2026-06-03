@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Ecocycle — Income Board</title>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet"/>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<link rel="stylesheet" href="IncomeBoard.css"/>
+</head>
+<body>
+<!-- TOPBAR -->
+<header class="topbar">
+  <div class="topbar-brand">
+    <div class="ecocycle-logo">
+      <div class="brand-icon">
+        <svg width="22" height="22" fill="none" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M7 19H4.815a1.83 1.83 0 0 1-1.57-.881 1.785 1.785 0 0 1-.004-1.784L7.196 9.5"/><path d="M11 19h8.203a1.83 1.83 0 0 0 1.556-.89 1.784 1.784 0 0 0 0-1.775l-1.226-2.12"/><path d="m14 16-3 3 3 3"/><path d="M8.293 13.596 7.196 9.5 3.1 10.598"/><path d="m9.344 5.811 1.093-1.892A1.83 1.83 0 0 1 11.985 3a1.784 1.784 0 0 1 1.546.888l3.943 6.843"/><path d="m13.378 9.633 4.096 1.098 1.097-4.096"/></svg>
+      </div>
+      <div>
+        <div class="ecocycle-wordmark"><span class="eco">Eco</span>cycle</div>
+        <div class="ecocycle-sub">Informal Pickers Management</div>
+      </div>
+    </div>
+  </div>
+       <button class="topbar-logout" onclick="window.location.href='../AuthScreens/login.html'">
+    <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="m16 17 5-5-5-5"/><path d="M21 12H9"/><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/></svg>
+    Logout
+  </button>
+</header>
+
+<div class="layout">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <a class="nav-item" href="EmployeeDashboard.html">
+      <svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></svg>
+      Dashboard
+    </a>
+    <a class="nav-item" href="RegisterUsers.html">
+      <svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" x2="19" y1="8" y2="14"/><line x1="22" x2="16" y1="11" y2="11"/></svg>
+      Register Waste Picker
+    </a>
+    <a class="nav-item" href="ViewRegisteredUser.html">
+      <svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><path d="M16 3.128a4 4 0 0 1 0 7.744"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><circle cx="9" cy="7" r="4"/></svg>
+      Registered Pickers
+    </a>
+    <a class="nav-item" href="RecordTransaction_Employee.html">
+      <svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" x2="8" y1="13" y2="13"/><line x1="16" x2="8" y1="17" y2="17"/></svg>
+      Record Transaction
+    </a>
+    <a class="nav-item active" href="IncomeBoard.html">
+      <svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><line x1="12" x2="12" y1="1" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+      Income Board
+    </a>
+    <a class="nav-item" href="Environmental.html">
+      <svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/></svg>
+      Environmental Dashboard
+    </a>
+    <a class="nav-item" href="RewardsSystems.html">
+  <svg 
+    fill="none" 
+    stroke="currentColor" 
+    stroke-width="2" 
+    stroke-linecap="round" 
+    stroke-linejoin="round" 
+    viewBox="0 0 24 24"
+  >
+    <!-- Trophy / Rewards Icon -->
+    <path d="M8 21h8"></path>
+    <path d="M12 17v4"></path>
+    <path d="M7 4h10v5a5 5 0 0 1-10 0V4z"></path>
+    <path d="M5 6H3a2 2 0 0 0 2 2"></path>
+    <path d="M19 6h2a2 2 0 0 1-2 2"></path>
+  </svg>
+
+  Rewards System
+</a>
+     
+<a class="nav-item" href="Settings.html">
+  <svg fill="none" stroke="currentColor" stroke-width="2"
+    stroke-linecap="round" stroke-linejoin="round"
+    viewBox="0 0 24 24">
+
+    <circle cx="12" cy="12" r="3"></circle>
+
+    <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06
+    a2 2 0 0 1 0 2.83
+    2 2 0 0 1-2.83 0l-.06-.06
+    a1.65 1.65 0 0 0-1.82-.33
+    1.65 1.65 0 0 0-1 1.51V21
+    a2 2 0 0 1-2 2
+    2 2 0 0 1-2-2v-.09
+    a1.65 1.65 0 0 0-1-1.51
+    1.65 1.65 0 0 0-1.82.33l-.06.06
+    a2 2 0 0 1-2.83 0
+    2 2 0 0 1 0-2.83l.06-.06
+    a1.65 1.65 0 0 0 .33-1.82
+    1.65 1.65 0 0 0-1.51-1H3
+    a2 2 0 0 1-2-2
+    2 2 0 0 1 2-2h.09
+    a1.65 1.65 0 0 0 1.51-1
+    1.65 1.65 0 0 0-.33-1.82l-.06-.06
+    a2 2 0 0 1 0-2.83
+    2 2 0 0 1 2.83 0l.06.06
+    a1.65 1.65 0 0 0 1.82.33H9
+    a1.65 1.65 0 0 0 1-1.51V3
+    a2 2 0 0 1 2-2
+    2 2 0 0 1 2 2v.09
+    a1.65 1.65 0 0 0 1 1.51
+    1.65 1.65 0 0 0 1.82-.33l.06-.06
+    a2 2 0 0 1 2.83 0
+    2 2 0 0 1 0 2.83l-.06.06
+    a1.65 1.65 0 0 0-.33 1.82V9
+    a1.65 1.65 0 0 0 1.51 1H21
+    a2 2 0 0 1 2 2
+    2 2 0 0 1-2 2h-.09
+    a1.65 1.65 0 0 0-1.51 1z">
+    </path>
+
+  </svg>
+  Settings
+</a>
+  
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main">
+    <h1 class="page-title">Income Board</h1>
+    <p class="page-sub">Financial overview of all picker payouts and revenue</p>
+
+    <!-- HERO -->
+    <div class="income-hero">
+      <div class="hero-left">
+        <div class="hero-label">Total Income Generated</div>
+        <div class="hero-amount">R 24,580</div>
+        <div class="hero-caption">April 2025 · All pickers combined</div>
+      </div>
+      <div class="hero-right">
+        <div class="hero-stat">
+          <div class="hs-val">R 6,140</div>
+          <div class="hs-lbl">This week</div>
+        </div>
+        <div class="hero-stat">
+          <div class="hs-val">47</div>
+          <div class="hs-lbl">Pickers paid</div>
+        </div>
+        <div class="hero-stat">
+          <div class="hs-val">R 522</div>
+          <div class="hs-lbl">Avg per picker</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- STAT CARDS -->
+    <div class="stats-row">
+      <div class="stat-card">
+        <div class="stat-card-left">
+          <h4>This Week</h4>
+          <div class="value">R 6,140</div>
+          <div class="caption caption-up">↑ +9.2% vs last week</div>
+        </div>
+        <div class="stat-icon">
+          <svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-card-left">
+          <h4>This Month</h4>
+          <div class="value">R 24,580</div>
+          <div class="caption caption-up">↑ +8.1% vs last month</div>
+        </div>
+        <div class="stat-icon">
+          <svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/></svg>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-card-left">
+          <h4>Pending Payouts</h4>
+          <div class="value">R 3,210</div>
+          <div class="caption caption-neutral">12 transactions</div>
+        </div>
+        <div class="stat-icon">
+          <svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-card-left">
+          <h4>Avg per Transaction</h4>
+          <div class="value">R 178</div>
+          <div class="caption caption-up">↑ +4.5% this month</div>
+        </div>
+        <div class="stat-icon">
+          <svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><line x1="12" x2="12" y1="1" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+        </div>
+      </div>
+    </div>
+
+    <!-- CHARTS -->
+    <div class="charts-row">
+      <div class="section-card">
+        <div class="section-header">
+          <div class="section-title">Monthly Revenue Trend</div>
+          <div class="filter-tabs">
+            <button class="ftab active" onclick="setTab(this,'monthly')">Monthly</button>
+            <button class="ftab" onclick="setTab(this,'weekly')">Weekly</button>
+          </div>
+        </div>
+        <div class="chart-wrap"><canvas id="revenueChart"></canvas></div>
+      </div>
+      <div class="section-card">
+        <div class="section-title">Revenue by Material</div>
+        <div class="chart-wrap"><canvas id="materialChart"></canvas></div>
+      </div>
+    </div>
+
+    <!-- BOTTOM GRID -->
+    <div class="bottom-grid">
+
+      <!-- Income by Zone -->
+      <div class="section-card">
+        <div class="section-title">Income by Zone</div>
+        <div class="sparkbar-row">
+          <span class="sparkbar-label">Zone A — JHB CBD</span>
+          <div class="sparkbar-track"><div class="sparkbar-fill" style="width:88%"></div></div>
+          <span class="sparkbar-val">R 8,640</span>
+        </div>
+        <div class="sparkbar-row">
+          <span class="sparkbar-label">Zone B — Soweto</span>
+          <div class="sparkbar-track"><div class="sparkbar-fill" style="width:65%"></div></div>
+          <span class="sparkbar-val">R 6,360</span>
+        </div>
+        <div class="sparkbar-row">
+          <span class="sparkbar-label">Zone C — Sandton</span>
+          <div class="sparkbar-track"><div class="sparkbar-fill" style="width:52%"></div></div>
+          <span class="sparkbar-val">R 5,090</span>
+        </div>
+        <div class="sparkbar-row">
+          <span class="sparkbar-label">Zone D — Alexandra</span>
+          <div class="sparkbar-track"><div class="sparkbar-fill" style="width:36%"></div></div>
+          <span class="sparkbar-val">R 3,520</span>
+        </div>
+        <div class="sparkbar-row">
+          <span class="sparkbar-label">Zone E — Randburg</span>
+          <div class="sparkbar-track"><div class="sparkbar-fill" style="width:22%"></div></div>
+          <span class="sparkbar-val">R 2,150</span>
+        </div>
+      </div>
+
+      <!-- Income by Material -->
+      <div class="section-card">
+        <div class="section-title">Income by Material Type</div>
+        <div class="sparkbar-row">
+          <span class="sparkbar-label">Metal / Aluminium</span>
+          <div class="sparkbar-track"><div class="sparkbar-fill" style="width:82%"></div></div>
+          <span class="sparkbar-val">R 9,240</span>
+        </div>
+        <div class="sparkbar-row">
+          <span class="sparkbar-label">Plastic (HDPE)</span>
+          <div class="sparkbar-track"><div class="sparkbar-fill" style="width:60%"></div></div>
+          <span class="sparkbar-val">R 6,780</span>
+        </div>
+        <div class="sparkbar-row">
+          <span class="sparkbar-label">Plastic (PET)</span>
+          <div class="sparkbar-track"><div class="sparkbar-fill" style="width:48%"></div></div>
+          <span class="sparkbar-val">R 5,415</span>
+        </div>
+        <div class="sparkbar-row">
+          <span class="sparkbar-label">Paper / Cardboard</span>
+          <div class="sparkbar-track"><div class="sparkbar-fill" style="width:28%"></div></div>
+          <span class="sparkbar-val">R 2,160</span>
+        </div>
+        <div class="sparkbar-row">
+          <span class="sparkbar-label">Glass</span>
+          <div class="sparkbar-track"><div class="sparkbar-fill" style="width:15%"></div></div>
+          <span class="sparkbar-val">R 985</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- TOP EARNERS TABLE -->
+    <div class="section-card">
+      <div class="section-header">
+        <div class="section-title">Top Earning Pickers</div>
+        <span style="font-size:.8rem;color:var(--muted);">April 2025</span>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Picker</th>
+              <th>Zone</th>
+              <th>Primary Material</th>
+              <th>Transactions</th>
+              <th>Total kg</th>
+              <th>Total Earned</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><div class="picker-cell"><div class="picker-avatar">DZ</div><div><div class="picker-name">David Zuma</div><div class="picker-id">EC-0003</div></div></div></td>
+              <td>Zone C</td><td>Metal (Aluminium)</td><td>18</td><td>231 kg</td>
+              <td><strong>R 1,617</strong></td><td><span class="badge badge-green">Paid</span></td>
+            </tr>
+            <tr>
+              <td><div class="picker-cell"><div class="picker-avatar">JM</div><div><div class="picker-name">John Mthembu</div><div class="picker-id">EC-0001</div></div></div></td>
+              <td>Zone A</td><td>Plastic (HDPE)</td><td>22</td><td>284 kg</td>
+              <td><strong>R 1,136</strong></td><td><span class="badge badge-green">Paid</span></td>
+            </tr>
+            <tr>
+              <td><div class="picker-cell"><div class="picker-avatar">BN</div><div><div class="picker-name">Bongani Nkosi</div><div class="picker-id">EC-0005</div></div></div></td>
+              <td>Zone D</td><td>Metal (Aluminium)</td><td>14</td><td>178 kg</td>
+              <td><strong>R 1,246</strong></td><td><span class="badge badge-green">Paid</span></td>
+            </tr>
+            <tr>
+              <td><div class="picker-cell"><div class="picker-avatar">SN</div><div><div class="picker-name">Sarah Ndlovu</div><div class="picker-id">EC-0002</div></div></div></td>
+              <td>Zone B</td><td>Paper / Cardboard</td><td>19</td><td>310 kg</td>
+              <td><strong>R 620</strong></td><td><span class="badge badge-amber">Pending</span></td>
+            </tr>
+            <tr>
+              <td><div class="picker-cell"><div class="picker-avatar">ND</div><div><div class="picker-name">Nomsa Dlamini</div><div class="picker-id">EC-0004</div></div></div></td>
+              <td>Zone A</td><td>Glass</td><td>11</td><td>142 kg</td>
+              <td><strong>R 284</strong></td><td><span class="badge badge-blue">Review</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+</div>
+
+
+<script src = "IncomeBoard.js"></script>
+
+<script src="EmployeeAppearance.js"></script>
+</body>
+</html>
