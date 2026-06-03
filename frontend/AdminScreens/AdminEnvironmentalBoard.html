@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>EcoCycle — Environmental Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet"/>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <link rel="stylesheet" href="admin.css"/>
+</head>
+<body>
+<!-- ── TOPBAR ─────────────────────────────────────────────── -->
+<header class="topbar">
+  <div class="topbar-brand">
+    <div class="brand-icon">
+      <svg width="22" height="22" fill="none" stroke="white" stroke-width="2.2"
+           stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+        <path d="M7 19H4.815a1.83 1.83 0 0 1-1.57-.881 1.785 1.785 0 0 1-.004-1.784L7.196 9.5"/>
+        <path d="M11 19h8.203a1.83 1.83 0 0 0 1.556-.89 1.784 1.784 0 0 0 0-1.775l-1.226-2.12"/>
+        <path d="m14 16-3 3 3 3"/>
+        <path d="M8.293 13.596 7.196 9.5 3.1 10.598"/>
+        <path d="m9.344 5.811 1.093-1.892A1.83 1.83 0 0 1 11.985 3a1.784 1.784 0 0 1 1.546.888l3.943 6.843"/>
+        <path d="m13.378 9.633 4.096 1.098 1.097-4.096"/>
+      </svg>
+    </div>
+    <div>
+      <div class="ecocycle-wordmark"><span class="eco">Eco</span>Cycle</div>
+      <div class="ecocycle-sub">Informal Pickers Management</div>
+    </div>
+  </div>
+
+  <div class="topbar-right">
+    <span class="badge-admin">Admin</span>
+        <button class="topbar-logout" onclick="window.location.href='../AuthScreens/login.html'"></button>
+      <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+        <path d="m16 17 5-5-5-5"/><path d="M21 12H9"/><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+      </svg>
+      Logout
+    </button>
+  </div>
+</header>
+
+<div class="layout">
+  <aside class="sidebar">
+    <nav>
+      <a class="nav-item" href="admin-dashboard.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/>
+          <rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/>
+        </svg>Dashboard
+      </a>
+      <a class="nav-item" href="pricemanagementpage.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/>
+          <line x1="19" x2="19" y1="8" y2="14"/><line x1="22" x2="16" y1="11" y2="11"/>
+        </svg>Price Management
+      </a>
+      <a class="nav-item" href="viewtransactions.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
+          <path d="M16 3.128a4 4 0 0 1 0 7.744"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/>
+          <circle cx="9" cy="7" r="4"/>
+        </svg>View Transactions
+      </a>
+      <a class="nav-item" href="AdminIncomeBoard.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="12" x2="12" y1="1" y2="23"/>
+          <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+        </svg>Income Board
+      </a>
+      <a class="nav-item active" href="AdminEnvironmentalBoard.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/>
+          <path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/>
+        </svg>Environmental Dashboard
+      </a>
+      <a class="nav-item" href="adminsettings.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="3"/>
+          <path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/>
+        </svg>Settings
+      </a>
+    </nav>
+  </aside>
+
+  <main class="main-content">
+    <h1 class="page-title">Environmental Dashboard</h1>
+    <p class="page-sub">Track system-wide recycling impact and environmental milestones.</p>
+
+    <div class="stats-row">
+      <div class="stat-card">
+        <div class="stat-card-left">
+          <h4>Total Materials</h4>
+          <div class="value">42.8 tons</div>
+          <div class="caption">This year</div>
+        </div>
+        <div class="stat-icon">
+          <svg viewBox="0 0 24 24"><polyline points="1 4 1 10 7 10"/><polyline points="23 20 23 14 17 14"/>
+          <path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 0 1 3.51 15"/></svg>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-card-left">
+          <h4>CO₂ Offset</h4>
+          <div class="value">85.6 tons</div>
+          <div class="caption">Carbon credits</div>
+        </div>
+        <div class="stat-icon">
+          <svg viewBox="0 0 24 24"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></svg>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-card-left">
+          <h4>Lives Impacted</h4>
+          <div class="value">1,924</div>
+          <div class="caption">Community members</div>
+        </div>
+        <div class="stat-icon">
+          <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-card-left">
+          <h4>Water Saved</h4>
+          <div class="value">128K L</div>
+          <div class="caption">Litres conserved</div>
+        </div>
+        <div class="stat-icon">
+          <svg viewBox="0 0 24 24"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></svg>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-card">
+      <div class="section-title">Material Collection Trends</div>
+      <div class="chart-wrap"><canvas id="trendsChart"></canvas></div>
+    </div>
+
+    <div class="charts-row">
+      <div class="section-card" style="margin-bottom:0">
+        <div class="section-title">Top Performing Centres</div>
+        <div class="activity-item">
+          <div class="activity-left"><h4>Johannesburg Central</h4><p>8 500 kg collected</p></div>
+          <div class="activity-right"><div class="amount">18.8 tons CO₂</div></div>
+        </div>
+        <div class="activity-item">
+          <div class="activity-left"><h4>Pretoria East</h4><p>7 860 kg collected</p></div>
+          <div class="activity-right"><div class="amount">16.8 tons CO₂</div></div>
+        </div>
+        <div class="activity-item">
+          <div class="activity-left"><h4>Cape Town South</h4><p>6 010 kg collected</p></div>
+          <div class="activity-right"><div class="amount">12.7 tons CO₂</div></div>
+        </div>
+        <div class="activity-item">
+          <div class="activity-left"><h4>Soweto Depot</h4><p>5 420 kg collected</p></div>
+          <div class="activity-right"><div class="amount">11.4 tons CO₂</div></div>
+        </div>
+      </div>
+
+      <div class="section-card" style="margin-bottom:0">
+        <div class="section-title">Environmental Milestones</div>
+        <div class="milestone-item">
+          <div class="milestone-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--primary)"
+                 stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="20 6 9 17 4 12"/>
+            </svg>
+          </div>
+          <div class="milestone-body">
+            <div class="milestone-title">50 tons milestone reached</div>
+            <div class="milestone-sub">March 21, 2026 · Completed</div>
+          </div>
+        </div>
+        <div class="milestone-item">
+          <div class="milestone-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--amber)"
+                 stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/>
+              <line x1="12" y1="16" x2="12.01" y2="16"/>
+            </svg>
+          </div>
+          <div class="milestone-body">
+            <div class="milestone-title">100 tons CO₂ offset target</div>
+            <div class="milestone-sub">85% complete · Est. July 2026</div>
+          </div>
+        </div>
+        <div class="milestone-item">
+          <div class="milestone-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--amber)"
+                 stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/>
+              <line x1="12" y1="16" x2="12.01" y2="16"/>
+            </svg>
+          </div>
+          <div class="milestone-body">
+            <div class="milestone-title">2,000 trees saved goal</div>
+            <div class="milestone-sub">96% complete · Almost there!</div>
+          </div>
+        </div>
+        <div class="milestone-item">
+          <div class="milestone-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--primary)"
+                 stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="20 6 9 17 4 12"/>
+            </svg>
+          </div>
+          <div class="milestone-body">
+            <div class="milestone-title">1,000 active pickers onboarded</div>
+            <div class="milestone-sub">April 5, 2026 · Completed</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script>
+const ctx = document.getElementById('trendsChart').getContext('2d');
+new Chart(ctx, {
+  type: 'line',
+  data: {
+    labels: ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],
+    datasets: [
+      {
+        label: 'Plastic (kg)',
+        data: [3200,3800,4100,4600,4200,4900,5100,4700,5300,5600,5200,5800],
+        borderColor: '#2E7D32', backgroundColor: 'rgba(46,125,50,0.08)',
+        fill: true, tension: 0.4, borderWidth: 2, pointRadius: 3,
+      },
+      {
+        label: 'Paper (kg)',
+        data: [1800,2100,2300,2600,2400,2800,3000,2700,3100,3300,3000,3400],
+        borderColor: '#66BB6A', backgroundColor: 'rgba(102,187,106,0.06)',
+        fill: true, tension: 0.4, borderWidth: 2, pointRadius: 3,
+      },
+      {
+        label: 'Glass (kg)',
+        data: [900,1000,1100,1200,1100,1300,1400,1250,1450,1550,1400,1600],
+        borderColor: '#A5D6A7', backgroundColor: 'rgba(165,214,167,0.04)',
+        fill: true, tension: 0.4, borderWidth: 2, pointRadius: 3,
+      },
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { position: 'bottom', labels: { font: { family: 'DM Sans', size: 12 }, boxWidth: 12 } } },
+    scales: {
+      x: { grid: { display: false }, ticks: { font: { family: 'DM Sans', size: 11 } } },
+      y: { grid: { color: '#F0EDE5' }, ticks: { font: { family: 'DM Sans', size: 11 } } },
+    }
+  }
+});
+</script>
+</body>
+</html>
+ 

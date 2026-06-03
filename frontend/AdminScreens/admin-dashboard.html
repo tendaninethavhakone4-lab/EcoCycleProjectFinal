@@ -1,0 +1,277 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>EcoCycle — Admin Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="admin.css"/>
+  <style>
+    /* Dashboard-specific additions */
+    .env-hero { margin-bottom: 24px; }
+    .section-card { margin-bottom: 0; }
+
+    /* Trend badge on stat cards */
+    .stat-trend {
+      display: inline-flex; align-items: center; gap: 3px;
+      font-size: 11px; font-weight: 600;
+      padding: 3px 8px; border-radius: 20px; margin-top: 8px;
+    }
+    .stat-trend.up   { background: #E8F5E9; color: var(--primary); }
+    .stat-trend.down { background: #FFEBEE; color: var(--red); }
+
+    /* Revenue number colour */
+    .value.revenue { color: var(--primary); }
+
+    /* Top centres progress bar */
+    .prog-wrap { width: 100%; height: 5px; background: var(--primary-pale); border-radius: 4px; margin-top: 4px; }
+    .prog-fill  { height: 5px; border-radius: 4px; background: var(--primary); }
+  </style>
+</head>
+<body>
+
+<!-- ── TOPBAR ─────────────────────────────────────────────── -->
+<header class="topbar">
+  <div class="topbar-brand">
+    <div class="brand-icon">
+      <svg width="22" height="22" fill="none" stroke="white" stroke-width="2.2"
+           stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+        <path d="M7 19H4.815a1.83 1.83 0 0 1-1.57-.881 1.785 1.785 0 0 1-.004-1.784L7.196 9.5"/>
+        <path d="M11 19h8.203a1.83 1.83 0 0 0 1.556-.89 1.784 1.784 0 0 0 0-1.775l-1.226-2.12"/>
+        <path d="m14 16-3 3 3 3"/>
+        <path d="M8.293 13.596 7.196 9.5 3.1 10.598"/>
+        <path d="m9.344 5.811 1.093-1.892A1.83 1.83 0 0 1 11.985 3a1.784 1.784 0 0 1 1.546.888l3.943 6.843"/>
+        <path d="m13.378 9.633 4.096 1.098 1.097-4.096"/>
+      </svg>
+    </div>
+    <div>
+      <div class="ecocycle-wordmark"><span class="eco">Eco</span>Cycle</div>
+      <div class="ecocycle-sub">Informal Pickers Management</div>
+    </div>
+  </div>
+
+  <div class="topbar-right">
+    <span class="badge-admin">Admin</span>
+       <button class="topbar-logout" onclick="window.location.href='../AuthScreens/login.html'"></button>
+      <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+        <path d="m16 17 5-5-5-5"/><path d="M21 12H9"/><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+      </svg>
+      Logout
+    </button>
+  </div>
+</header>
+
+<!-- ── LAYOUT ─────────────────────────────────────────────── -->
+<div class="layout">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <nav>
+      <a class="nav-item active" href="admin-dashboard.html">
+        <svg fill="none" stroke="currentColor" stroke-width="2"
+             stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+          <rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/>
+          <rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/>
+        </svg>
+        Dashboard
+      </a>
+      <a class="nav-item" href="pricemanagementpage.html">
+        <svg fill="none" stroke="currentColor" stroke-width="2"
+             stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+          <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
+          <circle cx="9" cy="7" r="4"/>
+          <line x1="19" x2="19" y1="8" y2="14"/><line x1="22" x2="16" y1="11" y2="11"/>
+        </svg>
+        Price Management
+      </a>
+      <a class="nav-item" href="viewtransactions.html">
+        <svg fill="none" stroke="currentColor" stroke-width="2"
+             stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+          <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
+          <path d="M16 3.128a4 4 0 0 1 0 7.744"/>
+          <path d="M22 21v-2a4 4 0 0 0-3-3.87"/>
+          <circle cx="9" cy="7" r="4"/>
+        </svg>
+        View Transactions
+      </a>
+      <a class="nav-item" href="AdminIncomeBoard.html">
+        <svg fill="none" stroke="currentColor" stroke-width="2"
+             stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+          <line x1="12" x2="12" y1="1" y2="23"/>
+          <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+        </svg>
+        Income Board
+      </a>
+      <a class="nav-item" href="AdminEnvironmentalBoard.html">
+        <svg fill="none" stroke="currentColor" stroke-width="2"
+             stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+          <path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/>
+          <path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/>
+        </svg>
+        Environmental Dashboard
+      </a>
+      <a class="nav-item" href="adminsettings.html">
+        <svg fill="none" stroke="currentColor" stroke-width="2"
+             stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+          <circle cx="12" cy="12" r="3"/>
+          <path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83
+                   0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0
+                   01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2
+                   2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0
+                   00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0
+                   00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0
+                   009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0
+                   001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83
+                   2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51
+                   1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/>
+        </svg>
+        Settings
+      </a>
+    </nav>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main">
+    <h1 class="page-title">Admin Dashboard</h1>
+    <p class="page-sub">Managing operations and pricing with the same polished layout</p>
+
+    <!-- Hero banner -->
+    <div class="env-hero">
+      <div class="hero-left">
+        <div class="hero-badge">
+          <svg viewBox="0 0 24 24">
+            <path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/>
+            <path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/>
+          </svg>
+          Admin Control Panel
+        </div>
+        <div class="hero-title">Everything in one<br/>control centre</div>
+        <div class="hero-sub">Use the same polished layout and navigation as the Environmental dashboard while managing admin workflows.</div>
+      </div>
+      <div class="hero-right">
+        <div class="hero-stat">
+          <div class="hs-val">1,248</div>
+          <div class="hs-lbl">Transactions this week</div>
+        </div>
+        <div class="hero-stat">
+          <div class="hs-val">R 68,240</div>
+          <div class="hs-lbl">Revenue earned</div>
+        </div>
+        <div class="hero-stat">
+          <div class="hs-val">62</div>
+          <div class="hs-lbl">Centres active</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Impact cards -->
+    <div class="impact-row">
+      <div class="impact-card">
+        <div class="impact-left">
+          <h4>Total Transactions</h4>
+          <div class="value">14,830</div>
+          <div class="caption">Tracked this month</div>
+          <div class="stat-trend up">↑ 9.2% vs last month</div>
+        </div>
+        <div class="impact-icon">📊</div>
+      </div>
+      <div class="impact-card">
+        <div class="impact-left">
+          <h4>Revenue Summary</h4>
+          <div class="value revenue">R 162,400</div>
+          <div class="caption">Monthly total</div>
+          <div class="stat-trend up">↑ 12.4% vs last month</div>
+        </div>
+        <div class="impact-icon">💰</div>
+      </div>
+      <div class="impact-card">
+        <div class="impact-left">
+          <h4>Growth Rate</h4>
+          <div class="value">+12.4%</div>
+          <div class="caption">Since last month</div>
+          <div class="stat-trend up">↑ Above target</div>
+        </div>
+        <div class="impact-icon">📈</div>
+      </div>
+      <div class="impact-card">
+        <div class="impact-left">
+          <h4>Price Updates</h4>
+          <div class="value">8 items</div>
+          <div class="caption">Updated today</div>
+          <div class="stat-trend down">↓ 2 pending review</div>
+        </div>
+        <div class="impact-icon">⚙️</div>
+      </div>
+    </div>
+
+    <!-- Bottom charts row -->
+    <div class="charts-row">
+      <div class="section-card">
+        <div class="section-header">
+          <div class="section-title">Top Performing Centres</div>
+          <a href="viewtransactions.html" style="font-size:12px;color:var(--primary);text-decoration:none;font-weight:500">View all →</a>
+        </div>
+        <div class="centres-list" id="centresList"></div>
+      </div>
+
+      <div class="section-card">
+        <div class="section-header">
+          <div class="section-title">Recent Price Updates</div>
+          <a href="pricemanagementpage.html" style="font-size:12px;color:var(--primary);text-decoration:none;font-weight:500">Manage →</a>
+        </div>
+        <div class="updates-list" id="updatesList"></div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script>
+/* ── Centre data ── */
+const centres = [
+  { name: 'Johannesburg Central', region: 'Gauteng', kg: 8500, pct: 100 },
+  { name: 'Soweto Depot',         region: 'Gauteng', kg: 6840, pct: 80  },
+  { name: 'Pretoria East',        region: 'Gauteng', kg: 5920, pct: 70  },
+  { name: 'Alexandra Hub',        region: 'Gauteng', kg: 4310, pct: 51  },
+  { name: 'Germiston Central',    region: 'Gauteng', kg: 3860, pct: 45  },
+];
+
+const cl = document.getElementById('centresList');
+centres.forEach((c, i) => {
+  cl.innerHTML += `
+    <div class="centre-row">
+      <div class="centre-rank">${i + 1}</div>
+      <div class="centre-info">
+        <div class="centre-name">${c.name}</div>
+        <div class="centre-sub">${c.region}</div>
+        <div class="prog-wrap"><div class="prog-fill" style="width:${c.pct}%"></div></div>
+      </div>
+      <div class="centre-kg">${c.kg.toLocaleString()} kg</div>
+    </div>`;
+});
+
+/* ── Price update data ── */
+const updates = [
+  { material: 'PET Plastic (clear)',  old: 'R 2.80', now: 'R 3.10', dir: 'up',   time: '2 hrs ago' },
+  { material: 'HDPE Plastic',         old: 'R 1.90', now: 'R 2.20', dir: 'up',   time: '4 hrs ago' },
+  { material: 'Cardboard (flat)',     old: 'R 0.90', now: 'R 0.75', dir: 'down', time: 'Yesterday' },
+  { material: 'Aluminium cans',       old: 'R 8.50', now: 'R 9.00', dir: 'up',   time: 'Yesterday' },
+  { material: 'Glass (clear)',        old: 'R 0.40', now: 'R 0.35', dir: 'down', time: '2 days ago' },
+];
+
+const ul = document.getElementById('updatesList');
+updates.forEach(u => {
+  const col = u.dir === 'up' ? '#2E7D32' : '#E53935';
+  const arrow = u.dir === 'up' ? '↑' : '↓';
+  ul.innerHTML += `
+    <div class="update-row">
+      <div class="update-dot" style="background:${col}"></div>
+      <div class="update-info">
+        <div class="update-name">${u.material}</div>
+        <div class="update-meta">${u.old} → <strong style="color:${col}">${u.now}</strong> · ${u.time}</div>
+      </div>
+      <div class="update-price" style="color:${col}">${arrow} ${u.now}</div>
+    </div>`;
+});
+</script>
+</body>
+</html>
