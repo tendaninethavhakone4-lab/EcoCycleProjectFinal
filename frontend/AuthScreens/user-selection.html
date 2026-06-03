@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="user-selection.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Select Your Role</h1>
+        <p class="subtitle">Choose the role that matches your responsibilities</p>
+        <!--the container for the employee card-->
+        <div class="cards-container">
+<div class="role-card selected"
+     onclick="selectRole(this)"
+     data-url="../UserScreens/EmployeeDashboard.html">
+                <!--container for the employee icon-->
+                <div class="icon-container">
+                    <i data-lucide="user-cog"></i>
+                </div>
+                <h2 class="role-title">Employee</h2>
+                <p class="role-description">Register waste pickers and record transactions</p>
+            </div>
+            <!--the container for the admin card-->
+            <div class="role-card selected"
+     onclick="selectRole(this)"
+     data-url="../AdminScreens/admin-dashboard.html">
+                <!--container for the admin icon-->
+                <div class="icon-container">
+                    <i data-lucide="shield-check"></i>
+                </div>
+                <h2 class="role-title">Admin</h2>
+                <p class="role-description">Manage pricing and monitor operations</p>
+            </div>
+            <!--the container for the super admin card-->
+            <div class="role-card selected" onclick="selectRole(this)" data-url="../SuperAdminScreens/SuperAdminDashboard.html">
+                 <!--container for the super admin icon-->
+                <div class="icon-container">
+                    <i data-lucide="shield"></i>
+                </div>
+                <h2 class="role-title">Super Admin</h2>
+                <p class="role-description">View system-wide insights and analytics</p>
+            </div>
+        </div>
+    </div>
+</body>
+<!--the source location for the role-card icons-->
+<script src="https://unpkg.com/lucide@latest"></script>
+<script src="user-selection.js"></script>
+</html>
