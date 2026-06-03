@@ -1,0 +1,394 @@
+/* ── Google Fonts ── */
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Sora:wght@700;800&display=swap');
+ 
+/* ── CSS Variables ── */
+:root {
+  --primary: #3a9e3f;
+  --primary-bg: #e8f5e9;
+  --bg: #f5ede0;
+  --white: #ffffff;
+  --text: #1a1a1a;
+  --muted: #7a7a7a;
+  --border: #ebebeb;
+  --sidebar-w: 290px;
+ 
+  --up-color: #2a7d2e;
+  --up-bg: #e8f5e9;
+  --flat-color: #1565c0;
+  --flat-bg: #e3f2fd;
+  --down-color: #c62828;
+  --down-bg: #ffebee;
+}
+ 
+/* ── Reset ── */
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+ 
+body {
+  font-family: "DM Sans", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+ 
+/* ─────────────────────────────────────
+   TOP BAR
+───────────────────────────────────── */
+.topbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 200;
+  height: 60px;
+  background: var(--white);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 28px;
+}
+ 
+.topbar-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+ 
+.brand-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 11px;
+  background: linear-gradient(135deg, #3a9e3f, #1f6b23);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 3px 10px rgba(58, 158, 63, 0.35);
+  flex-shrink: 0;
+}
+ 
+.ecocycle-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+ 
+.ecocycle-wordmark {
+  font-family: "Sora", sans-serif;
+  font-size: 1.2rem;
+  font-weight: 800;
+  color: #1a1a1a;
+  letter-spacing: -0.03em;
+  line-height: 1;
+}
+ 
+.ecocycle-wordmark .eco {
+  color: #3a9e3f;
+}
+ 
+.ecocycle-sub {
+  font-size: 0.7rem;
+  color: var(--muted);
+  margin-top: 2px;
+  letter-spacing: 0.01em;
+}
+ 
+.topbar-logout {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  border: none;
+  background: none;
+  font-family: 'DM Sans', sans-serif;
+  color: var(--muted);
+  transition: color 0.2s;
+}
+ 
+.topbar-logout:hover {
+  color: var(--primary);
+}
+ 
+.topbar-logout svg {
+  width: 16px;
+  height: 16px;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 2;
+}
+
+.topbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+ 
+/* ─────────────────────────────────────
+   LAYOUT
+───────────────────────────────────── */
+.layout {
+  display: flex;
+  padding-top: 60px;
+  min-height: 100vh;
+}
+ 
+/* ─────────────────────────────────────
+   SIDEBAR
+───────────────────────────────────── */
+.sidebar {
+  width: var(--sidebar-w);
+  background: var(--white);
+  border-right: 1px solid var(--border);
+  position: fixed;
+  top: 60px;
+  bottom: 0;
+  left: 0;
+  padding: 24px 16px;
+  overflow-y: auto;
+}
+ 
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  border-radius: 12px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--muted);
+  cursor: pointer;
+  margin-bottom: 4px;
+  transition: all 0.2s;
+  user-select: none;
+  text-decoration: none;
+}
+ 
+.nav-item:hover {
+  background: var(--primary-bg);
+  color: var(--primary);
+}
+ 
+.nav-item.active {
+  background: var(--primary);
+  color: var(--white);
+  font-weight: 600;
+}
+ 
+.nav-item.active svg {
+  stroke: white;
+}
+ 
+.nav-item svg {
+  width: 20px;
+  height: 20px;
+  stroke: currentColor;
+  flex-shrink: 0;
+}
+ 
+/* ─────────────────────────────────────
+   MAIN
+───────────────────────────────────── */
+.main {
+  margin-left: var(--sidebar-w);
+  flex: 1;
+  padding: 36px 40px 60px;
+}
+ 
+.page-title {
+  font-family: "Sora", sans-serif;
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--text);
+  margin-bottom: 4px;
+}
+ 
+.page-sub {
+  font-size: 0.92rem;
+  color: var(--muted);
+  margin-bottom: 32px;
+}
+ 
+/* ─────────────────────────────────────
+   SECTION CARD
+───────────────────────────────────── */
+.section-card {
+  background: var(--white);
+  border-radius: 16px;
+  border: 1px solid var(--border);
+  padding: 28px;
+  margin-bottom: 20px;
+}
+ 
+.section-title {
+  font-family: "Sora", sans-serif;
+  font-size: 1.05rem;
+  font-weight: 700;
+  margin-bottom: 20px;
+  color: var(--text);
+}
+ 
+/* ─────────────────────────────────────
+   CHART
+───────────────────────────────────── */
+.chart-wrap {
+  height: 200px;
+  position: relative;
+}
+ 
+.chart-legend {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  margin-top: 14px;
+}
+ 
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+ 
+.legend-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+ 
+/* ─────────────────────────────────────
+   INSIGHT ITEMS
+───────────────────────────────────── */
+.insight-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #f9f6f2;
+  border-radius: 12px;
+  padding: 16px 20px;
+  margin-bottom: 10px;
+  transition: background 0.18s;
+}
+ 
+.insight-item:last-child {
+  margin-bottom: 0;
+}
+ 
+.insight-item:hover {
+  background: #f2ece2;
+}
+ 
+.insight-left {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+}
+ 
+/* Trend icon bubble */
+.insight-icon {
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+ 
+.insight-icon svg {
+  width: 18px;
+  height: 18px;
+}
+ 
+.insight-icon.up {
+  background: var(--up-bg);
+}
+.insight-icon.up svg {
+  stroke: var(--up-color);
+}
+ 
+.insight-icon.flat {
+  background: var(--flat-bg);
+}
+.insight-icon.flat svg {
+  stroke: var(--flat-color);
+}
+ 
+.insight-icon.down {
+  background: var(--down-bg);
+}
+.insight-icon.down svg {
+  stroke: var(--down-color);
+}
+ 
+/* Insight body text */
+.insight-body {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+ 
+.insight-name {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text);
+}
+ 
+.insight-volume {
+  font-size: 0.78rem;
+  color: var(--muted);
+  margin-bottom: 5px;
+}
+ 
+.insight-note {
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+  font-size: 0.8rem;
+  color: var(--muted);
+  line-height: 1.45;
+}
+ 
+.note-icon {
+  width: 14px;
+  height: 14px;
+  stroke: var(--primary);
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+ 
+/* Percentage badge */
+.insight-badge {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 2px;
+  font-family: "Sora", sans-serif;
+  font-size: 1.05rem;
+  font-weight: 700;
+  flex-shrink: 0;
+  margin-left: 16px;
+}
+ 
+.insight-badge span {
+  font-family: "DM Sans", sans-serif;
+  font-size: 0.72rem;
+  font-weight: 400;
+  color: var(--muted);
+}
+ 
+.insight-badge.up   { color: var(--up-color); }
+.insight-badge.flat { color: var(--flat-color); }
+.insight-badge.down { color: var(--down-color); }
+ 
