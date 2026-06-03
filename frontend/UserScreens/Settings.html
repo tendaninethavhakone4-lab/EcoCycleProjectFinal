@@ -1,0 +1,820 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Settings — EcoCycle</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Sora:wght@600;700;800&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --green:        #3a9e3f;
+      --green-dark:   #1f6b23;
+      --green-light:  #66bb6a;
+      --green-bg:     #e8f5e9;
+      --green-border: #b5ddb6;
+      --red:          #e53935;
+      --amber:        #f59e0b;
+      --blue:         #1565c0;
+      --bg:           #f5ede0;
+      --white:        #ffffff;
+      --text:         #1a1a1a;
+      --text-2:       #4a4a4a;
+      --text-3:       #7a7a7a;
+      --border:       #e2dfd8;
+      --border-light: #f0ede8;
+      --sidebar-w:    260px;
+      --header-h:     64px;
+      --snav-w:       240px;
+    }
+    body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+
+    /* ── TOPBAR ── */
+    .topbar {
+      position: fixed; top: 0; left: 0; right: 0;
+      height: var(--header-h);
+      background: var(--white); border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 24px; z-index: 200;
+    }
+    .topbar-brand { display: flex; align-items: center; gap: 10px; }
+    .brand-icon {
+      width: 40px; height: 40px; border-radius: 11px;
+      background: linear-gradient(135deg, #3a9e3f, #1f6b23);
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 3px 10px rgba(58,158,63,0.35);
+    }
+    .ecocycle-wordmark { font-family: 'Sora', sans-serif; font-size: 1.15rem; font-weight: 800; color: var(--text); letter-spacing: -0.03em; }
+    .ecocycle-wordmark .eco { color: var(--green); }
+    .ecocycle-sub { font-size: 0.7rem; color: var(--text-3); margin-top: 1px; }
+    .topbar-right { display: flex; align-items: center; gap: 12px; }
+         .topbar-logout {
+      display: flex; align-items: center; gap: 7px;
+      font-size: 0.85rem; font-weight: 500;
+      cursor: pointer; border: none; background: none;
+      font-family: "DM Sans", sans-serif;
+      color: var(--muted);
+      padding: 8px 14px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      transition: all 0.18s;
+    }
+    .topbar-logout:hover { color: var(--primary); border-color: #c0dfc1; background: var(--primary-bg); }
+    .topbar-logout svg { width: 16px; height: 16px; }
+
+    /* ── LAYOUT ── */
+    .layout { display: flex; padding-top: var(--header-h); min-height: 100vh; }
+
+    /* ── SIDEBAR ── */
+    .sidebar {
+      width: var(--sidebar-w); background: var(--white);
+      border-right: 1px solid var(--border);
+      position: fixed; top: var(--header-h); bottom: 0; left: 0;
+      padding: 20px 12px; overflow-y: auto; z-index: 100;
+    }
+    .nav-item {
+      display: flex; align-items: center; gap: 11px;
+      padding: 11px 14px; border-radius: 10px;
+      font-size: 14px; font-weight: 500; color: var(--text-3);
+      cursor: pointer; margin-bottom: 3px;
+      transition: all 0.18s; text-decoration: none;
+    }
+    .nav-item:hover  { background: var(--green-bg); color: var(--green); }
+    .nav-item.active { background: var(--green); color: white; }
+    .nav-item svg    { width: 18px; height: 18px; flex-shrink: 0; }
+
+    /* ── MAIN WRAPPER ── */
+    .main {
+      margin-left: var(--sidebar-w);
+      flex: 1; display: flex;
+      min-height: calc(100vh - var(--header-h));
+    }
+
+    /* ── SETTINGS NAV (2nd column) ── */
+    .settings-nav {
+      width: var(--snav-w); background: var(--white);
+      border-right: 1px solid var(--border);
+      padding: 28px 16px; flex-shrink: 0;
+      overflow-y: auto;
+    }
+    .sn-title { font-family: 'Sora', sans-serif; font-size: 19px; font-weight: 700; color: var(--text); margin-bottom: 2px; }
+    .sn-sub { font-size: 12px; color: var(--text-3); margin-bottom: 22px; }
+    .sn-label {
+      font-size: 10px; font-weight: 700; letter-spacing: 1px;
+      color: var(--text-3); text-transform: uppercase;
+      padding: 10px 8px 5px;
+    }
+    .snav-item {
+      display: flex; align-items: center; gap: 9px;
+      padding: 10px 12px; border-radius: 10px;
+      font-size: 13px; font-weight: 500; color: var(--text-2);
+      cursor: pointer; margin-bottom: 2px; transition: all 0.15s;
+    }
+    .snav-item:hover { background: var(--green-bg); color: var(--green); }
+    .snav-item.active { background: var(--green-bg); color: var(--green); font-weight: 600; }
+    .snav-item.danger { color: var(--red); }
+    .snav-item.danger:hover { background: #ffebee; }
+    .snav-item svg { width: 15px; height: 15px; flex-shrink: 0; }
+    .snav-sep { height: 1px; background: var(--border); margin: 8px 8px; }
+    .notif-badge {
+      margin-left: auto; background: var(--red); color: white;
+      font-size: 10px; font-weight: 700; min-width: 18px; height: 18px;
+      border-radius: 20px; display: flex; align-items: center; justify-content: center;
+      padding: 0 4px;
+    }
+
+    /* ── SETTINGS CONTENT (3rd column) ── */
+    .settings-content { flex: 1; padding: 32px 36px; overflow-y: auto; }
+
+    .settings-section { display: none; }
+    .settings-section.visible { display: block; }
+
+    .page-header { margin-bottom: 24px; }
+    .page-header h1 { font-family: 'Sora', sans-serif; font-size: 24px; font-weight: 700; margin-bottom: 4px; }
+    .page-header p  { font-size: 13px; color: var(--text-3); }
+
+    /* Notice banner */
+    .notice-banner {
+      display: flex; align-items: flex-start; gap: 12px;
+      background: #fff8e1; border: 1px solid #ffe082;
+      border-radius: 12px; padding: 14px 18px; margin-bottom: 20px;
+    }
+    .notice-banner svg { width: 18px; height: 18px; color: #f59e0b; flex-shrink: 0; margin-top: 1px; }
+    .notice-banner p { font-size: 13px; color: #5d4037; line-height: 1.55; }
+    .notice-banner strong { color: #3e2723; }
+
+    /* Cards */
+    .card {
+      background: var(--white); border: 1px solid var(--border-light);
+      border-radius: 16px; margin-bottom: 18px; overflow: hidden;
+      animation: fadeUp 0.3s ease both;
+    }
+    @keyframes fadeUp { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:translateY(0); } }
+
+    .card-header {
+      display: flex; align-items: center; gap: 12px;
+      padding: 16px 22px; border-bottom: 1px solid var(--border-light);
+    }
+    .card-header-icon {
+      width: 34px; height: 34px; border-radius: 9px;
+      background: var(--green-bg); display: flex; align-items: center; justify-content: center;
+      color: var(--green); flex-shrink: 0;
+    }
+    .card-header-icon.red    { background: #ffebee; color: var(--red); }
+    .card-header-icon.blue   { background: #e3f2fd; color: var(--blue); }
+    .card-header-icon.amber  { background: #fff8e1; color: #e65100; }
+    .card-header-icon.purple { background: #f3e5f5; color: #7b1fa2; }
+    .card-header-icon svg    { width: 17px; height: 17px; }
+    .card-header-text strong { display: block; font-size: 14px; font-weight: 600; color: var(--text); }
+    .card-header-text span   { font-size: 12px; color: var(--text-3); }
+
+    /* Avatar block */
+    .avatar-wrap {
+      display: flex; align-items: center; gap: 18px;
+      padding: 20px 22px; border-bottom: 1px solid var(--border-light);
+    }
+    .avatar-circle {
+      width: 68px; height: 68px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--green-dark), var(--green-light));
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Sora', sans-serif; font-size: 22px; font-weight: 800;
+      color: white; flex-shrink: 0; cursor: pointer;
+    }
+    .avatar-info strong { display: block; font-size: 17px; font-weight: 700; color: var(--text); }
+    .avatar-info > span { display: block; font-size: 12px; color: var(--text-3); margin-top: 2px; }
+    .avatar-id {
+      display: inline-flex; align-items: center; gap: 5px;
+      background: var(--green-bg); border: 1px solid var(--green-border);
+      color: var(--green-dark); font-size: 11px; font-weight: 700;
+      padding: 3px 10px; border-radius: 20px; margin-top: 6px;
+    }
+
+    /* Setting rows */
+    .card-body { padding: 0; }
+    .setting-row {
+      display: flex; align-items: center; gap: 16px;
+      padding: 15px 22px; border-bottom: 1px solid var(--border-light);
+    }
+    .setting-row:last-child { border-bottom: none; }
+    .setting-left { flex: 1; }
+    .setting-label { font-size: 14px; font-weight: 500; color: var(--text); }
+    .setting-desc  { font-size: 12px; color: var(--text-3); margin-top: 2px; }
+    .setting-right { flex-shrink: 0; display: flex; align-items: center; gap: 10px; }
+
+    /* Inputs */
+    .setting-input, .setting-select {
+      padding: 8px 12px; border: 1px solid var(--border);
+      border-radius: 8px; font-family: inherit; font-size: 13px;
+      color: var(--text); background: var(--bg); min-width: 190px;
+      outline: none; transition: border-color 0.15s;
+    }
+    .setting-input:focus, .setting-select:focus { border-color: var(--green); box-shadow: 0 0 0 3px rgba(58,158,63,0.1); }
+    .setting-select { appearance: none; padding-right: 28px;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%237A7A7A' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+      background-repeat: no-repeat; background-position: right 8px center;
+    }
+
+    /* Toggle */
+    .toggle { position: relative; width: 42px; height: 23px; cursor: pointer; }
+    .toggle input { opacity: 0; width: 0; height: 0; }
+    .toggle-slider { position: absolute; inset: 0; background: #d1d5db; border-radius: 23px; transition: 0.2s; }
+    .toggle-slider::before { content:''; position: absolute; width: 17px; height: 17px; left: 3px; bottom: 3px; background: white; border-radius: 50%; transition: 0.2s; box-shadow: 0 1px 3px rgba(0,0,0,0.2); }
+    .toggle input:checked + .toggle-slider { background: var(--green); }
+    .toggle input:checked + .toggle-slider::before { transform: translateX(19px); }
+
+    /* Buttons */
+    .btn-row { display: flex; gap: 10px; padding: 16px 22px; border-top: 1px solid var(--border-light); }
+    .btn-primary { background: var(--green); color: white; border: none; border-radius: 8px; padding: 9px 18px; font-family: inherit; font-size: 13px; font-weight: 600; cursor: pointer; transition: background 0.15s; }
+    .btn-primary:hover { background: var(--green-dark); }
+    .btn-ghost   { background: none; border: 1px solid var(--border); color: var(--text-2); border-radius: 8px; padding: 9px 18px; font-family: inherit; font-size: 13px; font-weight: 500; cursor: pointer; transition: all 0.15s; }
+    .btn-ghost:hover   { background: var(--bg); }
+    .btn-secondary { display: inline-flex; align-items: center; gap: 6px; background: none; border: 1px solid var(--border); color: var(--text-2); border-radius: 8px; padding: 7px 14px; font-family: inherit; font-size: 12px; font-weight: 500; cursor: pointer; transition: all 0.15s; }
+    .btn-secondary:hover { background: var(--bg); }
+    .btn-danger  { background: #ffebee; color: var(--red); border: 1px solid #ffcdd2; border-radius: 8px; padding: 9px 18px; font-family: inherit; font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.15s; }
+    .btn-danger:hover { background: var(--red); color: white; }
+
+    /* Strength bar */
+    .strength-bar  { display: flex; gap: 4px; margin-top: 6px; width: 190px; }
+    .strength-seg  { flex: 1; height: 4px; border-radius: 99px; background: var(--border); transition: background 0.3s; }
+    .strength-label { font-size: 11px; color: var(--text-3); margin-top: 4px; }
+
+    /* Session item */
+    .session-item { display: flex; align-items: center; gap: 10px; padding: 13px 22px; border-bottom: 1px solid var(--border-light); }
+    .session-item:last-child { border-bottom: none; }
+    .session-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--green); flex-shrink: 0; }
+    .session-dot.inactive { background: #ccc; }
+    .session-info { flex: 1; }
+    .session-info strong { display: block; font-size: 13px; font-weight: 600; color: var(--text); }
+    .session-info span   { font-size: 12px; color: var(--text-3); }
+    .session-badge { background: var(--green-bg); color: var(--green-dark); border: 1px solid var(--green-border); font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 20px; }
+
+    /* Connected apps */
+    .connected-item { display: flex; align-items: center; gap: 12px; padding: 14px 22px; border-bottom: 1px solid var(--border-light); }
+    .connected-item:last-child { border-bottom: none; }
+    .conn-icon { width: 38px; height: 38px; border-radius: 9px; background: var(--bg); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; color: var(--text-2); flex-shrink: 0; }
+    .conn-icon svg { width: 20px; height: 20px; }
+    .conn-info { flex: 1; }
+    .conn-info strong { display: block; font-size: 13px; font-weight: 600; color: var(--text); }
+    .conn-info span   { font-size: 12px; color: var(--text-3); }
+    .conn-status { font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 20px; }
+    .conn-status.connected    { background: var(--green-bg); color: var(--green-dark); border: 1px solid var(--green-border); }
+    .conn-status.disconnected { background: var(--bg); color: var(--text-3); border: 1px solid var(--border); }
+
+    /* Swatches */
+    .swatches { display: flex; gap: 8px; }
+    .swatch { width: 26px; height: 26px; border-radius: 50%; cursor: pointer; border: 2px solid transparent; transition: transform 0.15s; }
+    .swatch:hover { transform: scale(1.12); }
+    .swatch.active { border-color: var(--text); }
+
+    /* Danger card */
+    .danger-card { background: #fffafa; border: 1px solid #ffcdd2; border-radius: 16px; overflow: hidden; margin-bottom: 18px; }
+    .danger-card .card-header { background: #fff3f3; border-bottom-color: #ffcdd2; }
+
+    /* Toast */
+    .toast {
+      position: fixed; bottom: 28px; right: 28px;
+      background: var(--text); color: white;
+      border-radius: 12px; padding: 13px 18px;
+      display: flex; align-items: center; gap: 10px;
+      font-size: 13px; font-weight: 500;
+      box-shadow: 0 6px 24px rgba(0,0,0,0.18);
+      transform: translateY(80px); opacity: 0;
+      transition: all 0.3s cubic-bezier(0.34,1.56,0.64,1);
+      z-index: 999; max-width: 320px;
+    }
+    .toast.show { transform: translateY(0); opacity: 1; }
+    .toast-icon { font-size: 16px; flex-shrink: 0; }
+    .toast-title { font-weight: 700; font-size: 13px; }
+    .toast-msg   { font-size: 12px; opacity: 0.8; }
+
+    /* Confirm modal */
+    .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.35); z-index: 500; display: flex; align-items: center; justify-content: center; padding: 20px; opacity: 0; pointer-events: none; transition: opacity 0.2s; }
+    .modal-overlay.open { opacity: 1; pointer-events: all; }
+    .modal { background: var(--white); border-radius: 16px; padding: 28px; max-width: 420px; width: 100%; box-shadow: 0 8px 40px rgba(0,0,0,0.15); transform: scale(0.95); transition: transform 0.2s; }
+    .modal-overlay.open .modal { transform: scale(1); }
+    .modal h3 { font-family: 'Sora', sans-serif; font-size: 18px; font-weight: 700; margin-bottom: 8px; }
+    .modal p  { font-size: 13px; color: var(--text-3); margin-bottom: 22px; }
+    .modal-btns { display: flex; gap: 10px; justify-content: flex-end; }
+
+    aside::-webkit-scrollbar, .settings-content::-webkit-scrollbar, .settings-nav::-webkit-scrollbar { width: 4px; }
+    aside::-webkit-scrollbar-thumb, .settings-content::-webkit-scrollbar-thumb, .settings-nav::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+  </style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<header class="topbar">
+  <div class="topbar-brand">
+    <div class="brand-icon">
+      <svg width="22" height="22" fill="none" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+        <path d="M7 19H4.815a1.83 1.83 0 0 1-1.57-.881 1.785 1.785 0 0 1-.004-1.784L7.196 9.5"/>
+        <path d="M11 19h8.203a1.83 1.83 0 0 0 1.556-.89 1.784 1.784 0 0 0 0-1.775l-1.226-2.12"/>
+        <path d="m14 16-3 3 3 3"/><path d="M8.293 13.596 7.196 9.5 3.1 10.598"/>
+        <path d="m9.344 5.811 1.093-1.892A1.83 1.83 0 0 1 11.985 3a1.784 1.784 0 0 1 1.546.888l3.943 6.843"/>
+        <path d="m13.378 9.633 4.096 1.098 1.097-4.096"/>
+      </svg>
+    </div>
+    <div>
+      <div class="ecocycle-wordmark"><span class="eco">Eco</span>Cycle</div>
+      <div class="ecocycle-sub">Informal Pickers Management</div>
+    </div>
+  </div>
+  <div class="topbar-right">
+      <button class="topbar-logout" onclick="window.location.href='../AuthScreens/login.html'">
+    <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="m16 17 5-5-5-5"/><path d="M21 12H9"/><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/></svg>
+    Logout
+  </button>
+  </div>
+</header>
+
+<div class="layout">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <a class="nav-item" href="EmployeeDashboard.html">
+      <svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></svg>
+      Dashboard
+    </a>
+    <a class="nav-item" href="RegisterUsers.html">
+      <svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" x2="19" y1="8" y2="14"/><line x1="22" x2="16" y1="11" y2="11"/></svg>
+      Register Waste Picker
+    </a>
+    <a class="nav-item" href="ViewRegisteredUser.html">
+      <svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><path d="M16 3.128a4 4 0 0 1 0 7.744"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><circle cx="9" cy="7" r="4"/></svg>
+      Registered Pickers
+    </a>
+    <a class="nav-item" href="RecordTransaction_Employee.html">
+      <svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" x2="8" y1="13" y2="13"/><line x1="16" x2="8" y1="17" y2="17"/></svg>
+      Record Transaction
+    </a>
+    <a class="nav-item" href="IncomeBoard.html">
+      <svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><line x1="12" x2="12" y1="1" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+      Income Board
+    </a>
+    <a class="nav-item" href="Environmental.html">
+      <svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/></svg>
+      Environmental Dashboard
+    </a>
+    <a class="nav-item" href="RewardsSystems.html">
+      <svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M8 21h8"/><path d="M12 17v4"/><path d="M7 4h10v5a5 5 0 0 1-10 0V4z"/><path d="M5 6H3a2 2 0 0 0 2 2"/><path d="M19 6h2a2 2 0 0 1-2 2"/></svg>
+      Rewards System
+    </a>
+    <a class="nav-item active" href="Settings.html">
+      <svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+      Settings
+    </a>
+  </aside>
+
+  <!-- MAIN -->
+  <div class="main">
+
+    <!-- SETTINGS NAV -->
+    <div class="settings-nav">
+      <div class="sn-title">Settings</div>
+      <div class="sn-sub">Soweto Zone 4 · Picker</div>
+
+      <div class="sn-label">Account</div>
+      <div class="snav-item active" onclick="showSection('profile', this)">
+        <svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+        Profile
+      </div>
+      <div class="snav-item" onclick="showSection('security', this)">
+        <svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        Security
+      </div>
+      <div class="snav-item" onclick="showSection('notifications', this)">
+        <svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+        Notifications
+      </div>
+
+      <div class="snav-sep"></div>
+      <div class="sn-label">App</div>
+      <div class="snav-item" onclick="showSection('appearance', this)">
+        <svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 2a10 10 0 0 1 0 20"/><path d="M12 12c-2.5-2-4-4.5-4-7a4 4 0 0 1 8 0c0 2.5-1.5 5-4 7z"/></svg>
+        Appearance
+      </div>
+      <div class="snav-item" onclick="showSection('language', this)">
+        <svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" x2="22" y1="12" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+        Language & Region
+      </div>
+      <div class="snav-item" onclick="showSection('privacy', this)">
+        <svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        Privacy & Data
+      </div>
+
+      <div class="snav-sep"></div>
+      <div class="sn-label">Integrations</div>
+      <div class="snav-item" onclick="showSection('connected', this)">
+        <svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+        Connected Apps
+      </div>
+
+      <div class="snav-sep"></div>
+      <div class="snav-item danger" onclick="showSection('danger', this)">
+        <svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" x2="12" y1="9" y2="13"/><line x1="12" x2="12.01" y1="17" y2="17"/></svg>
+        Danger Zone
+      </div>
+    </div>
+
+    <!-- SETTINGS CONTENT -->
+    <div class="settings-content">
+
+      <!-- ── PROFILE ── -->
+      <div class="settings-section visible" id="section-profile">
+        <div class="page-header">
+          <h1>Profile Settings</h1>
+          <p>Manage your personal information and picker details</p>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <div class="card-header-icon">
+              <svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+            </div>
+            <div class="card-header-text">
+              <strong>Profile Photo & Name</strong>
+              <span>Your public identity within Ecocycle</span>
+            </div>
+          </div>
+          <div class="avatar-wrap">
+            <div class="avatar-circle" title="Click to change photo">SN</div>
+            <div class="avatar-info">
+              <strong id="profileDisplayName"></strong>
+              <span>Waste Picker · Soweto Zone 4</span>
+              <div class="avatar-id">
+                <svg width="10" height="10" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+                ID: #WP-0047
+              </div>
+              <br>
+              <button class="btn-secondary" style="margin-top:8px" onclick="toast('📷','Change Photo','Feature coming soon')">
+                <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+                Change Photo
+              </button>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="setting-row">
+              <div class="setting-left"><div class="setting-label">Full Name</div><div class="setting-desc">As it appears on your official record</div></div>
+              <div class="setting-right"><input class="setting-input" type="text" id="profileName" value=""></div>
+            </div>
+            <div class="setting-row">
+              <div class="setting-left"><div class="setting-label">Phone Number</div><div class="setting-desc">Used for notifications and account recovery</div></div>
+              <div class="setting-right"><input class="setting-input" type="tel" id="profilePhone" value=""></div>
+            </div>
+            <div class="setting-row">
+              <div class="setting-left"><div class="setting-label">Email Address</div><div class="setting-desc">Used for reports and alerts</div></div>
+              <div class="setting-right"><input class="setting-input" type="email" id="profileEmail" value=""></div>
+            </div>
+            <div class="setting-row">
+              <div class="setting-left"><div class="setting-label">Zone / Collection Area</div><div class="setting-desc">Your assigned waste collection area</div></div>
+              <div class="setting-right">
+                <select class="setting-select">
+                  <option selected>Soweto Zone 4</option>
+                  <option>Alexandra Zone 1</option>
+                  <option>Diepsloot Zone 2</option>
+                  <option>Midrand Zone 3</option>
+                </select>
+              </div>
+            </div>
+            <div class="setting-row">
+              <div class="setting-left"><div class="setting-label">ID Number</div><div class="setting-desc">South African ID or passport number</div></div>
+              <div class="setting-right"><input class="setting-input" type="text" value="8204155060087"></div>
+            </div>
+          </div>
+          <div class="btn-row">
+            <button class="btn-primary" onclick="saveProfile()">Save Changes</button>
+            <button class="btn-ghost" onclick="loadUserInfo()">Cancel</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── SECURITY ── -->
+      <div class="settings-section" id="section-security">
+        <div class="page-header"><h1>Security</h1><p>Manage your password and account access</p></div>
+
+        <div class="card">
+          <div class="card-header">
+            <div class="card-header-icon blue">
+              <svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            </div>
+            <div class="card-header-text"><strong>Change Password</strong><span>Choose a strong, unique password</span></div>
+          </div>
+          <div class="card-body">
+            <div class="setting-row">
+              <div class="setting-left"><div class="setting-label" id="currentPwd">Current Password</div></div>
+              <div class="setting-right"><input class="setting-input" type="password" placeholder="Enter current password"></div>
+            </div>
+            <div class="setting-row">
+              <div class="setting-left"><div class="setting-label" id="newPwd">New Password</div></div>
+              <div class="setting-right" style="flex-direction:column;align-items:flex-end">
+                <input class="setting-input" type="password" placeholder="Min. 8 characters" oninput="updateStrength(this.value)">
+                <div class="strength-bar" id="strengthBar">
+                  <div class="strength-seg" id="s1"></div><div class="strength-seg" id="s2"></div>
+                  <div class="strength-seg" id="s3"></div><div class="strength-seg" id="s4"></div>
+                </div>
+                <div class="strength-label" id="strengthLabel">Enter a new password</div>
+              </div>
+            </div>
+            <div class="setting-row">
+              <div class="setting-left"><div class="setting-label">Confirm New Password</div></div>
+              <div class="setting-right"><input class="setting-input" type="password" placeholder="Repeat new password"></div>
+            </div>
+          </div>
+          <div class="btn-row">
+            <button class="btn-primary" onclick="toast('🔒','Password Updated','Your password has been changed')">Update Password</button>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <div class="card-header-icon amber">
+              <svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" x2="12.01" y1="18" y2="18"/></svg>
+            </div>
+            <div class="card-header-text"><strong>Two-Factor Authentication</strong><span>Add an extra layer of security</span></div>
+          </div>
+          <div class="card-body">
+            <div class="setting-row">
+              <div class="setting-left"><div class="setting-label">Enable 2FA via SMS</div><div class="setting-desc">Receive a code on +27 71 *** 5678 when logging in</div></div>
+              <div class="setting-right"><label class="toggle"><input type="checkbox" checked><span class="toggle-slider"></span></label></div>
+            </div>
+            <div class="setting-row">
+              <div class="setting-left"><div class="setting-label">Authenticator App</div><div class="setting-desc">Use Google Authenticator or similar</div></div>
+              <div class="setting-right"><label class="toggle"><input type="checkbox"><span class="toggle-slider"></span></label></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <div class="card-header-icon">
+              <svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" x2="16" y1="21" y2="21"/><line x1="12" x2="12" y1="17" y2="21"/></svg>
+            </div>
+            <div class="card-header-text"><strong>Active Sessions</strong><span>Devices currently logged into your account</span></div>
+          </div>
+          <div class="card-body">
+            <div class="session-item">
+              <div class="session-dot"></div>
+              <div class="session-info"><strong>Chrome on Windows — Johannesburg</strong><span>This device · Active now</span></div>
+              <span class="session-badge">Current</span>
+            </div>
+            <div class="session-item">
+              <div class="session-dot inactive"></div>
+              <div class="session-info"><strong>Safari on iPhone — Soweto</strong><span>Last active: 2 days ago</span></div>
+              <button class="btn-ghost" style="padding:6px 14px;font-size:12px" onclick="toast('🚪','Session Revoked','That device has been signed out')">Revoke</button>
+            </div>
+          </div>
+          <div class="btn-row">
+            <button class="btn-danger" onclick="toast('⚠️','All sessions revoked','You have been signed out of all other devices')">Sign out all devices</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── NOTIFICATIONS ── -->
+      <div class="settings-section" id="section-notifications">
+        <div class="page-header"><h1>Notifications</h1><p>Control how and when Ecocycle contacts you</p></div>
+
+        <div class="card">
+          <div class="card-header">
+            <div class="card-header-icon amber">
+              <svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+            </div>
+            <div class="card-header-text"><strong>Push Notifications</strong><span>Alerts sent directly to your device</span></div>
+          </div>
+          <div class="card-body">
+            <div class="setting-row"><div class="setting-left"><div class="setting-label">New Transaction Recorded</div><div class="setting-desc">Notify when a transaction is logged for your account</div></div><div class="setting-right"><label class="toggle"><input type="checkbox" checked><span class="toggle-slider"></span></label></div></div>
+            <div class="setting-row"><div class="setting-left"><div class="setting-label">Rewards & XP Updates</div><div class="setting-desc">Badges earned, level-ups, challenge completions</div></div><div class="setting-right"><label class="toggle"><input type="checkbox" checked><span class="toggle-slider"></span></label></div></div>
+            <div class="setting-row"><div class="setting-left"><div class="setting-label">Leaderboard Changes</div><div class="setting-desc">When your rank changes position</div></div><div class="setting-right"><label class="toggle"><input type="checkbox" checked><span class="toggle-slider"></span></label></div></div>
+            <div class="setting-row"><div class="setting-left"><div class="setting-label">Daily Streak Reminder</div><div class="setting-desc">Reminder to check in before your streak resets</div></div><div class="setting-right"><label class="toggle"><input type="checkbox" checked><span class="toggle-slider"></span></label></div></div>
+            <div class="setting-row"><div class="setting-left"><div class="setting-label">Income Payments</div><div class="setting-desc">Notify when a payment is processed</div></div><div class="setting-right"><label class="toggle"><input type="checkbox" checked><span class="toggle-slider"></span></label></div></div>
+            <div class="setting-row"><div class="setting-left"><div class="setting-label">Platform Announcements</div><div class="setting-desc">News and updates from Ecocycle</div></div><div class="setting-right"><label class="toggle"><input type="checkbox"><span class="toggle-slider"></span></label></div></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <div class="card-header-icon blue">
+              <svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            </div>
+            <div class="card-header-text"><strong>Email & SMS</strong><span>Communications sent to your contact details</span></div>
+          </div>
+          <div class="card-body">
+            <div class="setting-row"><div class="setting-left"><div class="setting-label">Weekly Summary Email</div><div class="setting-desc">A weekly digest of your collections and earnings</div></div><div class="setting-right"><label class="toggle"><input type="checkbox" checked><span class="toggle-slider"></span></label></div></div>
+            <div class="setting-row"><div class="setting-left"><div class="setting-label">SMS Alerts</div><div class="setting-desc">Critical alerts sent via SMS to your registered number</div></div><div class="setting-right"><label class="toggle"><input type="checkbox" checked><span class="toggle-slider"></span></label></div></div>
+            <div class="setting-row">
+              <div class="setting-left"><div class="setting-label">Quiet Hours</div><div class="setting-desc">Suppress all notifications between set hours</div></div>
+              <div class="setting-right">
+                <select class="setting-select"><option>Off</option><option selected>10pm – 7am</option><option>9pm – 8am</option><option>Always on</option></select>
+              </div>
+            </div>
+          </div>
+          <div class="btn-row">
+            <button class="btn-primary" onclick="toast('✅','Notification Settings Saved','Your preferences have been updated')">Save Preferences</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── APPEARANCE ── -->
+      <div class="settings-section" id="section-appearance">
+        <div class="page-header"><h1>Appearance</h1><p>Personalise the look and feel of Ecocycle</p></div>
+
+        <div class="card">
+          <div class="card-header">
+            <div class="card-header-icon purple">
+              <svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 2a10 10 0 0 1 0 20"/><path d="M12 12c-2.5-2-4-4.5-4-7a4 4 0 0 1 8 0c0 2.5-1.5 5-4 7z"/></svg>
+            </div>
+            <div class="card-header-text"><strong>Theme</strong><span>Choose your preferred colour mode</span></div>
+          </div>
+          <div class="card-body">
+            <div class="setting-row">
+              <div class="setting-left"><div class="setting-label">Colour Mode</div><div class="setting-desc">Light mode, dark mode, or follow your system</div></div>
+              <div class="setting-right">
+                <select class="setting-select" onchange="toast('🎨','Theme changed','Appearance updated')"><option selected>Light</option><option>Dark</option><option>System Default</option></select>
+              </div>
+            </div>
+            <div class="setting-row">
+              <div class="setting-left"><div class="setting-label">Accent Colour</div><div class="setting-desc">Choose the primary highlight colour</div></div>
+              <div class="setting-right">
+                <div class="swatches">
+                  <div class="swatch active" style="background:#4caf50" onclick="setSwatch(this)"></div>
+                  <div class="swatch" style="background:#2196f3" onclick="setSwatch(this)"></div>
+                  <div class="swatch" style="background:#9c27b0" onclick="setSwatch(this)"></div>
+                  <div class="swatch" style="background:#ff5722" onclick="setSwatch(this)"></div>
+                  <div class="swatch" style="background:#f5c842" onclick="setSwatch(this)"></div>
+                </div>
+              </div>
+            </div>
+            <div class="setting-row"><div class="setting-left"><div class="setting-label">Font Size</div><div class="setting-desc">Adjust text size across the application</div></div><div class="setting-right"><select class="setting-select"><option>Small</option><option selected>Medium</option><option>Large</option></select></div></div>
+            <div class="setting-row"><div class="setting-left"><div class="setting-label">Compact View</div><div class="setting-desc">Reduce spacing for more information on screen</div></div><div class="setting-right"><label class="toggle"><input type="checkbox"><span class="toggle-slider"></span></label></div></div>
+            <div class="setting-row"><div class="setting-left"><div class="setting-label">Animations</div><div class="setting-desc">Enable interface transitions and motion effects</div></div><div class="setting-right"><label class="toggle"><input type="checkbox" checked><span class="toggle-slider"></span></label></div></div>
+          </div>
+          <div class="btn-row">
+            <button class="btn-primary" onclick="toast('✅','Appearance Saved','Your theme preferences are applied')">Apply Theme</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── LANGUAGE & REGION ── -->
+      <div class="settings-section" id="section-language">
+        <div class="page-header"><h1>Language & Region</h1><p>Localise Ecocycle to your preference</p></div>
+
+        <div class="card">
+          <div class="card-header">
+            <div class="card-header-icon blue">
+              <svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" x2="22" y1="12" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+            </div>
+            <div class="card-header-text"><strong>Localisation</strong><span>Language, currency, and date formats</span></div>
+          </div>
+          <div class="card-body">
+            <div class="setting-row"><div class="setting-left"><div class="setting-label">Display Language</div><div class="setting-desc">App interface language</div></div><div class="setting-right"><select class="setting-select"><option selected>English</option><option>Zulu (isiZulu)</option><option>Xhosa (isiXhosa)</option><option>Sotho (Sesotho)</option><option>Afrikaans</option><option>Tswana (Setswana)</option></select></div></div>
+            <div class="setting-row"><div class="setting-left"><div class="setting-label">Currency</div><div class="setting-desc">Currency displayed on income and transactions</div></div><div class="setting-right"><select class="setting-select"><option selected>ZAR (R)</option><option>USD ($)</option><option>EUR (€)</option></select></div></div>
+            <div class="setting-row"><div class="setting-left"><div class="setting-label">Date Format</div><div class="setting-desc">How dates are displayed throughout the app</div></div><div class="setting-right"><select class="setting-select"><option selected>DD/MM/YYYY</option><option>MM/DD/YYYY</option><option>YYYY-MM-DD</option></select></div></div>
+            <div class="setting-row"><div class="setting-left"><div class="setting-label">Time Zone</div><div class="setting-desc">Used for timestamps and reports</div></div><div class="setting-right"><select class="setting-select"><option selected>Africa/Johannesburg (UTC+2)</option><option>UTC</option><option>Africa/Cape_Town</option></select></div></div>
+            <div class="setting-row"><div class="setting-left"><div class="setting-label">Weight Unit</div><div class="setting-desc">Unit used for material measurements</div></div><div class="setting-right"><select class="setting-select"><option selected>Kilograms (kg)</option><option>Pounds (lbs)</option></select></div></div>
+          </div>
+          <div class="btn-row">
+            <button class="btn-primary" onclick="toast('✅','Region Settings Saved','Localisation updated successfully')">Save Region Settings</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── PRIVACY ── -->
+      <div class="settings-section" id="section-privacy">
+        <div class="page-header"><h1>Privacy & Data</h1><p>Control how your data is collected and shared</p></div>
+
+        <div class="card">
+          <div class="card-header">
+            <div class="card-header-icon">
+              <svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            </div>
+            <div class="card-header-text"><strong>Privacy Controls</strong><span>Manage your data sharing preferences</span></div>
+          </div>
+          <div class="card-body">
+            <div class="setting-row"><div class="setting-left"><div class="setting-label">Show on Leaderboard</div><div class="setting-desc">Allow your name and XP to appear on the community leaderboard</div></div><div class="setting-right"><label class="toggle"><input type="checkbox" checked><span class="toggle-slider"></span></label></div></div>
+            <div class="setting-row"><div class="setting-left"><div class="setting-label">Share Collection Stats</div><div class="setting-desc">Allow anonymised data to improve environmental reports</div></div><div class="setting-right"><label class="toggle"><input type="checkbox" checked><span class="toggle-slider"></span></label></div></div>
+            <div class="setting-row"><div class="setting-left"><div class="setting-label">Analytics & Usage Data</div><div class="setting-desc">Help Ecocycle improve the platform with usage insights</div></div><div class="setting-right"><label class="toggle"><input type="checkbox" checked><span class="toggle-slider"></span></label></div></div>
+            <div class="setting-row"><div class="setting-left"><div class="setting-label">Marketing Communications</div><div class="setting-desc">Receive offers and news from Ecocycle partners</div></div><div class="setting-right"><label class="toggle"><input type="checkbox"><span class="toggle-slider"></span></label></div></div>
+            <div class="setting-row"><div class="setting-left"><div class="setting-label">Location Tracking</div><div class="setting-desc">Allow location data when recording transactions</div></div><div class="setting-right"><label class="toggle"><input type="checkbox" checked><span class="toggle-slider"></span></label></div></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <div class="card-header-icon blue">
+              <svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+            </div>
+            <div class="card-header-text"><strong>Your Data</strong><span>Access, export, or request removal of your data</span></div>
+          </div>
+          <div class="card-body">
+            <div class="setting-row">
+              <div class="setting-left"><div class="setting-label">Download My Data</div><div class="setting-desc">Export all your collections, transactions, and rewards history</div></div>
+              <div class="setting-right">
+                <button class="btn-secondary" onclick="toast('⬇️','Export Started','Your data export is being prepared')">
+                  <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>
+                  Export Data
+                </button>
+              </div>
+            </div>
+            <div class="setting-row">
+              <div class="setting-left"><div class="setting-label">Privacy Policy</div><div class="setting-desc">Read how Ecocycle uses your personal information</div></div>
+              <div class="setting-right">
+                <button class="btn-secondary">
+                  <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                  View Policy
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="btn-row">
+            <button class="btn-primary" onclick="toast('✅','Privacy Settings Saved','Your preferences have been updated')">Save Privacy Settings</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── CONNECTED APPS ── -->
+      <div class="settings-section" id="section-connected">
+        <div class="page-header"><h1>Connected Apps</h1><p>Manage external services and integrations</p></div>
+
+        <div class="card">
+          <div class="card-header">
+            <div class="card-header-icon">
+              <svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+            </div>
+            <div class="card-header-text"><strong>Integrations</strong><span>Apps with access to your Ecocycle account</span></div>
+          </div>
+          <div class="card-body">
+            <div class="connected-item">
+              <div class="conn-icon"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/><path d="M9 21V9"/></svg></div>
+              <div class="conn-info"><strong>Google Sheets</strong><span>Syncs transaction records to your spreadsheet</span></div>
+              <span class="conn-status connected">Connected</span>
+              <button class="btn-ghost" style="margin-left:10px;padding:6px 12px;font-size:12px" onclick="toast('🔗','Disconnected','Google Sheets has been unlinked')">Disconnect</button>
+            </div>
+            <div class="connected-item">
+              <div class="conn-icon"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
+              <div class="conn-info"><strong>WhatsApp Notifications</strong><span>Receive transaction alerts via WhatsApp</span></div>
+              <span class="conn-status connected">Connected</span>
+              <button class="btn-ghost" style="margin-left:10px;padding:6px 12px;font-size:12px" onclick="toast('🔗','Disconnected','WhatsApp notifications disabled')">Disconnect</button>
+            </div>
+            <div class="connected-item">
+              <div class="conn-icon"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></div>
+              <div class="conn-info"><strong>Google Maps</strong><span>Zone mapping and route tracking</span></div>
+              <span class="conn-status disconnected">Not Connected</span>
+              <button class="btn-secondary" style="margin-left:10px" onclick="toast('🔗','Google Maps','Connecting...')">Connect</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── DANGER ZONE ── -->
+      <div class="settings-section" id="section-danger">
+        <div class="page-header"><h1>Danger Zone</h1><p>Irreversible account actions — proceed with caution</p></div>
+
+        <div class="danger-card">
+          <div class="card-header">
+            <div class="card-header-icon red">
+              <svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" x2="12" y1="9" y2="13"/><line x1="12" x2="12.01" y1="17" y2="17"/></svg>
+            </div>
+            <div class="card-header-text"><strong>Irreversible Actions</strong><span>These actions cannot be undone</span></div>
+          </div>
+          <div class="card-body">
+            <div class="setting-row">
+              <div class="setting-left"><div class="setting-label">Reset Rewards & XP</div><div class="setting-desc" style="color:#e57373">Permanently erase all XP, badges, and leaderboard position.</div></div>
+              <div class="setting-right"><button class="btn-danger" onclick="confirmAction('reset-rewards','Reset all rewards?','This will erase all your XP and badges permanently.')">Reset Rewards</button></div>
+            </div>
+            <div class="setting-row">
+              <div class="setting-left"><div class="setting-label">Deactivate Account</div><div class="setting-desc" style="color:#e57373">Temporarily disable your account. Reactivate by contacting support.</div></div>
+              <div class="setting-right"><button class="btn-danger" onclick="confirmAction('deactivate','Deactivate account?','You will be signed out and your account will be suspended.')">Deactivate</button></div>
+            </div>
+            <div class="setting-row">
+              <div class="setting-left"><div class="setting-label">Delete Account</div><div class="setting-desc" style="color:#e57373">Permanently delete your account and all associated data. Irreversible.</div></div>
+              <div class="setting-right"><button class="btn-danger" onclick="confirmAction('delete','Delete your account?','All data will be permanently erased. This cannot be undone.')">Delete Account</button></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /settings-content -->
+  </div><!-- /main -->
+</div><!-- /layout -->
+
+<!-- Toast -->
+<div class="toast" id="toast">
+  <span class="toast-icon" id="toastIcon"></span>
+  <div><div class="toast-title" id="toastTitle"></div><div class="toast-msg" id="toastMsg"></div></div>
+</div>
+
+<!-- Confirm Modal -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal">
+    <h3 id="modalTitle">Are you sure?</h3>
+    <p id="modalMsg">This action cannot be undone.</p>
+    <div class="modal-btns">
+      <button class="btn-ghost" onclick="closeModal()">Cancel</button>
+      <button class="btn-danger" id="modalConfirmBtn">Confirm</button>
+    </div>
+  </div>
+</div>
+
+<script src="Settings.js"></script>
+
+</body>
+</html>
