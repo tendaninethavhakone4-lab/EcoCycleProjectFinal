@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register Waste Picker — Ecocycle</title>
+    <link rel="stylesheet" href="RegisterUsers.css">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Sora:wght@600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+<header class="topbar">
+  <div class="topbar-brand">
+    <div class="ecocycle-logo">
+      <div class="brand-icon">
+        <svg width="22" height="22" fill="none" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M7 19H4.815a1.83 1.83 0 0 1-1.57-.881 1.785 1.785 0 0 1-.004-1.784L7.196 9.5"/><path d="M11 19h8.203a1.83 1.83 0 0 0 1.556-.89 1.784 1.784 0 0 0 0-1.775l-1.226-2.12"/><path d="m14 16-3 3 3 3"/><path d="M8.293 13.596 7.196 9.5 3.1 10.598"/><path d="m9.344 5.811 1.093-1.892A1.83 1.83 0 0 1 11.985 3a1.784 1.784 0 0 1 1.546.888l3.943 6.843"/><path d="m13.378 9.633 4.096 1.098 1.097-4.096"/></svg>
+      </div>
+      <div>
+        <div class="ecocycle-wordmark"><span class="eco">Eco</span>Cycle</div>
+        <div class="ecocycle-sub">Informal Pickers Management</div>
+      </div>
+    </div>
+  </div>
+  </div>
+      <button class="topbar-logout" onclick="window.location.href='../AuthScreens/login.html'">
+    <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="m16 17 5-5-5-5"/><path d="M21 12H9"/><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/></svg>
+    Logout
+  </button>
+</header>
+
+<div class="layout">
+
+  <aside class="sidebar">
+    <a class="nav-item" href="EmployeeDashboard.html">
+      <svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></svg>
+      Dashboard
+    </a>
+    <a class="nav-item active" href="RegisterUsers.html">
+      <svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" x2="19" y1="8" y2="14"/><line x1="22" x2="16" y1="11" y2="11"/></svg>
+      Register Waste Picker
+    </a>
+    <a class="nav-item" href="ViewRegisteredUser.html">
+      <svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><path d="M16 3.128a4 4 0 0 1 0 7.744"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><circle cx="9" cy="7" r="4"/></svg>
+      Registered Pickers
+    </a>
+    <a class="nav-item" href="RecordTransaction_Employee.html">
+      <svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" x2="8" y1="13" y2="13"/><line x1="16" x2="8" y1="17" y2="17"/></svg>
+      Record Transaction
+    </a>
+    <a class="nav-item" href="IncomeBoard.html">
+      <svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><line x1="12" x2="12" y1="1" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+      Income Board
+    </a>
+    <a class="nav-item" href="Environmental.html">
+      <svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/></svg>
+      Environmental Dashboard
+    </a>
+    <a class="nav-item" href="RewardsSystems.html">
+      <svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+        <path d="M8 21h8"/><path d="M12 17v4"/>
+        <path d="M7 4h10v5a5 5 0 0 1-10 0V4z"/>
+        <path d="M5 6H3a2 2 0 0 0 2 2"/><path d="M19 6h2a2 2 0 0 1-2 2"/>
+      </svg>
+      Rewards System
+    </a>
+    <a class="nav-item" href="Settings.html">
+      <svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+        <circle cx="12" cy="12" r="3"/>
+        <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+      </svg>
+      Settings
+    </a>
+  </aside>
+
+  <main class="main">
+    <h1 class="page-title">Register Waste Picker</h1>
+    <p class="page-sub">Add a new picker to the system</p>
+
+    <div class="info-panel">
+      <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="8" y2="12"/><line x1="12" x2="12.01" y1="16" y2="16"/></svg>
+      <p>Fields marked with <strong>*</strong> are required. Please verify the picker's ID document before registering.</p>
+    </div>
+
+    <div class="form-card">
+      <div class="form-section-title">Personal Information</div>
+      <div class="form-grid">
+        <div class="form-group">
+          <label>First Name <span class="required">*</span></label>
+          <input type="text" id="fname" placeholder="e.g. John"/>
+        </div>
+        <div class="form-group">
+          <label>Last Name <span class="required">*</span></label>
+          <input type="text" id="lname" placeholder="e.g. Mthembu"/>
+        </div>
+        <div class="form-group">
+          <label>ID Number</label>
+          <input type="text" id="idnum" placeholder="13-digit SA ID number" maxlength="13"/>
+        </div>
+        <div class="form-group">
+          <label>Date of Birth</label>
+          <input type="date" id="dob"/>
+        </div>
+        <div class="form-group">
+          <label>Phone Number <span class="required">*</span></label>
+          <input type="tel" id="phone" placeholder="+27 XX XXX XXXX"/>
+        </div>
+        <div class="form-group">
+          <label>Gender</label>
+          <select id="gender">
+            <option value="">Select...</option>
+            <option>Male</option>
+            <option>Female</option>
+            <option>Prefer not to say</option>
+          </select>
+        </div>
+        <div class="form-group form-full">
+          <label>Home Address</label>
+          <input type="text" id="address" placeholder="Street address, suburb, city"/>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+      <div class="form-section-title">Collection Details</div>
+
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Assigned Zone <span class="required">*</span></label>
+          <select id="zone">
+            <option value="">Select zone...</option>
+            <option>Zone A — Johannesburg CBD</option>
+            <option>Zone B — Soweto</option>
+            <option>Zone C — Sandton</option>
+            <option>Zone D — Alexandra</option>
+            <option>Zone E — Randburg</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Primary Material</label>
+          <select id="material">
+            <option value="">Select material...</option>
+            <option>Plastic (PET)</option>
+            <option>Plastic (HDPE)</option>
+            <option>Paper / Cardboard</option>
+            <option>Metal (Aluminium)</option>
+            <option>Glass</option>
+            <option>Mixed / General</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Payment Method</label>
+          <select id="payment">
+            <option value="">Select...</option>
+            <option>Cash</option>
+            <option>Bank Transfer</option>
+            <option>Mobile Money</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Bank Account / Mobile Number</label>
+          <input type="text" id="bankaccount" placeholder="For payment purposes"/>
+        </div>
+        <div class="form-group form-full">
+          <label>Notes</label>
+          <textarea id="notes" placeholder="Any additional notes about this picker..."></textarea>
+        </div>
+      </div>
+
+      <div class="btn-row">
+        <button class="btn btn-primary" onclick="registerPicker()">
+          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg>
+          Register Picker
+        </button>
+        <button class="btn btn-outline" onclick="clearForm()">Clear Form</button>
+      </div>
+    </div>
+  </main>
+</div>
+
+<div class="toast" id="toast">
+  <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg>
+  <span id="toast-msg"></span>
+</div>
+
+
+<script src="RegisterUsers.js"></script>
+
+<script src="EmployeeAppearance.js"></script>
+</body>
+</html>

@@ -1,0 +1,451 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>EcoCycle — View Transactions</title>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --primary: #2E7D32;
+    --primary-accent: #b5ddb6;
+    --primary-pale: #E8F5E9;
+    --bg: #f5ede0;
+    --surface: #ffffff;
+    --border: #e8e4dc;
+    --text-dark: #1a1a1a;
+    --text-mid: #4a4a44;
+    --text-soft: #7a7a70;
+    --sidebar-w: 230px;
+    --topbar-h: 60px;
+  }
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text-dark); min-height: 100vh; }
+
+  /* TOPBAR */
+  .topbar {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+    height: var(--topbar-h);
+    background: #fff; border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 24px;
+  }
+  .topbar-brand { display: flex; align-items: center; gap: 10px; }
+  .brand-icon {
+    width: 36px; height: 36px; border-radius: 10px;
+    background: linear-gradient(135deg, #3a9e3f, #1f6b23);
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 3px 8px rgba(46,125,50,0.3);
+  }
+  .ecocycle-wordmark { font-family: 'Sora', sans-serif; font-size: 1.1rem; font-weight: 800; color: var(--text-dark); letter-spacing: -0.03em; line-height: 1; }
+  .ecocycle-wordmark .eco { color: var(--primary); }
+  .ecocycle-sub { font-size: 0.68rem; color: var(--text-soft); margin-top: 2px; }
+  .topbar-right { display: flex; align-items: center; gap: 10px; }
+  .badge-admin { font-size: 11px; font-weight: 700; background: var(--primary-pale); color: var(--primary); border: 1px solid var(--primary-accent); padding: 4px 10px; border-radius: 20px; }
+  .topbar-logout {
+    display: flex; align-items: center; gap: 6px;
+    font-size: 13px; font-weight: 500; border: 1px solid var(--border); border-radius: 9px;
+    padding: 7px 13px; background: none; cursor: pointer; color: var(--text-soft); font-family: 'DM Sans', sans-serif; transition: all .15s;
+  }
+  .topbar-logout:hover { color: var(--primary); border-color: var(--primary-accent); background: var(--primary-pale); }
+
+  /* LAYOUT */
+  .layout { display: flex; padding-top: var(--topbar-h); min-height: 100vh; }
+
+  /* SIDEBAR */
+  .sidebar {
+    width: var(--sidebar-w); background: #fff; border-right: 1px solid var(--border);
+    position: fixed; top: var(--topbar-h); bottom: 0; left: 0;
+    padding: 20px 12px; overflow-y: auto; z-index: 100;
+  }
+  .nav-item {
+    display: flex; align-items: center; gap: 10px; padding: 10px 14px; border-radius: 10px;
+    font-size: 0.875rem; font-weight: 500; color: var(--text-soft); cursor: pointer;
+    margin-bottom: 2px; transition: all .18s; text-decoration: none;
+  }
+  .nav-item svg { width: 18px; height: 18px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; flex-shrink: 0; }
+  .nav-item:hover { background: var(--primary-pale); color: var(--primary); }
+  .nav-item.active { background: var(--primary); color: #fff; font-weight: 600; }
+  .nav-item.active svg { stroke: #fff; }
+
+  /* MAIN */
+  .main {
+    margin-left: var(--sidebar-w); flex: 1; padding: 28px 32px;
+    /* Key fix: prevent content from overflowing the main area */
+    min-width: 0; overflow: hidden;
+  }
+  .page-title { font-family: 'Sora', sans-serif; font-size: 24px; font-weight: 800; letter-spacing: -0.5px; margin-bottom: 4px; }
+  .page-sub { font-size: 13px; color: var(--text-soft); margin-bottom: 22px; }
+
+  /* SUMMARY STRIP */
+  .summary-strip { display: grid; grid-template-columns: repeat(4,1fr); gap: 14px; margin-bottom: 20px; }
+  .summary-pill {
+    background: #fff; border: 1px solid var(--border); border-radius: 12px;
+    padding: 14px 16px; display: flex; align-items: center; gap: 12px;
+  }
+  .summary-pill-icon {
+    width: 36px; height: 36px; border-radius: 9px;
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  }
+  .summary-pill-icon svg { width: 16px; height: 16px; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+  .summary-pill-icon.green { background: var(--primary-pale); }
+  .summary-pill-icon.green svg { stroke: var(--primary); }
+  .summary-pill-icon.blue  { background: #E3F2FD; }
+  .summary-pill-icon.blue svg { stroke: #1565C0; }
+  .summary-pill-icon.amber { background: #FFF8E1; }
+  .summary-pill-icon.amber svg { stroke: #F59E0B; }
+  .summary-pill-icon.red   { background: #FFEBEE; }
+  .summary-pill-icon.red svg { stroke: #C62828; }
+  .sp-val { font-family: 'Sora', sans-serif; font-size: 18px; font-weight: 700; line-height: 1; }
+  .sp-lbl { font-size: 11px; color: var(--text-soft); margin-top: 3px; }
+
+  /* FILTER BAR */
+  .filter-bar { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; flex-wrap: wrap; }
+  .filter-bar input[type="text"],
+  .filter-bar select {
+    padding: 8px 12px; border: 1px solid var(--border); border-radius: 9px;
+    font-family: 'DM Sans', sans-serif; font-size: 13px; color: var(--text-dark);
+    background: #fff; outline: none; transition: border-color .15s;
+  }
+  .filter-bar input[type="text"] { flex: 1; min-width: 180px; }
+  .filter-bar input[type="text"]:focus,
+  .filter-bar select:focus { border-color: var(--primary); }
+  .filter-bar select {
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%237A7A7A' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+    background-repeat: no-repeat; background-position: right 10px center; padding-right: 30px; cursor: pointer;
+  }
+  .export-btn {
+    display: flex; align-items: center; gap: 6px; padding: 8px 14px; border-radius: 9px;
+    border: 1px solid var(--border); background: #fff; cursor: pointer;
+    font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 500;
+    color: var(--text-mid); transition: all .15s; white-space: nowrap;
+  }
+  .export-btn:hover { background: var(--bg); }
+  .export-btn svg { width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+  .btn-primary {
+    display: flex; align-items: center; gap: 6px; padding: 8px 16px; border-radius: 9px;
+    background: var(--primary); color: #fff; border: none; cursor: pointer;
+    font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 600;
+    transition: background .15s; white-space: nowrap;
+  }
+  .btn-primary:hover { background: #1b5e20; }
+
+  /* SECTION CARD */
+  .section-card {
+    background: #fff; border: 1px solid var(--border); border-radius: 14px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04); overflow: hidden;
+  }
+
+  /* TABLE — key fix: no overflow-x on the wrapper; table uses layout fixed with min widths kept small */
+  .table-wrap {
+    width: 100%;
+    /* NO overflow-x: auto — table must fit */
+  }
+  table {
+    width: 100%; border-collapse: collapse; font-size: 13px;
+    table-layout: fixed; /* fixed layout so columns respect widths */
+  }
+  col.col-id      { width: 100px; }
+  col.col-date    { width: 120px; }
+  col.col-picker  { width: auto; } /* flex fill */
+  col.col-mat     { width: 120px; }
+  col.col-weight  { width: 80px; }
+  col.col-amount  { width: 90px; }
+  col.col-status  { width: 110px; }
+  col.col-action  { width: 44px; }
+
+  thead th {
+    text-align: left; padding: 10px 14px;
+    font-size: 11px; font-weight: 600; color: var(--text-soft);
+    text-transform: uppercase; letter-spacing: 0.6px;
+    border-bottom: 1px solid var(--border); background: var(--bg);
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  tbody tr { border-bottom: 1px solid var(--border); transition: background .12s; }
+  tbody tr:last-child { border-bottom: none; }
+  tbody tr:hover { background: var(--bg); }
+  tbody td { padding: 12px 14px; color: var(--text-dark); vertical-align: middle; overflow: hidden; }
+  .tx-id { font-weight: 600; font-size: 12px; }
+  .tx-date { color: var(--text-soft); font-size: 11px; margin-top: 1px; }
+  .picker-cell { display: flex; align-items: center; gap: 8px; min-width: 0; }
+  .picker-av-sm {
+    width: 28px; height: 28px; border-radius: 50%;
+    background: var(--primary-pale); color: var(--primary);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 10px; font-weight: 700; flex-shrink: 0;
+  }
+  .picker-nm { font-weight: 500; font-size: 13px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .picker-id-sm { font-size: 11px; color: var(--text-soft); }
+  .material-tag {
+    display: inline-flex; align-items: center;
+    background: var(--bg); border: 1px solid var(--border);
+    font-size: 11px; font-weight: 500; padding: 3px 8px;
+    border-radius: 20px; color: var(--text-mid); white-space: nowrap;
+  }
+  .amt { font-family: 'Sora', sans-serif; font-weight: 700; font-size: 13px; color: var(--primary); }
+  .badge {
+    display: inline-flex; align-items: center; gap: 4px;
+    font-size: 11px; font-weight: 600; padding: 4px 9px;
+    border-radius: 20px; white-space: nowrap;
+  }
+  .badge::before { content: ''; width: 5px; height: 5px; border-radius: 50%; flex-shrink: 0; }
+  .badge-completed { background: #E8F5E9; color: #2E7D32; }
+  .badge-completed::before { background: #2E7D32; }
+  .badge-pending   { background: #E3F2FD; color: #1565C0; }
+  .badge-pending::before { background: #1565C0; }
+  .badge-rejected  { background: #FFEBEE; color: #C62828; }
+  .badge-rejected::before { background: #C62828; }
+  .badge-processing{ background: #FFF8E1; color: #F59E0B; }
+  .badge-processing::before { background: #F59E0B; }
+
+  .view-btn {
+    width: 28px; height: 28px; border-radius: 7px;
+    border: 1px solid var(--border); background: none; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--text-soft); transition: all .15s;
+  }
+  .view-btn:hover { background: var(--primary-pale); color: var(--primary); border-color: var(--primary-accent); }
+  .view-btn svg { width: 13px; height: 13px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+  /* PAGINATION */
+  .pagination {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 12px 16px; border-top: 1px solid var(--border);
+  }
+  .pagination-info { font-size: 12px; color: var(--text-soft); }
+  .pagination-btns { display: flex; gap: 4px; }
+  .page-btn {
+    width: 30px; height: 30px; border-radius: 7px;
+    border: 1px solid var(--border); background: none;
+    font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 500;
+    color: var(--text-mid); cursor: pointer; transition: all .15s;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .page-btn.active { background: var(--primary); color: #fff; border-color: var(--primary); }
+  .page-btn:hover:not(.active) { background: var(--bg); }
+  .page-btn svg { width: 12px; height: 12px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-brand">
+    <div class="brand-icon">
+      <svg width="20" height="20" fill="none" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+        <path d="M7 19H4.815a1.83 1.83 0 0 1-1.57-.881 1.785 1.785 0 0 1-.004-1.784L7.196 9.5"/>
+        <path d="M11 19h8.203a1.83 1.83 0 0 0 1.556-.89 1.784 1.784 0 0 0 0-1.775l-1.226-2.12"/>
+        <path d="m14 16-3 3 3 3"/><path d="M8.293 13.596 7.196 9.5 3.1 10.598"/>
+        <path d="m9.344 5.811 1.093-1.892A1.83 1.83 0 0 1 11.985 3a1.784 1.784 0 0 1 1.546.888l3.943 6.843"/>
+        <path d="m13.378 9.633 4.096 1.098 1.097-4.096"/>
+      </svg>
+    </div>
+    <div>
+      <div class="ecocycle-wordmark"><span class="eco">Eco</span>Cycle</div>
+      <div class="ecocycle-sub">Informal Pickers Management</div>
+    </div>
+  </div>
+  <div class="topbar-right">
+    <span class="badge-admin">Admin</span>
+    <button class="topbar-logout" onclick="window.location.href='../AuthScreens/login.html'">
+      <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+        <path d="m16 17 5-5-5-5"/><path d="M21 12H9"/><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+      </svg>
+      Logout
+    </button>
+  </div>
+</header>
+
+<div class="layout">
+  <aside class="sidebar">
+    <nav>
+      <a class="nav-item" href="admin-dashboard.html">
+        <svg viewBox="0 0 24 24"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></svg>
+        Dashboard
+      </a>
+      <a class="nav-item" href="pricemanagementpage.html">
+        <svg viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" x2="19" y1="8" y2="14"/><line x1="22" x2="16" y1="11" y2="11"/></svg>
+        Price Management
+      </a>
+      <a class="nav-item active" href="viewtransactions.html">
+        <svg viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><path d="M16 3.128a4 4 0 0 1 0 7.744"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><circle cx="9" cy="7" r="4"/></svg>
+        View Transactions
+      </a>
+      <a class="nav-item" href="AdminIncomeBoard.html">
+        <svg viewBox="0 0 24 24"><line x1="12" x2="12" y1="1" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+        Income Board
+      </a>
+      <a class="nav-item" href="AdminEnvironmentalBoard.html">
+        <svg viewBox="0 0 24 24"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/></svg>
+        Environmental Dashboard
+      </a>
+      <a class="nav-item" href="adminsettings.html">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
+        Settings
+      </a>
+    </nav>
+  </aside>
+
+  <main class="main">
+    <h1 class="page-title">View Transactions</h1>
+    <p class="page-sub">Review every transaction, payment status, and collector activity.</p>
+
+    <div class="summary-strip">
+      <div class="summary-pill">
+        <div class="summary-pill-icon green">
+          <svg viewBox="0 0 24 24"><polyline points="1 4 1 10 7 10"/><polyline points="23 20 23 14 17 14"/><path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 0 1 3.51 15"/></svg>
+        </div>
+        <div><div class="sp-val">14,830</div><div class="sp-lbl">Total this month</div></div>
+      </div>
+      <div class="summary-pill">
+        <div class="summary-pill-icon green">
+          <svg viewBox="0 0 24 24"><line x1="12" x2="12" y1="1" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+        </div>
+        <div><div class="sp-val" style="color:var(--primary)">R 162,400</div><div class="sp-lbl">Revenue this month</div></div>
+      </div>
+      <div class="summary-pill">
+        <div class="summary-pill-icon blue">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        </div>
+        <div><div class="sp-val" style="color:#1565C0">248</div><div class="sp-lbl">Pending review</div></div>
+      </div>
+      <div class="summary-pill">
+        <div class="summary-pill-icon red">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+        </div>
+        <div><div class="sp-val" style="color:#C62828">32</div><div class="sp-lbl">Rejected</div></div>
+      </div>
+    </div>
+
+    <div class="filter-bar">
+      <input type="text" id="searchInput" placeholder="🔍  Search by ID, picker or material…" oninput="filterTable()"/>
+      <select id="statusFilter" onchange="filterTable()">
+        <option value="">All Statuses</option>
+        <option value="completed">Completed</option>
+        <option value="pending">Pending</option>
+        <option value="rejected">Rejected</option>
+        <option value="processing">Processing</option>
+      </select>
+      <select id="materialFilter" onchange="filterTable()">
+        <option value="">All Materials</option>
+        <option value="PET Plastic">PET Plastic</option>
+        <option value="Cardboard">Cardboard</option>
+        <option value="Aluminium">Aluminium</option>
+        <option value="HDPE Plastic">HDPE Plastic</option>
+        <option value="Glass">Glass</option>
+      </select>
+      <button class="export-btn">
+        <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        Export CSV
+      </button>
+      <button class="btn-primary">+ New Transaction</button>
+    </div>
+
+    <div class="section-card">
+      <div class="table-wrap">
+        <table id="txTable">
+          <colgroup>
+            <col class="col-id"/>
+            <col class="col-date"/>
+            <col class="col-picker"/>
+            <col class="col-mat"/>
+            <col class="col-weight"/>
+            <col class="col-amount"/>
+            <col class="col-status"/>
+            <col class="col-action"/>
+          </colgroup>
+          <thead>
+            <tr>
+              <th>Txn ID</th>
+              <th>Date</th>
+              <th>Collector</th>
+              <th>Material</th>
+              <th>Wt (kg)</th>
+              <th>Amount</th>
+              <th>Status</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="txBody"></tbody>
+        </table>
+      </div>
+      <div class="pagination">
+        <div class="pagination-info" id="paginInfo">Showing 1–10 of 10 transactions</div>
+        <div class="pagination-btns">
+          <button class="page-btn"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg></button>
+          <button class="page-btn active">1</button>
+          <button class="page-btn">2</button>
+          <button class="page-btn">3</button>
+          <button class="page-btn"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></button>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script>
+const transactions = [
+  { id:'TRX-0012', date:'22 May 2026', time:'10:24 AM', picker:'Sipho Ndlovu',    initials:'SN', pickerId:'#WP-0047', material:'PET Plastic',  kg:42,  amt:130.20, status:'completed'  },
+  { id:'TRX-0013', date:'22 May 2026', time:'10:11 AM', picker:'Thandi Mokoena',  initials:'TM', pickerId:'#WP-0052', material:'Cardboard',    kg:68,  amt:51.00,  status:'pending'    },
+  { id:'TRX-0014', date:'22 May 2026', time:'09:58 AM', picker:'Bongani Khumalo', initials:'BK', pickerId:'#WP-0031', material:'Aluminium',    kg:12,  amt:108.00, status:'completed'  },
+  { id:'TRX-0015', date:'22 May 2026', time:'09:42 AM', picker:'Nomsa Petersen',  initials:'NP', pickerId:'#WP-0068', material:'HDPE Plastic', kg:35,  amt:77.00,  status:'rejected'   },
+  { id:'TRX-0016', date:'22 May 2026', time:'09:30 AM', picker:'Johan van N.',    initials:'JV', pickerId:'#WP-0019', material:'Glass',        kg:80,  amt:28.00,  status:'completed'  },
+  { id:'TRX-0017', date:'21 May 2026', time:'03:14 PM', picker:'Lerato Mokoena',  initials:'LM', pickerId:'#WP-0088', material:'PET Plastic',  kg:55,  amt:170.50, status:'processing' },
+  { id:'TRX-0018', date:'21 May 2026', time:'02:46 PM', picker:'Sam Khumalo',     initials:'SK', pickerId:'#WP-0022', material:'Cardboard',    kg:92,  amt:69.00,  status:'completed'  },
+  { id:'TRX-0019', date:'21 May 2026', time:'01:30 PM', picker:'Anele Dlamini',   initials:'AD', pickerId:'#WP-0074', material:'Aluminium',    kg:8,   amt:72.00,  status:'pending'    },
+  { id:'TRX-0020', date:'21 May 2026', time:'11:05 AM', picker:'Rendani Mphephu', initials:'RM', pickerId:'#WP-0033', material:'PET Plastic',  kg:30,  amt:93.00,  status:'completed'  },
+  { id:'TRX-0021', date:'20 May 2026', time:'04:20 PM', picker:'Fatima Adams',    initials:'FA', pickerId:'#WP-0061', material:'Glass',        kg:110, amt:38.50,  status:'completed'  },
+];
+
+const statusClass = { completed:'badge-completed', pending:'badge-pending', rejected:'badge-rejected', processing:'badge-processing' };
+const statusLabel  = { completed:'Completed', pending:'Pending', rejected:'Rejected', processing:'Processing' };
+
+function renderRows(data) {
+  const body = document.getElementById('txBody');
+  if (!data.length) {
+    body.innerHTML = `<tr><td colspan="8" style="text-align:center;padding:32px;color:var(--text-soft)">No transactions match your filters.</td></tr>`;
+    document.getElementById('paginInfo').textContent = 'Showing 0 results';
+    return;
+  }
+  body.innerHTML = data.map(t => `
+    <tr>
+      <td><span class="tx-id">${t.id}</span></td>
+      <td><div style="font-size:12px;font-weight:500">${t.date}</div><div class="tx-date">${t.time}</div></td>
+      <td>
+        <div class="picker-cell">
+          <div class="picker-av-sm">${t.initials}</div>
+          <div style="min-width:0">
+            <div class="picker-nm">${t.picker}</div>
+            <div class="picker-id-sm">${t.pickerId}</div>
+          </div>
+        </div>
+      </td>
+      <td><span class="material-tag">${t.material}</span></td>
+      <td style="font-weight:600;font-size:13px">${t.kg}</td>
+      <td><span class="amt">R ${t.amt.toFixed(2)}</span></td>
+      <td><span class="badge ${statusClass[t.status]}">${statusLabel[t.status]}</span></td>
+      <td>
+        <button class="view-btn" title="View details">
+          <svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+        </button>
+      </td>
+    </tr>`).join('');
+  document.getElementById('paginInfo').textContent = `Showing 1–${data.length} of ${data.length} transactions`;
+}
+
+function filterTable() {
+  const q      = document.getElementById('searchInput').value.toLowerCase();
+  const status = document.getElementById('statusFilter').value;
+  const mat    = document.getElementById('materialFilter').value;
+  const filtered = transactions.filter(t =>
+    (!q      || t.id.toLowerCase().includes(q) || t.picker.toLowerCase().includes(q) || t.material.toLowerCase().includes(q)) &&
+    (!status || t.status === status) &&
+    (!mat    || t.material === mat)
+  );
+  renderRows(filtered);
+}
+
+renderRows(transactions);
+</script>
+</body>
+</html>

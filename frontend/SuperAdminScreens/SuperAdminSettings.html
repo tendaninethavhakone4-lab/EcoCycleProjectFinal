@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Super Admin Settings</title>
+
+    <link rel="stylesheet" href="SuperAdminDashboard.css">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Sora:wght@700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="SuperAdminSettings.css">
+</head>
+<body>
+ 
+<!-- TOPBAR -->
+  <header class="topbar">
+    <div class="topbar-brand">
+      <div class="ecocycle-logo">
+        <div class="brand-icon">
+          <svg width="22" height="22" fill="none" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M7 19H4.815a1.83 1.83 0 0 1-1.57-.881 1.785 1.785 0 0 1-.004-1.784L7.196 9.5"></path><path d="M11 19h8.203a1.83 1.83 0 0 0 1.556-.89 1.784 1.784 0 0 0 0-1.775l-1.226-2.12"></path><path d="m14 16-3 3 3 3"></path><path d="M8.293 13.596 7.196 9.5 3.1 10.598"></path><path d="m9.344 5.811 1.093-1.892A1.83 1.83 0 0 1 11.985 3a1.784 1.784 0 0 1 1.546.888l3.943 6.843"></path><path d="m13.378 9.633 4.096 1.098 1.097-4.096"></path></svg>
+        </div>
+        <div>
+         <div class="ecocycle-wordmark"><span class="eco">Eco</span>Cycle</div>
+          <div class="ecocycle-sub">Informal Pickers Management</div>
+        </div>
+      </div>
+    </div>
+    <div class="topbar-actions">
+      <div class="ecocycle-badge topbar-badge">Super Admin</div>
+        <button class="topbar-logout" onclick="window.location.href='../AuthScreens/login.html'"></button>
+      <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+        <path d="m16 17 5-5-5-5"/><path d="M21 12H9"/><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+      </svg>
+      Logout
+    </button>
+    </div>
+  </header>
+
+  <div class="layout">
+
+    <aside class="sidebar">
+      <a class="nav-item" href="SuperAdminDashboard.html">
+        <svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><rect width="7" height="9" x="3" y="3" rx="1"></rect><rect width="7" height="5" x="14" y="3" rx="1"></rect><rect width="7" height="9" x="14" y="12" rx="1"></rect><rect width="7" height="5" x="3" y="16" rx="1"></rect></svg>
+        Dashboard
+      </a>
+      <a class="nav-item" href="SuperAdminEnvDashboard.html">
+        <svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"></path><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"></path></svg>
+        Environmental Dashboard
+      </a>
+      <a class="nav-item" href="SuperAdminAITracker.html">
+        <svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z"></path></svg>
+        AI Material Trends
+      </a>
+      <a class="nav-item" href="SuperAdminMap.html">
+        <svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"></path><circle cx="12" cy="10" r="3"></circle></svg>
+        Map View
+      </a>
+      <a class="nav-item active" href="SuperAdminSettings.html">
+        <svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09a1.65 1.65 0 001.51-1 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"></path></svg>
+        Settings
+      </a>
+    </aside>
+
+<main class="main">
+  <!-- SETTINGS NAV -->
+  <div class="settings-nav">
+    <div class="settings-nav-title">Settings</div>
+    <div class="settings-nav-sub">Super Admin Controls</div>
+ 
+    <div class="settings-section-lbl">Account</div>
+    <div class="settings-nav-item active" onclick="showSection('profile')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      Profile
+    </div>
+    <div class="settings-nav-item" onclick="showSection('security')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+      Security
+    </div>
+    <div class="settings-nav-item" onclick="showSection('notifications')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 01-3.46 0"/></svg>
+      Notifications
+      <span class="notif-badge">5</span>
+    </div>
+ 
+    <div class="settings-section-lbl">System</div>
+    <div class="settings-nav-item" onclick="showSection('admins')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v16"/></svg>
+      Admin Management
+    </div>
+    <div class="settings-nav-item" onclick="showSection('permissions')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      Permissions & Roles
+    </div>
+    <div class="settings-nav-item" onclick="showSection('integrations')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg>
+      Integrations
+    </div>
+ 
+    <div class="settings-section-lbl">App</div>
+    <div class="settings-nav-item" onclick="showSection('appearance')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/></svg>
+      Appearance
+    </div>
+    <div class="settings-nav-item" onclick="showSection('language')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>
+      Language & Region
+    </div>
+    <div class="settings-nav-item" onclick="showSection('audit')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+      Audit Logs
+    </div>
+ 
+    <div class="settings-section-lbl">Danger</div>
+    <div class="settings-nav-item" onclick="showSection('danger')" style="color:var(--red)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+      Danger Zone
+    </div>
+  </div>
+ 
+  <!-- SETTINGS CONTENT -->
+  <div class="settings-content" id="settingsContent">
+    <!-- Profile Section (default) -->
+    <div id="section-profile">
+      <div class="content-header">
+        <h2>Profile Settings</h2>
+        <p>Manage your Super Admin identity and personal information</p>
+      </div>
+ 
+      <div class="settings-card">
+        <div class="settings-card-header">
+          <div class="settings-card-icon green"><svg viewBox="0 0 24 24" fill="none" stroke="#2E7D32" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+          <div><div class="settings-card-title">Profile Photo & Identity</div><div class="settings-card-desc">Your public identity within Ecocycle</div></div>
+        </div>
+        <div class="profile-block">
+          <div class="profile-avatar">KM</div>
+          <div class="profile-info">
+            <div class="profile-name">Kagiso Molefe</div>
+            <div class="profile-role">Super Administrator · Full system access</div>
+            <div class="profile-id">⬡ SA-0001 · Super Admin</div>
+          </div>
+          <button class="change-photo-btn">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z"/><circle cx="12" cy="13" r="4"/></svg>
+            Change Photo
+          </button>
+        </div>
+        <div class="settings-row">
+          <div class="settings-row-left"><div class="settings-row-label">Full Name</div><div class="settings-row-hint">As it appears on your official record</div></div>
+          <div class="settings-row-right"><input class="settings-input" type="text" value="Kagiso Molefe"/></div>
+        </div>
+        <div class="settings-row">
+          <div class="settings-row-left"><div class="settings-row-label">Email Address</div><div class="settings-row-hint">Primary contact and login email</div></div>
+          <div class="settings-row-right"><input class="settings-input" type="email" value="kagiso@ecocycle.co.za"/></div>
+        </div>
+        <div class="settings-row">
+          <div class="settings-row-left"><div class="settings-row-label">Phone Number</div><div class="settings-row-hint">Used for 2FA and critical alerts</div></div>
+          <div class="settings-row-right"><input class="settings-input" type="tel" value="+27 82 555 0101"/></div>
+        </div>
+        <div class="settings-row">
+          <div class="settings-row-left"></div>
+          <div class="settings-row-right"><button class="btn btn-ghost">Cancel</button><button class="btn btn-primary" style="margin-left:8px">Save Changes</button></div>
+        </div>
+      </div>
+ 
+      <div class="settings-card">
+        <div class="settings-card-header">
+          <div class="settings-card-icon blue"><svg viewBox="0 0 24 24" fill="none" stroke="#1565C0" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v16"/></svg></div>
+          <div><div class="settings-card-title">Super Admin Privileges</div><div class="settings-card-desc">Read-only · Contact Anthropic to modify</div></div>
+        </div>
+        <div class="settings-row">
+          <div class="settings-row-left"><div class="settings-row-label">Role</div><div class="settings-row-hint">Highest privilege level</div></div>
+          <div class="settings-row-right"><span class="role-pill superadmin">Super Admin</span></div>
+        </div>
+        <div class="settings-row">
+          <div class="settings-row-left"><div class="settings-row-label">Access Level</div><div class="settings-row-hint">Full system read & write</div></div>
+          <div class="settings-row-right" style="color:var(--green-primary);font-weight:600;font-size:13px">Unrestricted</div>
+        </div>
+        <div class="settings-row">
+          <div class="settings-row-left"><div class="settings-row-label">Can Create Admins</div></div>
+          <div class="settings-row-right"><span style="color:var(--green-primary);font-weight:600;font-size:13px">✓ Yes</span></div>
+        </div>
+        <div class="settings-row">
+          <div class="settings-row-left"><div class="settings-row-label">Can Delete Data</div></div>
+          <div class="settings-row-right"><span style="color:var(--green-primary);font-weight:600;font-size:13px">✓ Yes</span></div>
+        </div>
+      </div>
+    </div>
+ 
+    <!-- Admin Management (hidden by default) -->
+    <div id="section-admins" style="display:none">
+      <div class="content-header">
+        <h2>Admin Management</h2>
+        <p>Create, edit, and manage regional admin accounts</p>
+      </div>
+      <div class="settings-card">
+        <div class="settings-card-header">
+          <div class="settings-card-icon blue"><svg viewBox="0 0 24 24" fill="none" stroke="#1565C0" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg></div>
+          <div style="flex:1"><div class="settings-card-title">Regional Admins</div><div class="settings-card-desc">6 admins across 6 regions</div></div>
+          <button class="btn btn-primary" style="font-size:12px">+ Add Admin</button>
+        </div>
+        <table class="admin-table">
+          <thead><tr><th>Admin</th><th>Region</th><th>Role</th><th>Status</th><th>Actions</th></tr></thead>
+          <tbody>
+            <tr><td><div class="admin-name">Sipho Dlamini</div><div class="admin-email">sipho@ecocycle.co.za</div></td><td>Soweto</td><td><span class="role-pill admin">Admin</span></td><td><span class="status-dot active"></span>Active</td><td class="action-btns"><button class="icon-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button><button class="icon-btn danger"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6M10 11v6M14 11v6"/></svg></button></td></tr>
+            <tr><td><div class="admin-name">Naledi Khumalo</div><div class="admin-email">naledi@ecocycle.co.za</div></td><td>Alexandra</td><td><span class="role-pill admin">Admin</span></td><td><span class="status-dot active"></span>Active</td><td class="action-btns"><button class="icon-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button><button class="icon-btn danger"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6M10 11v6M14 11v6"/></svg></button></td></tr>
+            <tr><td><div class="admin-name">Johan van Niekerk</div><div class="admin-email">johan@ecocycle.co.za</div></td><td>Germiston</td><td><span class="role-pill admin">Admin</span></td><td><span class="status-dot active"></span>Active</td><td class="action-btns"><button class="icon-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button><button class="icon-btn danger"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6M10 11v6M14 11v6"/></svg></button></td></tr>
+            <tr><td><div class="admin-name">Thabo Nkosi</div><div class="admin-email">thabo@ecocycle.co.za</div></td><td>Tembisa</td><td><span class="role-pill admin">Admin</span></td><td><span class="status-dot inactive"></span>Inactive</td><td class="action-btns"><button class="icon-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button><button class="icon-btn danger"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6M10 11v6M14 11v6"/></svg></button></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+ 
+    <!-- Audit Logs Section (hidden) -->
+    <div id="section-audit" style="display:none">
+      <div class="content-header">
+        <h2>Audit Logs</h2>
+        <p>Super admin activity trail — all system actions recorded</p>
+      </div>
+      <div class="settings-card">
+        <div class="settings-card-header">
+          <div class="settings-card-icon amber"><svg viewBox="0 0 24 24" fill="none" stroke="#F59E0B" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
+          <div style="flex:1"><div class="settings-card-title">Recent System Activity</div><div class="settings-card-desc">Last 30 days</div></div>
+          <button class="btn btn-ghost" style="font-size:12px">Export CSV</button>
+        </div>
+        <div class="audit-row"><div class="audit-dot" style="background:#2E7D32"></div><div><div class="audit-text"><strong>Admin created</strong> — Naledi Khumalo added as Alexandra region admin</div><div class="audit-time">Today, 10:24 AM · by Kagiso Molefe</div></div></div>
+        <div class="audit-row"><div class="audit-dot" style="background:#1565C0"></div><div><div class="audit-text"><strong>Permissions changed</strong> — Soweto admin role updated: income board access enabled</div><div class="audit-time">Yesterday, 3:11 PM · by Kagiso Molefe</div></div></div>
+        <div class="audit-row"><div class="audit-dot" style="background:#F59E0B"></div><div><div class="audit-text"><strong>System config updated</strong> — CO₂ calculation factor changed from 1.65 to 1.7 kg/kg</div><div class="audit-time">21 May 2026, 9:02 AM · by Kagiso Molefe</div></div></div>
+        <div class="audit-row"><div class="audit-dot" style="background:#E53935"></div><div><div class="audit-text"><strong>Admin suspended</strong> — Thabo Nkosi (Tembisa) account temporarily deactivated</div><div class="audit-time">19 May 2026, 2:45 PM · by Kagiso Molefe</div></div></div>
+        <div class="audit-row"><div class="audit-dot" style="background:#2E7D32"></div><div><div class="audit-text"><strong>Data export</strong> — Full system report generated and downloaded (18.4 MB)</div><div class="audit-time">17 May 2026, 11:30 AM · by Kagiso Molefe</div></div></div>
+      </div>
+    </div>
+ 
+    <!-- Danger Zone (hidden) -->
+    <div id="section-danger" style="display:none">
+      <div class="content-header">
+        <h2>Danger Zone</h2>
+        <p>Irreversible system-level actions. Proceed with extreme caution.</p>
+      </div>
+      <div class="danger-zone">
+        <div class="settings-card-header">
+          <div class="settings-card-icon red"><svg viewBox="0 0 24 24" fill="none" stroke="#E53935" stroke-width="2"><polygon points="10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div>
+          <div><div class="settings-card-title" style="color:var(--red)">Danger Zone</div><div class="settings-card-desc">These actions are permanent and cannot be undone</div></div>
+        </div>
+        <div class="settings-row">
+          <div class="settings-row-left"><div class="settings-row-label">Reset All Region Data</div><div class="settings-row-hint">Wipes all transaction and picker data. Cannot be recovered.</div></div>
+          <div class="settings-row-right"><button class="btn btn-danger">Reset Data</button></div>
+        </div>
+        <div class="settings-row">
+          <div class="settings-row-left"><div class="settings-row-label">Revoke All Admin Sessions</div><div class="settings-row-hint">Force-logs out all admin accounts immediately.</div></div>
+          <div class="settings-row-right"><button class="btn btn-danger">Revoke Sessions</button></div>
+        </div>
+        <div class="settings-row">
+          <div class="settings-row-left"><div class="settings-row-label">Delete System & All Data</div><div class="settings-row-hint">Permanently deletes the Ecocycle instance. No recovery.</div></div>
+          <div class="settings-row-right"><button class="btn btn-danger">Delete System</button></div>
+        </div>
+      </div>
+    </div>
+ 
+    <!-- Placeholders for other sections -->
+    <div id="section-security" style="display:none"><div class="content-header"><h2>Security</h2><p>Two-factor authentication, login sessions & password</p></div><div class="settings-card"><div class="settings-card-header"><div class="settings-card-icon green"><svg viewBox="0 0 24 24" fill="none" stroke="#2E7D32" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg></div><div><div class="settings-card-title">Security Settings</div><div class="settings-card-desc">Manage authentication and access controls</div></div></div><div class="settings-row"><div class="settings-row-left"><div class="settings-row-label">Two-Factor Authentication</div><div class="settings-row-hint">Required for all super admin logins</div></div><div class="settings-row-right"><label class="toggle"><input type="checkbox" checked/><span class="toggle-slider"></span></label></div></div><div class="settings-row"><div class="settings-row-left"><div class="settings-row-label">Login Alerts</div><div class="settings-row-hint">Email alert on each new sign-in</div></div><div class="settings-row-right"><label class="toggle"><input type="checkbox" checked/><span class="toggle-slider"></span></label></div></div><div class="settings-row"><div class="settings-row-left"><div class="settings-row-label">Session Timeout</div><div class="settings-row-hint">Auto logout after inactivity</div></div><div class="settings-row-right"><select class="settings-select"><option>30 minutes</option><option selected>1 hour</option><option>4 hours</option></select></div></div><div class="settings-row"><div class="settings-row-left"><div class="settings-row-label">Change Password</div></div><div class="settings-row-right"><button class="btn btn-ghost">Update Password</button></div></div></div></div>
+    <div id="section-notifications" style="display:none"><div class="content-header"><h2>Notifications</h2><p>Configure how and when you receive system alerts</p></div><div class="settings-card"><div class="settings-card-header"><div class="settings-card-icon amber"><svg viewBox="0 0 24 24" fill="none" stroke="#F59E0B" stroke-width="2"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 01-3.46 0"/></svg></div><div><div class="settings-card-title">Alert Preferences</div><div class="settings-card-desc">5 unread system notifications</div></div></div><div class="settings-row"><div class="settings-row-left"><div class="settings-row-label">Critical System Alerts</div><div class="settings-row-hint">Always on for super admin</div></div><div class="settings-row-right"><label class="toggle"><input type="checkbox" checked disabled/><span class="toggle-slider"></span></label></div></div><div class="settings-row"><div class="settings-row-left"><div class="settings-row-label">Admin Activity Digest</div><div class="settings-row-hint">Daily summary of admin actions</div></div><div class="settings-row-right"><label class="toggle"><input type="checkbox" checked/><span class="toggle-slider"></span></label></div></div><div class="settings-row"><div class="settings-row-left"><div class="settings-row-label">Environmental Target Alerts</div><div class="settings-row-hint">When regions miss monthly targets</div></div><div class="settings-row-right"><label class="toggle"><input type="checkbox" checked/><span class="toggle-slider"></span></label></div></div><div class="settings-row"><div class="settings-row-left"><div class="settings-row-label">Weekly Performance Report</div><div class="settings-row-hint">System-wide email every Monday</div></div><div class="settings-row-right"><label class="toggle"><input type="checkbox"/><span class="toggle-slider"></span></label></div></div></div></div>
+    <div id="section-permissions" style="display:none"><div class="content-header"><h2>Permissions & Roles</h2><p>Define what each role can access and modify</p></div><div class="settings-card"><div class="settings-card-header"><div class="settings-card-icon purple"><svg viewBox="0 0 24 24" fill="none" stroke="#7B1FA2" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><div><div class="settings-card-title">Role Configuration</div><div class="settings-card-desc">Admin vs Super Admin access matrix</div></div></div><div class="settings-row"><div class="settings-row-left"><div class="settings-row-label">Admin: View Transactions</div></div><div class="settings-row-right"><label class="toggle"><input type="checkbox" checked/><span class="toggle-slider"></span></label></div></div><div class="settings-row"><div class="settings-row-left"><div class="settings-row-label">Admin: Edit Picker Profiles</div></div><div class="settings-row-right"><label class="toggle"><input type="checkbox" checked/><span class="toggle-slider"></span></label></div></div><div class="settings-row"><div class="settings-row-left"><div class="settings-row-label">Admin: Access Income Board</div></div><div class="settings-row-right"><label class="toggle"><input type="checkbox"/><span class="toggle-slider"></span></label></div></div><div class="settings-row"><div class="settings-row-left"><div class="settings-row-label">Admin: Export Data</div></div><div class="settings-row-right"><label class="toggle"><input type="checkbox"/><span class="toggle-slider"></span></label></div></div></div></div>
+    <div id="section-integrations" style="display:none"><div class="content-header"><h2>Integrations</h2><p>Connected third-party services and APIs</p></div><div class="settings-card"><div class="settings-card-header"><div class="settings-card-icon blue"><svg viewBox="0 0 24 24" fill="none" stroke="#1565C0" stroke-width="2"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg></div><div><div class="settings-card-title">Connected Apps</div><div class="settings-card-desc">Manage API keys and service connections</div></div></div><div class="settings-row"><div class="settings-row-left"><div class="settings-row-label">Map API (OpenStreetMap)</div><div class="settings-row-hint">Used for live map view · Active</div></div><div class="settings-row-right"><span style="color:var(--green-primary);font-weight:600;font-size:13px">Connected</span></div></div><div class="settings-row"><div class="settings-row-left"><div class="settings-row-label">SMS Gateway</div><div class="settings-row-hint">Picker notifications via SMS</div></div><div class="settings-row-right"><button class="btn btn-ghost" style="font-size:12px">Configure</button></div></div><div class="settings-row"><div class="settings-row-left"><div class="settings-row-label">Carbon API</div><div class="settings-row-hint">CO₂ calculation factor data source</div></div><div class="settings-row-right"><span style="color:var(--green-primary);font-weight:600;font-size:13px">Connected</span></div></div></div></div>
+    <div id="section-appearance" style="display:none"><div class="content-header"><h2>Appearance</h2><p>Customize the look and feel of your dashboard</p></div><div class="settings-card"><div class="settings-card-header"><div class="settings-card-icon green"><svg viewBox="0 0 24 24" fill="none" stroke="#2E7D32" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4"/></svg></div><div><div class="settings-card-title">Theme & Display</div><div class="settings-card-desc">Visual preferences for the admin interface</div></div></div><div class="settings-row"><div class="settings-row-left"><div class="settings-row-label">Colour Theme</div></div><div class="settings-row-right"><select class="settings-select"><option selected>Ecocycle Green (Default)</option><option>Dark Mode</option><option>High Contrast</option></select></div></div><div class="settings-row"><div class="settings-row-left"><div class="settings-row-label">Compact Sidebar</div><div class="settings-row-hint">Show icons only</div></div><div class="settings-row-right"><label class="toggle"><input type="checkbox"/><span class="toggle-slider"></span></label></div></div></div></div>
+    <div id="section-language" style="display:none"><div class="content-header"><h2>Language & Region</h2><p>Localisation and date/number format preferences</p></div><div class="settings-card"><div class="settings-card-header"><div class="settings-card-icon green"><svg viewBox="0 0 24 24" fill="none" stroke="#2E7D32" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg></div><div><div class="settings-card-title">Localisation Settings</div></div></div><div class="settings-row"><div class="settings-row-left"><div class="settings-row-label">Language</div></div><div class="settings-row-right"><select class="settings-select"><option selected>English (South Africa)</option><option>Zulu</option><option>Xhosa</option><option>Afrikaans</option></select></div></div><div class="settings-row"><div class="settings-row-left"><div class="settings-row-label">Date Format</div></div><div class="settings-row-right"><select class="settings-select"><option selected>DD/MM/YYYY</option><option>YYYY-MM-DD</option></select></div></div><div class="settings-row"><div class="settings-row-left"><div class="settings-row-label">Currency</div></div><div class="settings-row-right"><select class="settings-select"><option selected>ZAR (R)</option><option>USD ($)</option></select></div></div></div></div>
+  </div>
+</main>
+  </div>
+</body>
+</html>

@@ -1,0 +1,2344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rewards System — EcoCycle</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Sora:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+/* ── Variables ─────────────────────────────────────── */
+:root {
+  --primary:        #3a9e3f;
+  --primary-bg:     #e8f5e9;
+  --c-green:        #3a9e3f;
+  --c-green-dark:   #1f6b23;
+  --c-green-light:  #66bb6a;
+  --c-green-bg:     #e8f5e9;
+  --c-green-border: #b5ddb6;
+  --c-red:          #e53935;
+  --c-red-bg:       #ffebee;
+  --bg:             #f5ede0;
+  --c-page:         #f5ede0;
+  --c-white:        #ffffff;
+  --white:          #ffffff;
+  --text:           #1a1a1a;
+  --c-text:         #1a1a1a;
+  --c-text-2:       #4a4a44;
+  --c-text-3:       #7a7a70;
+  --muted:          #7a7a7a;
+  --border:         #ebebeb;
+  --c-border:       #e2dfd8;
+  --c-border-light: #f0ede8;
+  --r-sm:           8px;
+  --r-md:           12px;
+  --r-lg:           16px;
+  --sidebar-w:      290px;
+  --topbar-h:       64px;
+}
+
+/* ── Reset ─────────────────────────────────────────── */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: "DM Sans", sans-serif; background: var(--bg); color: var(--c-text); min-height: 100vh; }
+a { color: inherit; text-decoration: none; }
+button { cursor: pointer; font-family: inherit; }
+
+
+/* ── Topbar ─────────────────────────────────────────── */
+.topbar {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 200;
+  height: var(--topbar-h);
+  background: var(--c-white);
+  border-bottom: 1px solid var(--c-border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 28px;
+}
+.topbar-brand,
+.ecocycle-logo { display: flex; align-items: center; gap: 10px; }
+.brand-icon {
+  width: 40px; height: 40px;
+  border-radius: 11px;
+  background: linear-gradient(135deg, #3a9e3f, #1f6b23);
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 3px 10px rgba(58,158,63,0.35);
+  flex-shrink: 0;
+}
+.ecocycle-wordmark {
+  font-family: "Sora", sans-serif;
+  font-size: 1.2rem; font-weight: 800;
+  color: var(--c-text); letter-spacing: -0.03em; line-height: 1;
+}
+.ecocycle-wordmark .eco { color: var(--c-green); }
+.ecocycle-sub { font-size: 0.7rem; color: var(--muted); margin-top: 2px; }
+
+.topbar-right { display: flex; align-items: center; gap: 10px; }
+
+.xp-pill {
+  display: flex; align-items: center; gap: 7px;
+  background: #fff8e1;
+  border: 1px solid #ffe082;
+  border-radius: 100px;
+  padding: 6px 14px;
+  font-size: 13px; font-weight: 700; color: #e65100;
+}
+.xp-pill svg { width: 14px; height: 14px; }
+
+.topbar-btn {
+  display: flex; align-items: center; gap: 7px;
+  font-size: 0.85rem; font-weight: 500;
+  cursor: pointer;
+  color: var(--muted);
+  padding: 8px 14px;
+  border-radius: 10px;
+  border: 1px solid var(--c-border);
+  background: none;
+  font-family: "DM Sans", sans-serif;
+  transition: all 0.18s;
+}
+.topbar-btn:hover { color: var(--primary); border-color: #c0dfc1; background: var(--primary-bg); }
+.topbar-btn svg { width: 16px; height: 16px; }
+
+/* ── Layout ─────────────────────────────────────────── */
+.layout {
+  display: flex;
+  padding-top: var(--topbar-h);
+  min-height: 100vh;
+}
+
+/* ── Sidebar ─────────────────────────────────────────── */
+.sidebar {
+  width: var(--sidebar-w);
+  background: var(--c-white);
+  border-right: 1px solid var(--c-border);
+  position: fixed;
+  top: var(--topbar-h); bottom: 0; left: 0;
+  padding: 24px 16px;
+  overflow-y: auto;
+  z-index: 100;
+  flex-shrink: 0;
+}
+.nav-item {
+  display: flex; align-items: center; gap: 12px;
+  padding: 12px 16px;
+  border-radius: 12px;
+  font-size: 0.9rem; font-weight: 500;
+  color: var(--muted);
+  cursor: pointer; margin-bottom: 4px;
+  transition: all 0.2s;
+  text-decoration: none;
+}
+.nav-item:hover  { background: var(--primary-bg); color: var(--primary); }
+.nav-item.active { background: var(--primary); color: var(--c-white); font-weight: 600; }
+.nav-item.active svg { stroke: white; }
+.nav-item svg { width: 20px; height: 20px; stroke: currentColor; flex-shrink: 0; }
+.nav-badge {
+  margin-left: auto;
+  background: var(--c-green); color: #fff;
+  font-size: 10px; font-weight: 700;
+  padding: 2px 7px; border-radius: 100px;
+}
+.nav-item.active .nav-badge { background: rgba(255,255,255,0.25); color: #fff; }
+
+.main {
+  margin-left: var(--sidebar-w);
+  flex: 1;
+  min-height: calc(100vh - var(--topbar-h));
+  background: var(--c-page);
+  padding: 32px 36px;
+  padding-top: calc(32px + var(--topbar-h)); /* ← add this if topbar overlaps */
+  overflow-y: auto;
+}
+     .topbar-logout {
+      display: flex; align-items: center; gap: 7px;
+      font-size: 0.85rem; font-weight: 500;
+      cursor: pointer; border: none; background: none;
+      font-family: "DM Sans", sans-serif;
+      color: var(--muted);
+      padding: 8px 14px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      transition: all 0.18s;
+    }
+    .topbar-logout:hover { color: var(--primary); border-color: #c0dfc1; background: var(--primary-bg); }
+    .topbar-logout svg { width: 16px; height: 16px; }
+/* PAGE HEADER — this was the h1 visibility problem: no conflicting positioning */
+.page-header { margin-bottom: 22px; }
+.page-header h1 {
+  font-family: "Sora", sans-serif;
+  font-size: 26px; font-weight: 800; color: var(--c-text);
+  letter-spacing: -0.6px; line-height: 1.15; margin-bottom: 4px;
+  display: flex; align-items: center; gap: 10px;
+}
+.page-header h1 svg { width: 26px; height: 26px; color: #f57f17; stroke: currentColor; fill: none; flex-shrink: 0; }
+.page-header p { font-size: 14px; color: var(--c-text-3); }
+ 
+/* CARD */
+.card {
+  background: var(--c-white); border-radius: var(--r-lg);
+  border: 1px solid var(--c-border-light); padding: 20px 22px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+}
+.card-title {
+  font-size: 15px; font-weight: 700; color: var(--c-text);
+  margin-bottom: 14px; display: flex; align-items: center; gap: 8px;
+}
+.card-title svg { width: 16px; height: 16px; color: var(--c-green); stroke: var(--c-green); fill: none; }
+
+/* ── Seasonal banner ─────────────────────────────────── */
+.seasonal-banner {
+  background: linear-gradient(135deg, #fff8e1, #e8f5e9);
+  border: 1px solid #ffe082;
+  border-radius: var(--r-lg);
+  padding: 16px 22px;
+  margin-bottom: 20px;
+  display: flex; align-items: center; gap: 16px;
+}
+.seasonal-icon {
+  width: 44px; height: 44px;
+  border-radius: var(--r-md);
+  background: #fff8e1;
+  border: 1px solid #ffe082;
+  display: flex; align-items: center; justify-content: center;
+  color: #f57f17; flex-shrink: 0;
+}
+.seasonal-icon svg { width: 22px; height: 22px; }
+.seasonal-text { flex: 1; }
+.seasonal-text h3 { font-family: "Sora", sans-serif; font-size: 14px; font-weight: 700; color: #e65100; margin-bottom: 2px; }
+.seasonal-text p  { font-size: 12px; color: var(--c-text-3); }
+.seasonal-timer { text-align: center; flex-shrink: 0; }
+.seasonal-timer .time  { font-family: "Sora", sans-serif; font-size: 20px; font-weight: 800; color: var(--c-green-dark); }
+.seasonal-timer .tlabel { font-size: 10px; color: var(--c-text-3); text-transform: uppercase; letter-spacing: 0.5px; }
+.btn-boost {
+  display: flex; align-items: center; gap: 6px;
+  padding: 8px 14px;
+  background: var(--c-green-bg);
+  color: var(--c-green-dark);
+  border: 1px solid var(--c-green-border);
+  border-radius: var(--r-sm);
+  font-size: 12px; font-weight: 700;
+  flex-shrink: 0;
+  transition: all 0.15s;
+}
+.btn-boost:hover { background: var(--c-green); color: #fff; }
+.btn-boost svg { width: 13px; height: 13px; }
+
+/* ── Live ticker ─────────────────────────────────────── */
+.live-ticker {
+  display: flex; align-items: center; gap: 10px;
+  background: var(--c-white);
+  border: 1px solid var(--c-border-light);
+  border-radius: var(--r-md);
+  padding: 10px 16px;
+  margin-bottom: 20px;
+  overflow: hidden;
+}
+.live-dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: #e53935; flex-shrink: 0;
+  animation: live-pulse 1.5s ease-in-out infinite;
+}
+@keyframes live-pulse { 0%,100%{opacity:1} 50%{opacity:0.35} }
+.ticker-label {
+  font-size: 11px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.9px;
+  color: #e53935; flex-shrink: 0;
+}
+.ticker-scroll { flex: 1; overflow: hidden; }
+.ticker-inner {
+  display: inline-flex; gap: 48px;
+  white-space: nowrap;
+  animation: ticker 30s linear infinite;
+  font-size: 13px; color: var(--c-text-2);
+}
+@keyframes ticker { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+
+/* ── Stats row ───────────────────────────────────────── */
+.stats-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+  margin-bottom: 20px;
+}
+.stat-card {
+  background: var(--c-white);
+  border-radius: var(--r-lg);
+  border: 1px solid var(--c-border-light);
+  padding: 18px 20px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+  position: relative; overflow: hidden;
+  transition: transform 0.18s, box-shadow 0.18s;
+}
+.stat-card:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
+.stat-card::before {
+  content: ''; position: absolute;
+  top: 0; left: 0; right: 0; height: 3px;
+}
+.stat-card.green::before  { background: linear-gradient(90deg, var(--c-green), var(--c-green-light)); }
+.stat-card.gold::before   { background: linear-gradient(90deg, #f9a825, #ffd54f); }
+.stat-card.silver::before { background: linear-gradient(90deg, #90a4ae, #cfd8dc); }
+.stat-card.bronze::before { background: linear-gradient(90deg, #bf360c, #ff8a65); }
+
+.stat-icon-wrap {
+  width: 36px; height: 36px;
+  border-radius: var(--r-sm);
+  display: flex; align-items: center; justify-content: center;
+  margin-bottom: 10px;
+}
+.stat-icon-wrap.green  { background: var(--c-green-bg);  color: var(--c-green); }
+.stat-icon-wrap.gold   { background: #fff8e1; color: #f57f17; }
+.stat-icon-wrap.silver { background: #f5f5f5; color: #616161; }
+.stat-icon-wrap.bronze { background: #fbe9e7; color: #bf360c; }
+.stat-icon-wrap svg { width: 18px; height: 18px; }
+
+.stat-label {
+  font-size: 11px; font-weight: 600;
+  text-transform: uppercase; letter-spacing: 0.5px;
+  color: var(--c-text-3); margin-bottom: 4px;
+}
+.stat-value {
+  font-family: "Sora", sans-serif;
+  font-size: 24px; font-weight: 800;
+  color: var(--c-text); letter-spacing: -0.5px;
+  line-height: 1; margin-bottom: 3px;
+}
+.stat-sub { font-size: 12px; color: var(--c-text-3); }
+
+/* ── Tabs ────────────────────────────────────────────── */
+.tabs {
+  display: flex; gap: 2px;
+  border-bottom: 2px solid var(--c-border-light);
+  margin-bottom: 22px;
+  overflow-x: auto;
+}
+.tab {
+  display: flex; align-items: center; gap: 6px;
+  padding: 10px 16px;
+  font-size: 13px; font-weight: 500;
+  color: var(--c-text-3);
+  border: none; background: transparent;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -2px;
+  transition: all 0.18s; white-space: nowrap;
+}
+.tab svg { width: 14px; height: 14px; }
+.tab:hover { color: var(--c-text-2); }
+.tab.active { color: var(--c-green-dark); border-bottom-color: var(--c-green); font-weight: 600; }
+.tab-panel { display: none; }
+.tab-panel.active { display: block; }
+
+/* ── Two / Three col ─────────────────────────────────── */
+.two-col   { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-bottom: 18px; }
+.three-col { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 18px; margin-bottom: 18px; }
+
+/* ── Profile card ────────────────────────────────────── */
+.profile-top {
+  display: flex; align-items: center; gap: 14px;
+  margin-bottom: 16px;
+}
+.avatar {
+  width: 50px; height: 50px; border-radius: 50%;
+  background: linear-gradient(135deg, var(--c-green-dark), #f57f17);
+  display: flex; align-items: center; justify-content: center;
+  font-family: "Sora", sans-serif;
+  font-size: 18px; font-weight: 800; color: white;
+  flex-shrink: 0;
+}
+.profile-info { display: flex; flex-direction: column; gap: 3px; }
+.profile-info strong { font-size: 15px; font-weight: 700; color: var(--c-text); }
+.profile-info > span { font-size: 13px; color: var(--c-text-3); }
+.rank-badge {
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 3px 10px;
+  background: #fff8e1; color: #e65100;
+  border-radius: 100px;
+  font-size: 12px; font-weight: 700;
+  width: fit-content; margin-top: 2px;
+}
+.rank-badge svg { width: 11px; height: 11px; }
+
+.xp-row {
+  display: flex; justify-content: space-between; align-items: baseline;
+  margin-bottom: 7px;
+}
+.xp-label  { font-size: 13px; color: var(--c-text-2); }
+.xp-current { font-size: 13px; font-weight: 700; color: var(--c-green); }
+.xp-total   { font-size: 13px; color: var(--c-text-3); }
+.xp-bar-bg {
+  height: 7px; background: var(--c-border-light);
+  border-radius: 99px; overflow: hidden; margin-bottom: 6px;
+}
+.xp-bar-fill {
+  height: 100%; background: var(--c-green);
+  border-radius: 99px; width: 0;
+  transition: width 1.2s cubic-bezier(0.4,0,0.2,1);
+}
+.xp-to-next { font-size: 12px; color: var(--c-text-3); margin-bottom: 12px; }
+
+.tier-row { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 10px; }
+.tier-pill {
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 4px 13px; border-radius: 100px;
+  font-size: 12px; font-weight: 600;
+  background: var(--c-border-light); color: var(--c-text-3);
+  border: 1px solid transparent;
+}
+.tier-pill.current {
+  background: #fff8e1; color: #e65100; border-color: #ffe082;
+}
+
+/* ── XP Breakdown ────────────────────────────────────── */
+.section-tag {
+  font-size: 11px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.7px;
+  color: var(--c-text-3);
+  display: flex; align-items: center; gap: 5px;
+  margin-bottom: 10px; margin-top: 16px;
+}
+.section-tag svg { width: 12px; height: 12px; }
+
+.xp-breakdown { display: flex; flex-direction: column; gap: 6px; }
+.xp-breakdown-item {
+  display: flex; align-items: center; gap: 10px;
+  padding: 8px 10px;
+  background: var(--c-border-light);
+  border-radius: var(--r-sm);
+}
+.xp-breakdown-item .dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+.xp-breakdown-item .lbl { flex: 1; font-size: 12px; color: var(--c-text-2); }
+.xp-breakdown-item .val { font-size: 13px; font-weight: 700; color: var(--c-green); }
+
+/* ── Streak card ─────────────────────────────────────── */
+.streak-num {
+  font-family: "Sora", sans-serif;
+  font-size: 52px; font-weight: 800;
+  color: var(--c-text); letter-spacing: -2px; line-height: 1;
+  margin: 8px 0 4px;
+}
+.streak-label { font-size: 14px; color: var(--c-text-2); margin-bottom: 18px; }
+.streak-days { display: flex; gap: 6px; margin-bottom: 16px; }
+.streak-day {
+  width: 36px; height: 36px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px; font-weight: 700;
+  background: var(--c-border-light); color: var(--c-text-3);
+}
+.streak-day.done  { background: var(--c-green); color: #fff; }
+.streak-day.today {
+  background: var(--c-green-bg); color: var(--c-green-dark);
+  border: 2px solid var(--c-green);
+  animation: day-glow 1.5s alternate infinite;
+}
+@keyframes day-glow { 0%{box-shadow:0 0 4px rgba(58,158,63,0.2)} 100%{box-shadow:0 0 10px rgba(58,158,63,0.5)} }
+
+.streak-bonus-hint {
+  display: flex; align-items: center; gap: 8px;
+  padding: 10px 14px;
+  background: #fff8e1;
+  border-radius: var(--r-sm);
+  border: 1px solid #ffe082;
+  font-size: 13px; color: #5d4037;
+  margin-bottom: 14px;
+}
+.streak-bonus-hint svg { width: 14px; height: 14px; color: #f9a825; flex-shrink: 0; }
+
+.btn-claim {
+  width: 100%;
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  padding: 12px;
+  background: var(--c-green); color: #fff;
+  border: none; border-radius: var(--r-sm);
+  font-size: 14px; font-weight: 700;
+  transition: background 0.15s;
+}
+.btn-claim:hover    { background: var(--c-green-dark); }
+.btn-claim:disabled { opacity: 0.55; cursor: not-allowed; }
+.btn-claim svg { width: 14px; height: 14px; }
+
+.streak-milestones { display: flex; flex-direction: column; gap: 6px; margin-top: 14px; }
+.sm-row {
+  display: flex; align-items: center; gap: 8px;
+  padding: 8px 10px; border-radius: var(--r-sm);
+  border: 1px solid var(--c-border-light);
+  background: var(--c-white);
+}
+.sm-row.done { background: var(--c-green-bg); border-color: var(--c-green-border); }
+.sm-row .sm-icon { width: 20px; height: 20px; flex-shrink: 0; }
+.sm-row .sm-icon svg { width: 16px; height: 16px; }
+.sm-row .sm-icon.check svg { color: var(--c-green); }
+.sm-row .sm-icon.lock  svg { color: var(--c-text-3); }
+.sm-row .sm-lbl { flex: 1; font-size: 12px; color: var(--c-text-2); }
+.sm-row .sm-xp  { font-size: 11px; font-weight: 700; color: var(--c-green); }
+.sm-row.locked .sm-xp { color: #f57f17; }
+
+/* ── Milestone track ─────────────────────────────────── */
+.milestone-track {
+  position: relative;
+  display: flex; justify-content: space-between; align-items: flex-start;
+  padding: 34px 10px 8px;
+}
+.milestone-line {
+  position: absolute;
+  top: 48px; left: 30px; right: 30px;
+  height: 3px; background: var(--c-border); border-radius: 99px;
+}
+.milestone-progress {
+  position: absolute;
+  top: 48px; left: 30px;
+  height: 3px; background: var(--c-green);
+  border-radius: 99px; width: 0;
+  transition: width 1.5s cubic-bezier(0.4,0,0.2,1);
+}
+.milestone-node {
+  display: flex; flex-direction: column; align-items: center;
+  gap: 8px; position: relative; z-index: 1;
+}
+.milestone-dot {
+  width: 34px; height: 34px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px; font-weight: 800;
+}
+.milestone-dot.done    { background: var(--c-green); color: #fff; }
+.milestone-dot.done svg { width: 14px; height: 14px; }
+.milestone-dot.current {
+  background: var(--c-green); color: #fff;
+  box-shadow: 0 0 0 4px var(--c-green-bg), 0 0 0 7px var(--c-green-border);
+  animation: m-pulse 2s infinite;
+}
+@keyframes m-pulse { 0%,100%{box-shadow:0 0 0 4px var(--c-green-bg),0 0 0 7px var(--c-green-border)} 50%{box-shadow:0 0 0 6px var(--c-green-bg),0 0 0 10px rgba(181,221,182,0.3)} }
+.milestone-dot.locked  { background: var(--c-border); color: var(--c-text-3); }
+.milestone-dot.locked svg { width: 13px; height: 13px; }
+.milestone-label { font-size: 12px; font-weight: 600; color: var(--c-text-2); text-align: center; line-height: 1.4; }
+.milestone-label strong { display: block; font-size: 13px; font-weight: 700; color: var(--c-text); }
+.milestone-xp { font-size: 11px; color: var(--c-text-3); }
+
+/* ── Challenges ──────────────────────────────────────── */
+.challenge-item {
+  display: flex; align-items: center; gap: 12px;
+  padding: 13px 8px;
+  border-bottom: 1px solid var(--c-border-light);
+  cursor: pointer; border-radius: var(--r-sm);
+  transition: background 0.12s;
+}
+.challenge-item:last-child { border-bottom: none; }
+.challenge-item.complete   { opacity: 0.7; cursor: default; }
+.challenge-item:not(.complete):hover { background: var(--c-green-bg); }
+.ch-icon {
+  width: 38px; height: 38px;
+  background: var(--c-green-bg); border-radius: var(--r-sm);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--c-green); flex-shrink: 0;
+}
+.ch-icon svg { width: 18px; height: 18px; }
+.challenge-item.complete .ch-icon { background: var(--c-green); color: #fff; }
+.ch-body { flex: 1; min-width: 0; }
+.ch-type { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: var(--c-text-3); margin-bottom: 2px; }
+.ch-name { font-size: 13px; font-weight: 700; color: var(--c-text); margin-bottom: 2px; }
+.ch-desc { font-size: 12px; color: var(--c-text-3); margin-bottom: 7px; }
+.ch-prog-bg { height: 5px; background: var(--c-border-light); border-radius: 99px; overflow: hidden; }
+.ch-prog-fill { height: 100%; background: var(--c-green); border-radius: 99px; transition: width 0.6s ease; }
+.ch-right { flex-shrink: 0; text-align: right; }
+.ch-xp { font-size: 12px; font-weight: 700; color: var(--c-green); white-space: nowrap; }
+.ch-check {
+  width: 26px; height: 26px; border-radius: 50%;
+  background: var(--c-green);
+  display: flex; align-items: center; justify-content: center; color: #fff;
+}
+.ch-check svg { width: 12px; height: 12px; }
+
+/* ── Filter tabs ─────────────────────────────────────── */
+.filter-tabs { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 14px; }
+.filter-tab {
+  padding: 5px 14px; border-radius: 100px;
+  font-size: 12px; font-weight: 600;
+  border: 1px solid var(--c-border); background: transparent;
+  color: var(--c-text-3); cursor: pointer; transition: all 0.15s;
+}
+.filter-tab:hover { border-color: var(--c-green-border); color: var(--c-green-dark); }
+.filter-tab.active { background: var(--c-green-bg); color: var(--c-green-dark); border-color: var(--c-green-border); }
+
+/* ── Bar chart ───────────────────────────────────────── */
+.bar-chart { display: flex; align-items: flex-end; gap: 6px; height: 80px; margin-top: 8px; }
+.bar-wrap { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px; }
+.bar { width: 100%; background: linear-gradient(180deg, var(--c-green), var(--c-green-light)); border-radius: 4px 4px 0 0; min-height: 4px; }
+.bar.muted { background: var(--c-border-light); }
+.bar-lbl { font-size: 9px; color: var(--c-text-3); font-weight: 600; }
+.bar-lbl.today { color: var(--c-green); }
+
+/* ── Leaderboard ─────────────────────────────────────── */
+.lb-item {
+  display: flex; align-items: center; gap: 12px;
+  padding: 11px 8px; border-radius: var(--r-md);
+  transition: background 0.12s;
+}
+.lb-item:hover { background: #faf8f4; }
+.lb-item.me {
+  background: var(--c-green-bg);
+  border: 1px solid var(--c-green-border);
+  border-radius: var(--r-md);
+}
+.lb-rank {
+  width: 28px; height: 28px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px; font-weight: 800; flex-shrink: 0;
+  background: var(--c-border-light); color: var(--c-text-3);
+}
+.lb-rank.r1 { background: #fff8e1; color: #e65100; }
+.lb-rank.r2 { background: #f5f5f5; color: #546e7a; }
+.lb-rank.r3 { background: #fbe9e7; color: #bf360c; }
+.lb-avatar {
+  width: 32px; height: 32px; border-radius: 50%;
+  background: var(--c-green-bg); border: 1.5px solid var(--c-green-border);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px; font-weight: 700; color: var(--c-green); flex-shrink: 0;
+}
+.lb-name { flex: 1; font-size: 13px; font-weight: 600; color: var(--c-text); }
+.lb-you {
+  font-size: 10px; font-weight: 800;
+  background: var(--c-green); color: #fff;
+  padding: 2px 7px; border-radius: 100px;
+  margin-left: 6px; text-transform: uppercase; letter-spacing: 0.4px;
+}
+.lb-xp { font-size: 13px; font-weight: 700; color: var(--c-text-2); }
+.lb-move { font-size: 11px; margin-left: 4px; }
+.lb-move.up   { color: var(--c-green); }
+.lb-move.down { color: var(--c-red); }
+
+/* ── Team cards ──────────────────────────────────────── */
+.team-card {
+  display: flex; align-items: center; gap: 12px;
+  padding: 12px; background: var(--c-border-light);
+  border-radius: var(--r-md); margin-bottom: 8px;
+  transition: background 0.12s; cursor: pointer;
+}
+.team-card:hover { background: var(--c-green-bg); }
+.team-rank-num { font-family: "Sora", sans-serif; font-size: 18px; font-weight: 800; width: 28px; text-align: center; flex-shrink: 0; }
+.team-rank-num.gold   { color: #f57f17; }
+.team-rank-num.silver { color: #616161; }
+.team-rank-num.bronze { color: #bf360c; }
+.team-info { flex: 1; }
+.team-name    { font-size: 13px; font-weight: 600; color: var(--c-text); }
+.team-members { font-size: 11px; color: var(--c-text-3); }
+.team-you { font-size: 10px; color: var(--c-green); font-weight: 700; margin-left: 4px; }
+.team-xp { font-size: 13px; font-weight: 700; color: var(--c-text-2); }
+.team-bar-wrap { width: 70px; flex-shrink: 0; }
+.team-bar-bg   { height: 4px; background: var(--c-border); border-radius: 99px; }
+.team-bar-fill { height: 100%; background: var(--c-green); border-radius: 99px; }
+
+/* ── Badges ──────────────────────────────────────────── */
+.badges-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(94px, 1fr));
+  gap: 10px;
+}
+.badge-item {
+  display: flex; flex-direction: column; align-items: center; gap: 6px;
+  padding: 14px 8px;
+  background: var(--c-white);
+  border: 1px solid var(--c-border-light);
+  border-radius: var(--r-md);
+  cursor: pointer; text-align: center;
+  transition: border-color 0.15s, transform 0.12s;
+  position: relative;
+}
+.badge-item:hover:not(.locked) {
+  border-color: var(--c-green-border);
+  transform: translateY(-2px);
+  box-shadow: 0 3px 10px rgba(58,138,60,0.12);
+}
+.badge-item.locked { opacity: 0.38; cursor: default; filter: grayscale(1); }
+.badge-item.new { border-color: var(--c-green); }
+.badge-item.new::after {
+  content: 'NEW'; position: absolute; top: -7px; right: -5px;
+  font-size: 9px; font-weight: 800; letter-spacing: 0.5px;
+  background: var(--c-green); color: #fff;
+  padding: 2px 5px; border-radius: 100px;
+}
+.badge-icon {
+  width: 44px; height: 44px; border-radius: 50%;
+  background: var(--c-green-bg); border: 2px solid var(--c-green-border);
+  display: flex; align-items: center; justify-content: center; color: var(--c-green);
+}
+.badge-icon svg { width: 20px; height: 20px; }
+.badge-item.locked .badge-icon { background: var(--c-border-light); border-color: var(--c-border); color: var(--c-text-3); }
+.badge-name   { font-size: 11px; font-weight: 600; color: var(--c-text-2); line-height: 1.3; }
+.badge-rarity { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
+.badge-rarity.common    { color: var(--c-text-3); }
+.badge-rarity.rare      { color: #1565c0; }
+.badge-rarity.epic      { color: #6a1b9a; }
+.badge-rarity.legendary { color: #e65100; }
+
+/* ── Rewards store ───────────────────────────────────── */
+.rewards-grid-store {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 12px;
+}
+.reward-card {
+  background: var(--c-white);
+  border: 1px solid var(--c-border-light);
+  border-radius: var(--r-lg);
+  overflow: hidden;
+  transition: all 0.18s; cursor: pointer;
+}
+.reward-card:hover { border-color: var(--c-green-border); transform: translateY(-2px); box-shadow: 0 4px 14px rgba(0,0,0,0.08); }
+.reward-card.featured { border-color: #ffe082; }
+.reward-img {
+  height: 88px;
+  display: flex; align-items: center; justify-content: center;
+  color: #fff;
+}
+.reward-img svg { width: 40px; height: 40px; opacity: 0.9; }
+.reward-img.food    { background: linear-gradient(135deg, #3e2723, #5d4037); }
+.reward-img.ent     { background: linear-gradient(135deg, #0d47a1, #1565c0); }
+.reward-img.merch   { background: linear-gradient(135deg, #1b5e20, #2e7d32); }
+.reward-img.work    { background: linear-gradient(135deg, #311b92, #4527a0); }
+.reward-img.cash    { background: linear-gradient(135deg, #e65100, #f57c00); }
+.reward-img.gift    { background: linear-gradient(135deg, #880e4f, #ad1457); }
+.reward-body { padding: 12px 14px; }
+.reward-name { font-weight: 700; font-size: 13px; margin-bottom: 3px; color: var(--c-text); }
+.reward-desc { font-size: 11px; color: var(--c-text-3); margin-bottom: 10px; min-height: 28px; }
+.reward-footer { display: flex; align-items: center; justify-content: space-between; }
+.reward-cost {
+  font-size: 13px; font-weight: 700; color: #e65100;
+  display: flex; align-items: center; gap: 4px;
+}
+.reward-cost svg { width: 13px; height: 13px; }
+.btn-redeem {
+  padding: 5px 12px;
+  background: var(--c-green-bg); color: var(--c-green-dark);
+  border: 1px solid var(--c-green-border);
+  border-radius: var(--r-sm);
+  font-size: 11px; font-weight: 700; transition: all 0.15s;
+}
+.btn-redeem:hover    { background: var(--c-green); color: #fff; }
+.btn-redeem:disabled { opacity: 0.4; cursor: not-allowed; }
+
+/* ── Notice banner ───────────────────────────────────── */
+.notice {
+  background: #e3f2fd;
+  border: 1px solid #90caf9;
+  border-radius: var(--r-sm);
+  padding: 10px 14px;
+  font-size: 13px; color: #1565c0;
+  margin-bottom: 14px;
+  display: flex; align-items: center; gap: 8px;
+}
+.notice svg { width: 15px; height: 15px; flex-shrink: 0; }
+
+/* ── Activity feed ───────────────────────────────────── */
+.feed-item {
+  display: flex; align-items: flex-start; gap: 12px;
+  padding: 12px 0; border-bottom: 1px solid var(--c-border-light);
+}
+.feed-item:last-child { border-bottom: none; }
+.feed-dot {
+  width: 30px; height: 30px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; margin-top: 1px;
+}
+.feed-dot svg { width: 14px; height: 14px; }
+.feed-dot.xp     { background: var(--c-green-bg); color: var(--c-green); }
+.feed-dot.badge  { background: #fff8e1; color: #f57f17; }
+.feed-dot.rank   { background: #e3f2fd; color: #1565c0; }
+.feed-dot.streak { background: #fbe9e7; color: #bf360c; }
+.feed-dot.redeem { background: #f3e5f5; color: #6a1b9a; }
+.feed-text { flex: 1; min-width: 0; }
+.feed-text strong { display: block; font-size: 13px; font-weight: 700; color: var(--c-text); margin-bottom: 2px; }
+.feed-text span   { font-size: 12px; color: var(--c-text-3); }
+.feed-time { font-size: 11px; color: var(--c-text-3); white-space: nowrap; flex-shrink: 0; padding-top: 2px; }
+
+/* ── Impact / Analytics ──────────────────────────────── */
+.analytics-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 12px; margin-bottom: 18px;
+}
+.an-card {
+  background: var(--c-white);
+  border: 1px solid var(--c-border-light);
+  border-radius: var(--r-lg); padding: 14px;
+}
+.an-label { font-size: 11px; color: var(--c-text-3); text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600; margin-bottom: 4px; }
+.an-value { font-family: "Sora", sans-serif; font-size: 22px; font-weight: 800; margin-bottom: 2px; }
+.an-trend { font-size: 11px; display: flex; align-items: center; gap: 4px; }
+.an-trend.up   { color: var(--c-green); }
+.an-trend.down { color: var(--c-red); }
+.an-trend svg  { width: 12px; height: 12px; }
+.impact-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+.impact-card {
+  background: var(--c-green-bg);
+  border: 1px solid var(--c-green-border);
+  border-radius: var(--r-md); padding: 14px; text-align: center;
+}
+.impact-icon { width: 28px; height: 28px; margin: 0 auto 8px; color: var(--c-green-dark); }
+.impact-icon svg { width: 28px; height: 28px; }
+.impact-val { font-family: "Sora", sans-serif; font-size: 20px; font-weight: 800; color: var(--c-green-dark); }
+.impact-lbl { font-size: 11px; color: var(--c-text-2); margin-top: 2px; }
+
+/* ── Social / Recognition ────────────────────────────── */
+.recognition-card {
+  background: var(--c-border-light);
+  border-radius: var(--r-md); padding: 14px; margin-bottom: 10px;
+}
+.rec-top { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+.rec-avatar {
+  width: 36px; height: 36px; border-radius: 50%;
+  background: var(--c-green-bg); border: 1px solid var(--c-green-border);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px; font-weight: 700; color: var(--c-green); flex-shrink: 0;
+}
+.rec-from { font-size: 13px; font-weight: 700; color: var(--c-text); }
+.rec-time { font-size: 11px; color: var(--c-text-3); }
+.rec-msg  { font-size: 13px; color: var(--c-text-2); line-height: 1.5; }
+.rec-tag  {
+  display: inline-flex; align-items: center; gap: 4px;
+  font-size: 11px; font-weight: 700;
+  padding: 3px 10px; border-radius: 100px; margin-top: 8px;
+}
+.rec-tag svg { width: 12px; height: 12px; }
+.rec-tag.green { background: var(--c-green-bg); color: #1b5e20; border: 1px solid var(--c-green-border); }
+.rec-tag.gold  { background: #fff8e1; color: #e65100; border: 1px solid #ffe082; }
+.rec-tag.blue  { background: #e3f2fd; color: #1565c0; border: 1px solid #90caf9; }
+
+/* ── History ─────────────────────────────────────────── */
+.xp-hist-item {
+  display: flex; align-items: center; gap: 10px;
+  padding: 9px 0; border-bottom: 1px solid var(--c-border-light);
+}
+.xp-hist-item:last-child { border-bottom: none; }
+.xp-hist-info { flex: 1; }
+.xp-hist-tag {
+  font-size: 10px; font-weight: 700; padding: 2px 7px;
+  border-radius: 4px; text-transform: uppercase; letter-spacing: 0.4px;
+  margin-right: 8px;
+}
+.xp-hist-tag.earn   { background: var(--c-green-bg); color: #1b5e20; }
+.xp-hist-tag.deduct { background: #ffebee; color: #b71c1c; }
+.xp-hist-desc   { font-size: 12px; color: var(--c-text-2); }
+.xp-hist-time   { font-size: 11px; color: var(--c-text-3); }
+.xp-hist-amount { font-weight: 700; font-size: 13px; margin-left: auto; white-space: nowrap; flex-shrink: 0; }
+.xp-hist-amount.earn   { color: var(--c-green); }
+.xp-hist-amount.deduct { color: var(--c-red); }
+
+.redemption-table { width: 100%; border-collapse: collapse; }
+.redemption-table th {
+  font-size: 10px; font-weight: 700; color: var(--c-text-3);
+  text-transform: uppercase; letter-spacing: 0.5px;
+  padding: 6px 10px; text-align: left;
+  border-bottom: 1px solid var(--c-border);
+}
+.redemption-table td { font-size: 12px; padding: 9px 10px; border-bottom: 1px solid var(--c-border-light); }
+.redemption-table tr:last-child td { border-bottom: none; }
+.status-pill { font-size: 10px; font-weight: 700; padding: 3px 8px; border-radius: 100px; }
+.status-pill.approved { background: var(--c-green-bg); color: #1b5e20; }
+.status-pill.pending  { background: #fff8e1; color: #e65100; }
+.status-pill.rejected { background: #ffebee; color: #b71c1c; }
+
+/* ── Admin modal ─────────────────────────────────────── */
+.modal-overlay {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.35);
+  z-index: 400; display: flex;
+  align-items: center; justify-content: center; padding: 20px;
+  opacity: 0; pointer-events: none; transition: opacity 0.22s;
+}
+.modal-overlay.open { opacity: 1; pointer-events: all; }
+.modal {
+  background: var(--c-white);
+  border: 1px solid var(--c-border);
+  border-radius: var(--r-lg);
+  padding: 24px; max-width: 500px; width: 100%;
+  max-height: 90vh; overflow-y: auto;
+  transform: scale(0.96); transition: transform 0.22s;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.15);
+}
+.modal-overlay.open .modal { transform: scale(1); }
+.modal-header {
+  display: flex; align-items: flex-start; justify-content: space-between;
+  margin-bottom: 18px;
+}
+.modal-close { background: none; border: none; font-size: 20px; color: var(--c-text-3); line-height: 1; }
+.modal-close:hover { color: var(--c-text); }
+
+.admin-section {
+  background: #f9f7f4;
+  border: 1px solid var(--c-border-light);
+  border-radius: var(--r-md);
+  padding: 16px 18px; margin-bottom: 14px;
+}
+.admin-title {
+  font-size: 12px; font-weight: 700; color: var(--c-text-2);
+  text-transform: uppercase; letter-spacing: 0.6px;
+  margin-bottom: 12px; display: flex; align-items: center; gap: 6px;
+}
+.admin-title svg { width: 14px; height: 14px; color: var(--c-green); }
+.form-row { display: flex; gap: 10px; margin-bottom: 10px; flex-wrap: wrap; }
+.form-group { display: flex; flex-direction: column; gap: 4px; flex: 1; min-width: 130px; }
+.form-label { font-size: 11px; color: var(--c-text-3); font-weight: 600; text-transform: uppercase; letter-spacing: 0.4px; }
+.form-input, .form-select {
+  background: var(--c-white); border: 1px solid var(--c-border);
+  border-radius: var(--r-sm); padding: 8px 11px;
+  color: var(--c-text); font-family: inherit; font-size: 13px;
+  outline: none; transition: border-color 0.15s;
+  appearance: none;
+}
+.form-input:focus, .form-select:focus { border-color: var(--c-green); box-shadow: 0 0 0 3px rgba(58,158,63,0.1); }
+
+.admin-btns { display: flex; gap: 8px; }
+.admin-btn {
+  display: flex; align-items: center; gap: 6px;
+  padding: 7px 14px; border-radius: var(--r-sm);
+  font-size: 12px; font-weight: 700; border: 1px solid;
+  transition: all 0.15s;
+}
+.admin-btn svg { width: 13px; height: 13px; }
+.admin-btn.green { background: var(--c-green-bg); color: var(--c-green-dark); border-color: var(--c-green-border); }
+.admin-btn.green:hover { background: var(--c-green); color: #fff; border-color: var(--c-green); }
+.admin-btn.red { background: #ffebee; color: #b71c1c; border-color: #ffcdd2; }
+.admin-btn.red:hover { background: #e53935; color: #fff; border-color: #e53935; }
+.admin-btn.purple { background: #f3e5f5; color: #6a1b9a; border-color: #ce93d8; }
+.admin-btn.purple:hover { background: #7b1fa2; color: #fff; border-color: #7b1fa2; }
+
+/* ── Toast ───────────────────────────────────────────── */
+.toast-container { position: fixed; bottom: 24px; right: 24px; z-index: 999; display: flex; flex-direction: column; gap: 8px; }
+.toast {
+  display: flex; align-items: flex-start; gap: 10px;
+  background: var(--c-white); border: 1px solid var(--c-border);
+  border-radius: var(--r-md); padding: 12px 14px;
+  min-width: 270px; max-width: 340px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+  animation: toastIn 0.3s cubic-bezier(0.22,1,0.36,1);
+}
+.toast.success { border-color: var(--c-green-border); }
+.toast-icon-wrap {
+  width: 30px; height: 30px; border-radius: var(--r-sm);
+  background: var(--c-green-bg); color: var(--c-green);
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+}
+.toast-icon-wrap svg { width: 15px; height: 15px; }
+.toast-body strong { display: block; font-size: 13px; font-weight: 700; color: var(--c-text); }
+.toast-body span   { font-size: 12px; color: var(--c-text-3); }
+.toast-close { margin-left: auto; color: var(--c-text-3); background: none; border: none; font-size: 16px; line-height: 1; cursor: pointer; flex-shrink: 0; padding: 0; }
+@keyframes toastIn  { from{opacity:0;transform:translateY(12px)} to{opacity:1;transform:none} }
+@keyframes toastOut { to{opacity:0;transform:translateY(6px)} }
+
+/* ── Badge modal ─────────────────────────────────────── */
+.badge-modal-icon {
+  width: 72px; height: 72px; border-radius: 50%;
+  background: var(--c-green-bg); border: 3px solid var(--c-green-border);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--c-green); margin: 0 auto 12px;
+}
+.badge-modal-icon svg { width: 34px; height: 34px; }
+.btn-ok {
+  display: flex; align-items: center; justify-content: center; gap: 6px;
+  padding: 10px 24px;
+  background: var(--c-green); color: #fff;
+  border: none; border-radius: var(--r-sm);
+  font-size: 14px; font-weight: 700;
+  transition: background 0.15s;
+}
+.btn-ok:hover { background: var(--c-green-dark); }
+
+/* ── Scrollbar ───────────────────────────────────────── */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--c-border); border-radius: 2px; }
+
+/* ── Info highlight ──────────────────────────────────── */
+.info-box {
+  padding: 10px 14px; border-radius: var(--r-sm);
+  font-size: 12px; display: flex; align-items: center; gap: 8px;
+}
+.info-box svg { width: 14px; height: 14px; flex-shrink: 0; }
+.info-box.blue  { background: #e3f2fd; color: #1565c0; border: 1px solid #90caf9; }
+.info-box.green { background: var(--c-green-bg); color: #1b5e20; border: 1px solid var(--c-green-border); }
+.info-box.gold  { background: #fff8e1; color: #e65100; border: 1px solid #ffe082; }
+
+/* ── Responsive ──────────────────────────────────────── */
+@media(max-width:960px) {
+  .sidebar { display: none; }
+  .main { margin-left: 0; padding: 20px 16px; }
+  .stats-row { grid-template-columns: repeat(2, 1fr); }
+  .two-col, .three-col, .analytics-grid { grid-template-columns: 1fr; }
+}
+@media(max-width:600px) {
+  .stats-row { grid-template-columns: 1fr; }
+  .impact-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<header class="topbar">
+  <div class="topbar-brand">
+    <div class="brand-icon">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 19H4.815a1.83 1.83 0 0 1-1.57-.881 1.785 1.785 0 0 1-.004-1.784L7.196 9.5"/><path d="M11 19h8.203a1.83 1.83 0 0 0 1.556-.89 1.784 1.784 0 0 0 0-1.775l-1.226-2.12"/><path d="m14 16-3 3 3 3"/><path d="M8.293 13.596 7.196 9.5 3.1 10.598"/><path d="m9.344 5.811 1.093-1.892A1.83 1.83 0 0 1 11.985 3a1.784 1.784 0 0 1 1.546.888l3.943 6.843"/><path d="m13.378 9.633 4.096 1.098 1.097-4.096"/></svg>
+    </div>
+    <div>
+      <div class="ecocycle-wordmark"><span class="eco">Eco</span>Cycle</div>
+      <div class="ecocycle-sub">Informal Pickers Management</div>
+    </div>
+  </div>
+  <div class="topbar-right">
+    <div class="xp-pill">
+      <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+      <span id="topbarXP">3,840 XP</span>
+    </div>
+      <button class="topbar-logout" onclick="window.location.href='../AuthScreens/login.html'">
+    <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="m16 17 5-5-5-5"/><path d="M21 12H9"/><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/></svg>
+    Logout
+  </button>
+  </div>
+</header>
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+  <a class="nav-item" href="EmployeeDashboard.html">
+    <svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></svg>
+    Dashboard
+  </a>
+  <a class="nav-item" href="RegisterUsers.html">
+    <svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" x2="19" y1="8" y2="14"/><line x1="22" x2="16" y1="11" y2="11"/></svg>
+    Register Waste Picker
+  </a>
+  <a class="nav-item" href="ViewRegisteredUser.html">
+    <svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><path d="M16 3.128a4 4 0 0 1 0 7.744"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><circle cx="9" cy="7" r="4"/></svg>
+    Registered Pickers
+  </a>
+  <a class="nav-item" href="RecordTransaction_Employee.html">
+    <svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" x2="8" y1="13" y2="13"/><line x1="16" x2="8" y1="17" y2="17"/></svg>
+    Record Transaction
+  </a>
+  <a class="nav-item" href="IncomeBoard.html">
+    <svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><line x1="12" x2="12" y1="1" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+    Income Board
+  </a>
+  <a class="nav-item" href="Environmental.html">
+    <svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/></svg>
+    Environmental Dashboard
+  </a>
+  <a class="nav-item active" href="RewardsSystem.html">
+    <svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M8 21h8"/><path d="M12 17v4"/><path d="M7 4h10v5a5 5 0 0 1-10 0V4z"/><path d="M5 6H3a2 2 0 0 0 2 2"/><path d="M19 6h2a2 2 0 0 1-2 2"/></svg>
+    Rewards System
+    <span class="nav-badge">NEW</span>
+  </a>
+  <a class="nav-item" href="Settings.html">
+    <svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+    Settings
+  </a>
+</aside>
+<!-- MAIN -->
+<main class="main">
+  <div class="page-header">
+    <h1>
+      <svg fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M8 21h8"/><path d="M12 17v4"/><path d="M7 4h10v5a5 5 0 0 1-10 0V4z"/><path d="M5 6H3a2 2 0 0 0 2 2"/><path d="M19 6h2a2 2 0 0 1-2 2"/></svg>
+      Rewards System
+    </h1>
+    <p>Track achievements · Earn XP · Climb the leaderboard · Unlock real rewards</p>
+  </div>
+  <!-- LIVE TICKER -->
+  <div class="live-ticker">
+    <div class="live-dot"></div>
+    <span class="ticker-label">Live</span>
+    <div class="ticker-scroll">
+      <div class="ticker-inner" id="tickerInner"></div>
+    </div>
+  </div>
+
+  <!-- STATS ROW -->
+  <div class="stats-row">
+    <div class="stat-card green">
+      <div class="stat-icon-wrap green">
+        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+      </div>
+      <div class="stat-label">Total XP</div>
+      <div class="stat-value" id="totalXP">3,840</div>
+      <div class="stat-sub">Level 7 · Gold Tier</div>
+    </div>
+    <div class="stat-card gold">
+      <div class="stat-icon-wrap gold">
+        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg>
+      </div>
+      <div class="stat-label">Current Streak</div>
+      <div class="stat-value">12 days</div>
+      <div class="stat-sub">Personal best: 18 days</div>
+    </div>
+    <div class="stat-card silver">
+      <div class="stat-icon-wrap silver">
+        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+      </div>
+      <div class="stat-label">Leaderboard Rank</div>
+      <div class="stat-value">#3</div>
+      <div class="stat-sub">Top 6% of all pickers</div>
+    </div>
+    <div class="stat-card bronze">
+      <div class="stat-icon-wrap bronze">
+        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/></svg>
+      </div>
+      <div class="stat-label">Badges Earned</div>
+      <div class="stat-value">14 / 28</div>
+      <div class="stat-sub">2 new this week</div>
+    </div>
+  </div>
+
+  <!-- TABS -->
+  <div class="tabs">
+    <button class="tab active" onclick="switchTab('overview',this)">
+      <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></svg>
+      Overview
+    </button>
+    <button class="tab" onclick="switchTab('challenges',this)">
+      <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+      Challenges
+    </button>
+    <button class="tab" onclick="switchTab('leaderboard',this)">
+      <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+      Leaderboard
+    </button>
+    <button class="tab" onclick="switchTab('store',this)">
+      <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/><line x1="12" y1="22" x2="12" y2="7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg>
+      Rewards Store
+    </button>
+    <button class="tab" onclick="switchTab('badges',this)">
+      <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/></svg>
+      Badges
+    </button>
+    <button class="tab" onclick="switchTab('impact',this)">
+      <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/></svg>
+      Impact
+    </button>
+    <button class="tab" onclick="switchTab('social',this)">
+      <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+      Social
+    </button>
+    <button class="tab" onclick="switchTab('history',this)">
+      <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+      History
+    </button>
+  </div>
+
+  <!-- ====== TAB: OVERVIEW ====== -->
+  <div id="tab-overview" class="tab-panel active">
+    <div class="two-col">
+      <!-- Profile -->
+      <div class="card">
+        <div class="section-tag">
+          <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+          Profile
+        </div>
+        <div class="profile-top">
+          <div class="avatar">SN</div>
+          <div class="profile-info">
+            <strong>Sipho Nkosi</strong>
+            <span>Waste Picker · Soweto Zone 4</span>
+            <div class="rank-badge">
+              <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+              Gold Tier · Level 7
+            </div>
+          </div>
+        </div>
+        <div class="xp-row">
+          <span class="xp-label">Progress to Level 8</span>
+          <span><span class="xp-current" id="xpCurrent">3,840</span><span class="xp-total"> / 4,500 XP</span></span>
+        </div>
+        <div class="xp-bar-bg"><div class="xp-bar-fill" id="xpFill"></div></div>
+        <div class="xp-to-next" id="xpNote">660 XP needed to reach Level 8 · Platinum Tier</div>
+        <div class="tier-row">
+          <div class="tier-pill">Bronze</div>
+          <div class="tier-pill">Silver</div>
+          <div class="tier-pill current">Gold</div>
+          <div class="tier-pill">Platinum</div>
+          <div class="tier-pill">Diamond</div>
+        </div>
+        <div class="section-tag">
+          <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+          XP Breakdown
+        </div>
+        <div class="xp-breakdown">
+          <div class="xp-breakdown-item"><div class="dot" style="background:var(--c-green)"></div><span class="lbl">Recycling Transactions</span><span class="val">+2,400 XP</span></div>
+          <div class="xp-breakdown-item"><div class="dot" style="background:#f57f17"></div><span class="lbl">Challenge Completions</span><span class="val">+900 XP</span></div>
+          <div class="xp-breakdown-item"><div class="dot" style="background:#6a1b9a"></div><span class="lbl">Streak Bonuses</span><span class="val">+400 XP</span></div>
+          <div class="xp-breakdown-item"><div class="dot" style="background:#1565c0"></div><span class="lbl">Referrals &amp; Social</span><span class="val">+140 XP</span></div>
+        </div>
+      </div>
+      <!-- Streak -->
+      <div class="card">
+        <div class="section-tag">
+          <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg>
+          Daily Streak
+        </div>
+        <div class="streak-num">12</div>
+        <div class="streak-label">Day Streak — Keep it going</div>
+        <div class="streak-days">
+          <div class="streak-day done">M</div>
+          <div class="streak-day done">T</div>
+          <div class="streak-day done">W</div>
+          <div class="streak-day done">T</div>
+          <div class="streak-day done">F</div>
+          <div class="streak-day done">S</div>
+          <div class="streak-day today">S</div>
+        </div>
+        <div class="streak-bonus-hint">
+          <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/><line x1="12" y1="22" x2="12" y2="7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg>
+          Streak Bonus unlocks in <strong style="margin-left:3px;color:#e65100">3 more days</strong>
+        </div>
+        <button class="btn-claim" id="claimBtn" onclick="claimBonus(this)">
+          <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+          Claim Daily Check-in (+50 XP)
+        </button>
+        <div class="section-tag" style="margin-top:16px">
+          <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/></svg>
+          Streak Milestones
+        </div>
+        <div class="streak-milestones">
+          <div class="sm-row done">
+            <div class="sm-icon check"><svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg></div>
+            <span class="sm-lbl">7-Day Streak</span><span class="sm-xp">+200 XP earned</span>
+          </div>
+          <div class="sm-row done">
+            <div class="sm-icon check"><svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg></div>
+            <span class="sm-lbl">10-Day Streak</span><span class="sm-xp">+400 XP earned</span>
+          </div>
+          <div class="sm-row locked">
+            <div class="sm-icon lock"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
+            <span class="sm-lbl">15-Day Streak</span><span class="sm-xp">+600 XP · 3 days away</span>
+          </div>
+          <div class="sm-row locked">
+            <div class="sm-icon lock"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
+            <span class="sm-lbl">30-Day Streak</span><span class="sm-xp">+1,500 XP · Legendary Badge</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Milestone Timeline -->
+    <div class="card" style="margin-bottom:18px">
+      <div class="card-title">
+        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polygon points="3 6 9 3 15 6 21 3 21 18 15 21 9 18 3 21"/><line x1="9" y1="3" x2="9" y2="18"/><line x1="15" y1="6" x2="15" y2="21"/></svg>
+        Level Milestones
+        <span style="margin-left:auto;font-size:11px;font-weight:400;color:var(--c-text-3)">58% to Level 12</span>
+      </div>
+      <div class="milestone-track">
+        <div class="milestone-line"></div>
+        <div class="milestone-progress" id="milestoneProg"></div>
+        <div class="milestone-node">
+          <div class="milestone-dot done"><svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg></div>
+          <div class="milestone-label"><strong>Lv. 1</strong>Starter</div>
+          <div class="milestone-xp">0 XP</div>
+        </div>
+        <div class="milestone-node">
+          <div class="milestone-dot done"><svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg></div>
+          <div class="milestone-label"><strong>Lv. 3</strong>Collector</div>
+          <div class="milestone-xp">500 XP</div>
+        </div>
+        <div class="milestone-node">
+          <div class="milestone-dot done"><svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg></div>
+          <div class="milestone-label"><strong>Lv. 5</strong>Recycler</div>
+          <div class="milestone-xp">1,500 XP</div>
+        </div>
+        <div class="milestone-node">
+          <div class="milestone-dot current">7</div>
+          <div class="milestone-label"><strong>Lv. 7</strong>Champion</div>
+          <div class="milestone-xp">3,000 XP</div>
+        </div>
+        <div class="milestone-node">
+          <div class="milestone-dot locked"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
+          <div class="milestone-label"><strong>Lv. 9</strong>Legend</div>
+          <div class="milestone-xp">5,000 XP</div>
+        </div>
+        <div class="milestone-node">
+          <div class="milestone-dot locked"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
+          <div class="milestone-label"><strong>Lv. 12</strong>EcoHero</div>
+          <div class="milestone-xp">10,000 XP</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Activity Feed -->
+    <div class="card">
+      <div class="card-title">
+        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+        Real-Time Activity Feed
+        <div class="live-dot" style="margin-left:6px;width:7px;height:7px"></div>
+      </div>
+      <div id="feedList">
+        <div class="feed-item">
+          <div class="feed-dot xp"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>
+          <div class="feed-text"><strong>+120 XP — Transaction Logged</strong><span>Collected 8.5 kg of plastics · Recorded by you</span></div>
+          <span class="feed-time">2 min ago</span>
+        </div>
+        <div class="feed-item">
+          <div class="feed-dot badge"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/></svg></div>
+          <div class="feed-text"><strong>Badge Unlocked: Plastic Hero</strong><span>You've collected 20+ kg of plastic materials</span></div>
+          <span class="feed-time">1 hr ago</span>
+        </div>
+        <div class="feed-item">
+          <div class="feed-dot rank"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg></div>
+          <div class="feed-text"><strong>Rank Up — You moved to #3</strong><span>You surpassed Thandi Khumalo on the leaderboard</span></div>
+          <span class="feed-time">3 hrs ago</span>
+        </div>
+        <div class="feed-item">
+          <div class="feed-dot streak"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg></div>
+          <div class="feed-text"><strong>10-Day Streak Milestone</strong><span>Badge + 200 XP bonus awarded</span></div>
+          <span class="feed-time">Yesterday</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ====== TAB: CHALLENGES ====== -->
+  <div id="tab-challenges" class="tab-panel">
+    <div class="filter-tabs">
+      <button class="filter-tab active" onclick="filterChallenges('all',this)">All</button>
+      <button class="filter-tab" onclick="filterChallenges('daily',this)">Daily</button>
+      <button class="filter-tab" onclick="filterChallenges('weekly',this)">Weekly</button>
+      <button class="filter-tab" onclick="filterChallenges('monthly',this)">Monthly</button>
+      <button class="filter-tab" onclick="filterChallenges('special',this)">Event</button>
+      <button class="filter-tab" onclick="filterChallenges('team',this)">Team</button>
+    </div>
+    <div class="two-col">
+      <div>
+        <div class="card">
+          <div class="card-title">
+            <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+            Active Challenges
+          </div>
+          <div id="challengeList">
+            <div class="challenge-item complete" data-type="daily">
+              <div class="ch-icon"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M7 19H4.815a1.83 1.83 0 0 1-1.57-.881 1.785 1.785 0 0 1-.004-1.784L7.196 9.5"/><path d="M11 19h8.203a1.83 1.83 0 0 0 1.556-.89 1.784 1.784 0 0 0 0-1.775l-1.226-2.12"/><path d="m14 16-3 3 3 3"/></svg></div>
+              <div class="ch-body">
+                <div class="ch-type">Daily</div>
+                <div class="ch-name">Collect 10 kg Today</div>
+                <div class="ch-desc">Record 10 kg in a single day</div>
+                <div class="ch-prog-bg"><div class="ch-prog-fill" style="width:100%"></div></div>
+              </div>
+              <div class="ch-right"><div class="ch-check"><svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg></div></div>
+            </div>
+            <div class="challenge-item" data-type="weekly" onclick="addXP(100,'Plastic Pioneer completed!')">
+              <div class="ch-icon"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg></div>
+              <div class="ch-body">
+                <div class="ch-type">Weekly</div>
+                <div class="ch-name">Plastic Pioneer</div>
+                <div class="ch-desc">Collect 5 kg of plastic this week (4/5 kg)</div>
+                <div class="ch-prog-bg"><div class="ch-prog-fill" style="width:80%"></div></div>
+              </div>
+              <div class="ch-right"><div class="ch-xp">+100 XP</div></div>
+            </div>
+            <div class="challenge-item" data-type="daily" onclick="addXP(200,'Paper Master unlocked!')">
+              <div class="ch-icon"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
+              <div class="ch-body">
+                <div class="ch-type">Daily</div>
+                <div class="ch-name">Paper Master</div>
+                <div class="ch-desc">Collect paper 3 days in a row (2/3)</div>
+                <div class="ch-prog-bg"><div class="ch-prog-fill" style="width:66%"></div></div>
+              </div>
+              <div class="ch-right"><div class="ch-xp">+200 XP</div></div>
+            </div>
+            <div class="challenge-item" data-type="monthly" onclick="addXP(500,'Monthly Legend achieved!')">
+              <div class="ch-icon"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>
+              <div class="ch-body">
+                <div class="ch-type">Monthly</div>
+                <div class="ch-name">Monthly Legend</div>
+                <div class="ch-desc">Collect 50 kg across all materials (31/50 kg)</div>
+                <div class="ch-prog-bg"><div class="ch-prog-fill" style="width:62%"></div></div>
+              </div>
+              <div class="ch-right"><div class="ch-xp">+500 XP</div></div>
+            </div>
+            <div class="challenge-item" data-type="special" onclick="addXP(400,'Earth Month Challenge progress saved!')">
+              <div class="ch-icon" style="background:#f3e5f5;color:#6a1b9a"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></div>
+              <div class="ch-body">
+                <div class="ch-type" style="color:#6a1b9a">Event Challenge</div>
+                <div class="ch-name">Earth Month Champion</div>
+                <div class="ch-desc">Collect 100 kg during Earth Month (56/100 kg)</div>
+                <div class="ch-prog-bg"><div class="ch-prog-fill" style="width:56%;background:linear-gradient(90deg,#6a1b9a,#1565c0)"></div></div>
+              </div>
+              <div class="ch-right"><div class="ch-xp" style="color:#6a1b9a">+400 XP</div></div>
+            </div>
+            <div class="challenge-item" data-type="team" onclick="addXP(300,'Team challenge progress!')">
+              <div class="ch-icon" style="background:#e3f2fd;color:#1565c0"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+              <div class="ch-body">
+                <div class="ch-type" style="color:#1565c0">Team</div>
+                <div class="ch-name">Zone 4 Squad Goals</div>
+                <div class="ch-desc">Zone 4 collects 500 kg this month (312/500 kg)</div>
+                <div class="ch-prog-bg"><div class="ch-prog-fill" style="width:62.4%;background:linear-gradient(90deg,#1565c0,#26a69a)"></div></div>
+              </div>
+              <div class="ch-right"><div class="ch-xp" style="color:#1565c0">+300 XP</div></div>
+            </div>
+            <div class="challenge-item" data-type="weekly">
+              <div class="ch-icon"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" x2="19" y1="8" y2="14"/><line x1="22" x2="16" y1="11" y2="11"/></svg></div>
+              <div class="ch-body">
+                <div class="ch-type">Weekly</div>
+                <div class="ch-name">Refer a Picker</div>
+                <div class="ch-desc">Refer 1 new waste picker to the platform (0/1)</div>
+                <div class="ch-prog-bg"><div class="ch-prog-fill" style="width:0%"></div></div>
+              </div>
+              <div class="ch-right"><div class="ch-xp">+300 XP</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="card" style="margin-bottom:16px">
+          <div class="card-title">
+            <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+            Weekly XP Trend
+          </div>
+          <div class="bar-chart">
+            <div class="bar-wrap"><div class="bar" style="height:40px"></div><div class="bar-lbl">Mon</div></div>
+            <div class="bar-wrap"><div class="bar" style="height:60px"></div><div class="bar-lbl">Tue</div></div>
+            <div class="bar-wrap"><div class="bar" style="height:35px"></div><div class="bar-lbl">Wed</div></div>
+            <div class="bar-wrap"><div class="bar" style="height:75px"></div><div class="bar-lbl">Thu</div></div>
+            <div class="bar-wrap"><div class="bar" style="height:50px"></div><div class="bar-lbl">Fri</div></div>
+            <div class="bar-wrap"><div class="bar" style="height:65px"></div><div class="bar-lbl">Sat</div></div>
+            <div class="bar-wrap"><div class="bar muted" style="height:20px"></div><div class="bar-lbl today">Sun</div></div>
+          </div>
+          <div style="font-size:11px;color:var(--c-text-3);margin-top:8px;text-align:center">This week · 345 XP earned so far</div>
+        </div>
+        <div class="card">
+          <div class="card-title">
+            <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            Challenge Timers
+          </div>
+          <div style="display:flex;flex-direction:column;gap:8px">
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:9px 12px;background:var(--c-border-light);border-radius:var(--r-sm)">
+              <span style="font-size:12px;color:var(--c-text-2)">Daily challenges reset</span>
+              <span style="font-size:13px;font-weight:700;color:#e65100" id="dailyReset">08:42:17</span>
+            </div>
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:9px 12px;background:var(--c-border-light);border-radius:var(--r-sm)">
+              <span style="font-size:12px;color:var(--c-text-2)">Weekly challenges reset</span>
+              <span style="font-size:13px;font-weight:700;color:#1565c0">4d 08:42:17</span>
+            </div>
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:9px 12px;background:var(--c-border-light);border-radius:var(--r-sm)">
+              <span style="font-size:12px;color:var(--c-text-2)">Earth Month ends</span>
+              <span style="font-size:13px;font-weight:700;color:#6a1b9a">0d <span id="countdownTimer2">02:14:33</span></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ====== TAB: LEADERBOARD ====== -->
+  <div id="tab-leaderboard" class="tab-panel">
+    <div class="filter-tabs">
+      <button class="filter-tab active" onclick="switchLeaderboard('overall',this)">Overall</button>
+      <button class="filter-tab" onclick="switchLeaderboard('weekly',this)">This Week</button>
+      <button class="filter-tab" onclick="switchLeaderboard('monthly',this)">This Month</button>
+      <button class="filter-tab" onclick="switchLeaderboard('department',this)">Department</button>
+      <button class="filter-tab" onclick="switchLeaderboard('improved',this)">Most Improved</button>
+    </div>
+    <div class="two-col">
+      <div class="card">
+        <div class="card-title">
+          <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+          Community Leaderboard
+          <span style="margin-left:auto;font-size:11px;font-weight:400;color:var(--c-text-3)" id="lbSubtitle">Overall · All time</span>
+        </div>
+        <div id="leaderboardList">
+          <div class="lb-item"><span class="lb-rank r1">1</span><div class="lb-avatar">ND</div><div class="lb-name">Nomsa Dlamini</div><span class="lb-xp">5,210 XP</span><span class="lb-move up">▲2</span></div>
+          <div class="lb-item"><span class="lb-rank r2">2</span><div class="lb-avatar">BM</div><div class="lb-name">Bongani Moyo</div><span class="lb-xp">4,680 XP</span><span class="lb-move down">▼1</span></div>
+          <div class="lb-item me"><span class="lb-rank r3">3</span><div class="lb-avatar" style="background:linear-gradient(135deg,var(--c-green-dark),#f57f17);color:white;border:none">SN</div><div class="lb-name">Sipho Nkosi <span class="lb-you">YOU</span></div><span class="lb-xp" id="lbXP">3,840 XP</span><span class="lb-move up">▲1</span></div>
+          <div class="lb-item"><span class="lb-rank">4</span><div class="lb-avatar">TK</div><div class="lb-name">Thandi Khumalo</div><span class="lb-xp">3,200 XP</span><span class="lb-move down">▼1</span></div>
+          <div class="lb-item"><span class="lb-rank">5</span><div class="lb-avatar">JS</div><div class="lb-name">Joseph Sithole</div><span class="lb-xp">2,950 XP</span><span class="lb-move">—</span></div>
+          <div class="lb-item"><span class="lb-rank">6</span><div class="lb-avatar">PN</div><div class="lb-name">Priya Naidoo</div><span class="lb-xp">2,710 XP</span><span class="lb-move up">▲3</span></div>
+          <div class="lb-item"><span class="lb-rank">7</span><div class="lb-avatar">LM</div><div class="lb-name">Lungelo Mthembu</div><span class="lb-xp">2,340 XP</span><span class="lb-move down">▼2</span></div>
+          <div class="lb-item"><span class="lb-rank">8</span><div class="lb-avatar">ZN</div><div class="lb-name">Zanele Ndlovu</div><span class="lb-xp">2,100 XP</span><span class="lb-move">—</span></div>
+          <div class="lb-item"><span class="lb-rank">9</span><div class="lb-avatar">KD</div><div class="lb-name">Khosi Dube</div><span class="lb-xp">1,890 XP</span><span class="lb-move up">▲1</span></div>
+          <div class="lb-item"><span class="lb-rank">10</span><div class="lb-avatar">AM</div><div class="lb-name">Andile Mkhize</div><span class="lb-xp">1,740 XP</span><span class="lb-move down">▼1</span></div>
+        </div>
+      </div>
+      <div>
+        <div class="card" style="margin-bottom:16px">
+          <div class="card-title">
+            <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+            Department Rankings
+          </div>
+          <div class="team-card">
+            <div class="team-rank-num gold">1</div>
+            <div class="team-info"><div class="team-name">Soweto Zone 4 <span class="team-you">YOUR ZONE</span></div><div class="team-members">8 pickers · avg 420 XP</div></div>
+            <div class="team-xp">3,360 XP</div>
+            <div class="team-bar-wrap"><div class="team-bar-bg"><div class="team-bar-fill" style="width:100%"></div></div></div>
+          </div>
+          <div class="team-card">
+            <div class="team-rank-num silver">2</div>
+            <div class="team-info"><div class="team-name">Alexandra Zone 2</div><div class="team-members">6 pickers · avg 410 XP</div></div>
+            <div class="team-xp">2,460 XP</div>
+            <div class="team-bar-wrap"><div class="team-bar-bg"><div class="team-bar-fill" style="width:73%"></div></div></div>
+          </div>
+          <div class="team-card">
+            <div class="team-rank-num bronze">3</div>
+            <div class="team-info"><div class="team-name">Sandton North</div><div class="team-members">5 pickers · avg 380 XP</div></div>
+            <div class="team-xp">1,900 XP</div>
+            <div class="team-bar-wrap"><div class="team-bar-bg"><div class="team-bar-fill" style="width:56%"></div></div></div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">
+            <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+            Your Stats vs Community
+          </div>
+          <div style="display:flex;flex-direction:column;gap:10px">
+            <div>
+              <div style="display:flex;justify-content:space-between;font-size:11px;margin-bottom:4px"><span style="color:var(--c-text-3)">XP vs #1 (Nomsa)</span><span style="color:var(--c-text-2)">3,840 / 5,210</span></div>
+              <div class="xp-bar-bg"><div class="xp-bar-fill" style="width:73.7%;background:linear-gradient(90deg,#1565c0,#6a1b9a)"></div></div>
+            </div>
+            <div>
+              <div style="display:flex;justify-content:space-between;font-size:11px;margin-bottom:4px"><span style="color:var(--c-text-3)">Community Average</span><span style="color:var(--c-green);font-weight:700">+62% above avg</span></div>
+              <div class="xp-bar-bg"><div class="xp-bar-fill" style="width:85%"></div></div>
+            </div>
+            <div class="info-box blue">
+              <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+              You need <strong style="margin:0 3px">840 XP</strong> to reach #2 (Bongani). Keep collecting!
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ====== TAB: REWARDS STORE ====== -->
+  <div id="tab-store" class="tab-panel">
+    <div class="notice">
+      <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+      You have <strong style="margin:0 4px" id="storeXPLabel">3,840 XP</strong> available to spend. Redemptions are reviewed within 24 hours.
+    </div>
+    <div class="filter-tabs">
+      <button class="filter-tab active" onclick="filterStore('all',this)">All Rewards</button>
+      <button class="filter-tab" onclick="filterStore('food',this)">Food &amp; Drinks</button>
+      <button class="filter-tab" onclick="filterStore('ent',this)">Entertainment</button>
+      <button class="filter-tab" onclick="filterStore('merch',this)">Merchandise</button>
+      <button class="filter-tab" onclick="filterStore('work',this)">Workplace</button>
+      <button class="filter-tab" onclick="filterStore('cash',this)">Cash &amp; Vouchers</button>
+    </div>
+    <div class="rewards-grid-store" id="rewardsGrid">
+      <div class="reward-card featured" data-category="food">
+        <div class="reward-img food"><svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg></div>
+        <div class="reward-body">
+          <div class="reward-name">Coffee Voucher</div>
+          <div class="reward-desc">R50 voucher at Vida e Caffè or Mugg &amp; Bean</div>
+          <div class="reward-footer">
+            <div class="reward-cost"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>500 XP</div>
+            <button class="btn-redeem" onclick="redeemReward(this,'Coffee Voucher',500)">Redeem</button>
+          </div>
+        </div>
+      </div>
+      <div class="reward-card" data-category="ent">
+        <div class="reward-img ent"><svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="2.18" ry="2.18"/><line x1="7" y1="2" x2="7" y2="22"/><line x1="17" y1="2" x2="17" y2="22"/><line x1="2" y1="12" x2="22" y2="12"/><line x1="2" y1="7" x2="7" y2="7"/><line x1="2" y1="17" x2="7" y2="17"/><line x1="17" y1="17" x2="22" y2="17"/><line x1="17" y1="7" x2="22" y2="7"/></svg></div>
+        <div class="reward-body">
+          <div class="reward-name">Movie Ticket</div>
+          <div class="reward-desc">2× Ster-Kinekor tickets (standard 2D)</div>
+          <div class="reward-footer">
+            <div class="reward-cost"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>800 XP</div>
+            <button class="btn-redeem" onclick="redeemReward(this,'Movie Tickets',800)">Redeem</button>
+          </div>
+        </div>
+      </div>
+      <div class="reward-card" data-category="food">
+        <div class="reward-img gift"><svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/><line x1="12" y1="22" x2="12" y2="7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg></div>
+        <div class="reward-body">
+          <div class="reward-name">Gift Hamper</div>
+          <div class="reward-desc">Curated R200 value grocery hamper delivered</div>
+          <div class="reward-footer">
+            <div class="reward-cost"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>1,500 XP</div>
+            <button class="btn-redeem" onclick="redeemReward(this,'Gift Hamper',1500)">Redeem</button>
+          </div>
+        </div>
+      </div>
+      <div class="reward-card" data-category="merch">
+        <div class="reward-img merch"><svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M20.38 3.46 16 2a4 4 0 0 1-8 0L3.62 3.46a2 2 0 0 0-1.34 2.23l.58 3.57a1 1 0 0 0 .99.84H6v10c0 1.1.9 2 2 2h8a2 2 0 0 0 2-2V10h2.15a1 1 0 0 0 .99-.84l.58-3.57a2 2 0 0 0-1.34-2.23z"/></svg></div>
+        <div class="reward-body">
+          <div class="reward-name">EcoCycle T-Shirt</div>
+          <div class="reward-desc">Official branded tee — your size, any colour</div>
+          <div class="reward-footer">
+            <div class="reward-cost"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>600 XP</div>
+            <button class="btn-redeem" onclick="redeemReward(this,'EcoCycle T-Shirt',600)">Redeem</button>
+          </div>
+        </div>
+      </div>
+      <div class="reward-card" data-category="work">
+        <div class="reward-img work"><svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/><path d="m9 16 2 2 4-4"/></svg></div>
+        <div class="reward-body">
+          <div class="reward-name">Extra Leave Day</div>
+          <div class="reward-desc">One additional paid leave day — subject to approval</div>
+          <div class="reward-footer">
+            <div class="reward-cost"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>2,000 XP</div>
+            <button class="btn-redeem" onclick="redeemReward(this,'Extra Leave Day',2000)">Redeem</button>
+          </div>
+        </div>
+      </div>
+      <div class="reward-card" data-category="cash">
+        <div class="reward-img cash"><svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg></div>
+        <div class="reward-body">
+          <div class="reward-name">Cash Voucher R100</div>
+          <div class="reward-desc">Pick n Pay / Checkers / Shoprite e-voucher</div>
+          <div class="reward-footer">
+            <div class="reward-cost"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>1,000 XP</div>
+            <button class="btn-redeem" onclick="redeemReward(this,'Cash Voucher R100',1000)">Redeem</button>
+          </div>
+        </div>
+      </div>
+      <div class="reward-card" data-category="ent">
+        <div class="reward-img ent" style="background:linear-gradient(135deg,#1b5e20,#388e3c)"><svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><rect x="6" y="2" width="12" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg></div>
+        <div class="reward-body">
+          <div class="reward-name">Gaming Voucher</div>
+          <div class="reward-desc">R150 PlayStation / Xbox digital store credit</div>
+          <div class="reward-footer">
+            <div class="reward-cost"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>1,200 XP</div>
+            <button class="btn-redeem" onclick="redeemReward(this,'Gaming Voucher',1200)">Redeem</button>
+          </div>
+        </div>
+      </div>
+      <div class="reward-card" data-category="work">
+        <div class="reward-img work" style="background:linear-gradient(135deg,#4527a0,#7b1fa2)"><svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M8 21h8"/><path d="M12 17v4"/><path d="M7 4h10v5a5 5 0 0 1-10 0V4z"/></svg></div>
+        <div class="reward-body">
+          <div class="reward-name">Employee Spotlight</div>
+          <div class="reward-desc">Featured on company notice board for 1 month</div>
+          <div class="reward-footer">
+            <div class="reward-cost"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>800 XP</div>
+            <button class="btn-redeem" onclick="redeemReward(this,'Employee Spotlight',800)">Redeem</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ====== TAB: BADGES ====== -->
+  <div id="tab-badges" class="tab-panel">
+    <div class="two-col">
+      <div>
+        <div class="card">
+          <div class="card-title">
+            <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/></svg>
+            Badge Cabinet
+            <span style="margin-left:auto;font-size:12px;font-weight:500;color:var(--c-text-3)">14 / 28 unlocked</span>
+          </div>
+          <div class="filter-tabs" style="margin-bottom:12px">
+            <button class="filter-tab active" onclick="filterBadges('all',this)">All</button>
+            <button class="filter-tab" onclick="filterBadges('common',this)">Common</button>
+            <button class="filter-tab" onclick="filterBadges('rare',this)">Rare</button>
+            <button class="filter-tab" onclick="filterBadges('epic',this)">Epic</button>
+            <button class="filter-tab" onclick="filterBadges('legendary',this)">Legendary</button>
+          </div>
+          <div class="badges-grid" id="badgesGrid">
+            <div class="badge-item" data-rarity="common" onclick="showBadge('First Collection','Earned 50 XP on your first collection','common')">
+              <div class="badge-icon"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/></svg></div>
+              <div class="badge-name">First Collection</div>
+              <div class="badge-rarity common">Common</div>
+            </div>
+            <div class="badge-item new" data-rarity="rare" onclick="showBadge('Plastic Hero','Collected 20+ kg of plastic materials','rare')">
+              <div class="badge-icon"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M7 19H4.815a1.83 1.83 0 0 1-1.57-.881 1.785 1.785 0 0 1-.004-1.784L7.196 9.5"/><path d="M11 19h8.203a1.83 1.83 0 0 0 1.556-.89 1.784 1.784 0 0 0 0-1.775l-1.226-2.12"/><path d="m14 16-3 3 3 3"/></svg></div>
+              <div class="badge-name">Plastic Hero</div>
+              <div class="badge-rarity rare">Rare</div>
+            </div>
+            <div class="badge-item" data-rarity="common" onclick="showBadge('Early Bird','Logged a collection before 7am','common')">
+              <div class="badge-icon"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></div>
+              <div class="badge-name">Early Bird</div>
+              <div class="badge-rarity common">Common</div>
+            </div>
+            <div class="badge-item new" data-rarity="rare" onclick="showBadge('10-Day Streak','Maintained a 10-day collection streak','rare')">
+              <div class="badge-icon"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg></div>
+              <div class="badge-name">10-Day Streak</div>
+              <div class="badge-rarity rare">Rare</div>
+            </div>
+            <div class="badge-item" data-rarity="rare" onclick="showBadge('Ton Club','Collected 100 kg total','rare')">
+              <div class="badge-icon"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div>
+              <div class="badge-name">Ton Club</div>
+              <div class="badge-rarity rare">Rare</div>
+            </div>
+            <div class="badge-item" data-rarity="rare" onclick="showBadge('Top 10%','Reached leaderboard top 10%','rare')">
+              <div class="badge-icon"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></div>
+              <div class="badge-name">Top 10%</div>
+              <div class="badge-rarity rare">Rare</div>
+            </div>
+            <div class="badge-item" data-rarity="epic" onclick="showBadge('Challenge Master','Completed 10 challenges','epic')">
+              <div class="badge-icon" style="border-color:#ce93d8;background:#f3e5f5;color:#6a1b9a"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div>
+              <div class="badge-name">Challenge Master</div>
+              <div class="badge-rarity epic">Epic</div>
+            </div>
+            <div class="badge-item" data-rarity="common" onclick="showBadge('Referral Starter','Referred your first picker','common')">
+              <div class="badge-icon"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" x2="19" y1="8" y2="14"/><line x1="22" x2="16" y1="11" y2="11"/></svg></div>
+              <div class="badge-name">Referral Starter</div>
+              <div class="badge-rarity common">Common</div>
+            </div>
+            <div class="badge-item locked" data-rarity="legendary">
+              <div class="badge-icon"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polygon points="6 3 18 3 22 9 12 22 2 9"/></svg></div>
+              <div class="badge-name">Diamond Picker</div>
+              <div class="badge-rarity legendary">Legendary</div>
+            </div>
+            <div class="badge-item locked" data-rarity="legendary">
+              <div class="badge-icon"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></div>
+              <div class="badge-name">EcoWarrior</div>
+              <div class="badge-rarity legendary">Legendary</div>
+            </div>
+            <div class="badge-item locked" data-rarity="epic">
+              <div class="badge-icon"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M8 21h8"/><path d="M12 17v4"/><path d="M7 4h10v5a5 5 0 0 1-10 0V4z"/></svg></div>
+              <div class="badge-name">Zone Champion</div>
+              <div class="badge-rarity epic">Epic</div>
+            </div>
+            <div class="badge-item locked" data-rarity="epic">
+              <div class="badge-icon"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg></div>
+              <div class="badge-name">30-Day Inferno</div>
+              <div class="badge-rarity epic">Epic</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="card" style="margin-bottom:16px">
+          <div class="card-title">
+            <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+            Badge Progress
+          </div>
+          <div style="margin-bottom:14px">
+            <div style="display:flex;justify-content:space-between;margin-bottom:4px;font-size:12px"><span style="color:var(--c-text-2)">Overall Completion</span><span style="color:#e65100;font-weight:700">14/28 (50%)</span></div>
+            <div class="xp-bar-bg"><div class="xp-bar-fill" style="width:50%"></div></div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:8px">
+            <div><div style="display:flex;justify-content:space-between;font-size:11px;margin-bottom:4px"><span style="color:var(--c-text-3)">Common</span><span style="color:var(--c-text-2)">8/10</span></div><div class="xp-bar-bg"><div class="xp-bar-fill" style="width:80%;background:linear-gradient(90deg,#9e9e9e,#bdbdbd)"></div></div></div>
+            <div><div style="display:flex;justify-content:space-between;font-size:11px;margin-bottom:4px"><span style="color:#1565c0">Rare</span><span style="color:var(--c-text-2)">5/8</span></div><div class="xp-bar-bg"><div class="xp-bar-fill" style="width:62.5%;background:linear-gradient(90deg,#1565c0,#42a5f5)"></div></div></div>
+            <div><div style="display:flex;justify-content:space-between;font-size:11px;margin-bottom:4px"><span style="color:#6a1b9a">Epic</span><span style="color:var(--c-text-2)">1/6</span></div><div class="xp-bar-bg"><div class="xp-bar-fill" style="width:16.7%;background:linear-gradient(90deg,#6a1b9a,#ba68c8)"></div></div></div>
+            <div><div style="display:flex;justify-content:space-between;font-size:11px;margin-bottom:4px"><span style="color:#e65100">Legendary</span><span style="color:var(--c-text-2)">0/4</span></div><div class="xp-bar-bg"><div class="xp-bar-fill" style="width:0%;background:linear-gradient(90deg,#e65100,#ffb74d)"></div></div></div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">
+            <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+            Next Badges to Unlock
+          </div>
+          <div style="display:flex;flex-direction:column;gap:8px">
+            <div style="display:flex;align-items:center;gap:10px;padding:9px 12px;background:var(--c-border-light);border-radius:var(--r-sm)">
+              <div style="width:34px;height:34px;border-radius:50%;background:var(--c-green-bg);display:flex;align-items:center;justify-content:center;color:var(--c-green);flex-shrink:0"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
+              <div style="flex:1"><div style="font-size:12px;font-weight:700;color:var(--c-text)">Paper Master</div><div style="font-size:10px;color:var(--c-text-3)">Collect paper 3 days in a row</div><div class="xp-bar-bg" style="margin-top:5px"><div class="xp-bar-fill" style="width:66%"></div></div></div>
+              <span style="font-size:11px;font-weight:700;color:#1565c0">66%</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:10px;padding:9px 12px;background:var(--c-border-light);border-radius:var(--r-sm)">
+              <div style="width:34px;height:34px;border-radius:50%;background:#fff8e1;display:flex;align-items:center;justify-content:center;color:#e65100;flex-shrink:0"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg></div>
+              <div style="flex:1"><div style="font-size:12px;font-weight:700;color:var(--c-text)">15-Day Streak</div><div style="font-size:10px;color:var(--c-text-3)">3 more days to unlock</div><div class="xp-bar-bg" style="margin-top:5px"><div class="xp-bar-fill" style="width:80%"></div></div></div>
+              <span style="font-size:11px;font-weight:700;color:#e65100">80%</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:10px;padding:9px 12px;background:var(--c-border-light);border-radius:var(--r-sm)">
+              <div style="width:34px;height:34px;border-radius:50%;background:#f3e5f5;display:flex;align-items:center;justify-content:center;color:#6a1b9a;flex-shrink:0"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div>
+              <div style="flex:1"><div style="font-size:12px;font-weight:700;color:var(--c-text)">Challenge Master</div><div style="font-size:10px;color:var(--c-text-3)">Complete 3 more challenges</div><div class="xp-bar-bg" style="margin-top:5px"><div class="xp-bar-fill" style="width:70%;background:linear-gradient(90deg,#6a1b9a,#ba68c8)"></div></div></div>
+              <span style="font-size:11px;font-weight:700;color:#6a1b9a">70%</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ====== TAB: IMPACT ====== -->
+  <div id="tab-impact" class="tab-panel">
+    <div class="analytics-grid">
+      <div class="an-card"><div class="an-label">Total Collected</div><div class="an-value" style="color:var(--c-green)">342 kg</div><div class="an-trend up"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/></svg>+18% this month</div></div>
+      <div class="an-card"><div class="an-label">XP This Week</div><div class="an-value" style="color:#e65100">345</div><div class="an-trend up"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/></svg>+12% vs last week</div></div>
+      <div class="an-card"><div class="an-label">XP This Month</div><div class="an-value" style="color:#6a1b9a">1,240</div><div class="an-trend up"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/></svg>Best month yet!</div></div>
+    </div>
+    <div class="two-col">
+      <div class="card">
+        <div class="card-title">
+          <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/></svg>
+          Environmental Impact
+        </div>
+        <div class="impact-grid">
+          <div class="impact-card">
+            <div class="impact-icon"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M17 8C8 10 5.9 16.17 3.82 20.31a7.79 7.79 0 0 0 1.36.81"/><path d="M22 8S17 7 15 12c.7 3.36 1.49 5.08 2 6"/><path d="M13.63 11.89C13.17 13.53 12.43 14.44 12 17"/></svg></div>
+            <div class="impact-val">4.2</div>
+            <div class="impact-lbl">Trees saved equivalent</div>
+          </div>
+          <div class="impact-card">
+            <div class="impact-icon"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M8 15H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2h-4"/><polyline points="12 15 12 22"/><polyline points="8 22 16 22"/></svg></div>
+            <div class="impact-val">68 kg</div>
+            <div class="impact-lbl">CO₂ emissions reduced</div>
+          </div>
+          <div class="impact-card">
+            <div class="impact-icon"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></div>
+            <div class="impact-val">342 kg</div>
+            <div class="impact-lbl">Waste diverted from landfill</div>
+          </div>
+          <div class="impact-card">
+            <div class="impact-icon"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div>
+            <div class="impact-val">124 kWh</div>
+            <div class="impact-lbl">Energy saved (recycled material)</div>
+          </div>
+        </div>
+        <div class="info-box green" style="margin-top:12px;flex-direction:column;align-items:flex-start">
+          <div style="font-size:11px;font-weight:700;color:var(--c-green-dark);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px">Personal Impact Score</div>
+          <div style="font-family:'Sora',sans-serif;font-size:30px;font-weight:800;color:var(--c-green-dark);line-height:1">87 / 100</div>
+          <div style="font-size:11px;color:var(--c-text-2);margin-top:2px">Top 13% of all EcoCycle pickers in your region</div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title">
+          <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          Company-Wide Impact
+        </div>
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <div style="padding:12px;background:var(--c-border-light);border-radius:var(--r-sm)">
+            <div style="font-size:11px;color:var(--c-text-3);margin-bottom:2px">Total company collected</div>
+            <div style="font-family:'Sora',sans-serif;font-size:22px;font-weight:800;color:var(--c-text)">12,840 kg</div>
+            <div style="font-size:11px;color:var(--c-green);font-weight:600">+23% vs last month</div>
+          </div>
+          <div style="padding:12px;background:var(--c-border-light);border-radius:var(--r-sm)">
+            <div style="font-size:11px;color:var(--c-text-3);margin-bottom:2px">Trees saved (total team)</div>
+            <div style="font-family:'Sora',sans-serif;font-size:22px;font-weight:800;color:var(--c-green-dark)">158</div>
+          </div>
+          <div style="padding:12px;background:var(--c-border-light);border-radius:var(--r-sm)">
+            <div style="font-size:11px;color:var(--c-text-3);margin-bottom:2px">Your contribution to team total</div>
+            <div style="font-size:15px;font-weight:700;color:#e65100">2.66% of all collections</div>
+            <div class="xp-bar-bg" style="margin-top:6px"><div class="xp-bar-fill" style="width:2.66%;background:#e65100"></div></div>
+          </div>
+          <div class="info-box green" style="flex-direction:column;align-items:center;text-align:center">
+            <div style="font-size:11px;color:var(--c-text-2)">Together the team has diverted</div>
+            <div style="font-family:'Sora',sans-serif;font-size:26px;font-weight:800;color:var(--c-green-dark);line-height:1.1">12.8 tonnes</div>
+            <div style="font-size:11px;color:var(--c-text-2)">of waste from Johannesburg landfills</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">
+        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+        Recycling Trends — Last 6 Months
+      </div>
+      <div class="bar-chart" style="height:100px">
+        <div class="bar-wrap"><div class="bar" style="height:45px"></div><div class="bar-lbl">Dec</div></div>
+        <div class="bar-wrap"><div class="bar" style="height:55px"></div><div class="bar-lbl">Jan</div></div>
+        <div class="bar-wrap"><div class="bar" style="height:38px"></div><div class="bar-lbl">Feb</div></div>
+        <div class="bar-wrap"><div class="bar" style="height:70px"></div><div class="bar-lbl">Mar</div></div>
+        <div class="bar-wrap"><div class="bar" style="height:85px"></div><div class="bar-lbl">Apr</div></div>
+        <div class="bar-wrap"><div class="bar" style="height:100px"></div><div class="bar-lbl today">May</div></div>
+      </div>
+      <div style="font-size:11px;color:var(--c-text-3);margin-top:6px;text-align:center">kg collected per month · May is your best month ever</div>
+    </div>
+  </div>
+
+  <!-- ====== TAB: SOCIAL ====== -->
+  <div id="tab-social" class="tab-panel">
+    <div class="two-col">
+      <div>
+        <div class="card">
+          <div class="card-title">
+            <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            Recognition Wall
+          </div>
+          <div class="recognition-card">
+            <div class="rec-top">
+              <div class="rec-avatar">BM</div>
+              <div><div class="rec-from">Bongani Moyo</div><div class="rec-time">2 hours ago</div></div>
+            </div>
+            <div class="rec-msg">Sipho, great work hitting your daily target every single day this week! Your consistency inspires the whole zone.</div>
+            <div class="rec-tag green">
+              <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+              Consistency Star
+            </div>
+          </div>
+          <div class="recognition-card">
+            <div class="rec-top">
+              <div class="rec-avatar">ND</div>
+              <div><div class="rec-from">Nomsa Dlamini</div><div class="rec-time">Yesterday</div></div>
+            </div>
+            <div class="rec-msg">Thanks for helping me sort materials at the depot last week. Real team spirit, Sipho!</div>
+            <div class="rec-tag gold">
+              <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+              Team Player
+            </div>
+          </div>
+          <div class="recognition-card">
+            <div class="rec-top">
+              <div class="rec-avatar" style="background:#e3f2fd;color:#1565c0;border-color:#90caf9">AM</div>
+              <div><div class="rec-from">Admin: Mrs Mokoena</div><div class="rec-time">2 days ago</div></div>
+            </div>
+            <div class="rec-msg">Excellent performance this month — you've been selected as Zone 4 Employee of the Month for May 2026!</div>
+            <div class="rec-tag blue">
+              <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M8 21h8"/><path d="M12 17v4"/><path d="M7 4h10v5a5 5 0 0 1-10 0V4z"/></svg>
+              Employee of the Month
+            </div>
+          </div>
+          <button class="btn-claim" style="margin-top:10px" onclick="showToast('Recognition Sent','Your appreciation has been posted to the wall',false)">
+            <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+            Send Recognition to a Colleague
+          </button>
+        </div>
+      </div>
+      <div>
+        <div class="card" style="margin-bottom:16px">
+          <div class="card-title">
+            <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M8 21h8"/><path d="M12 17v4"/><path d="M7 4h10v5a5 5 0 0 1-10 0V4z"/></svg>
+            Employee Spotlight
+          </div>
+          <div style="text-align:center;padding:12px">
+            <div style="width:64px;height:64px;border-radius:50%;background:linear-gradient(135deg,var(--c-green-dark),#f57f17);display:flex;align-items:center;justify-content:center;font-family:'Sora',sans-serif;font-size:22px;font-weight:800;color:white;margin:0 auto 10px">SN</div>
+            <div style="font-family:'Sora',sans-serif;font-size:16px;font-weight:700;color:var(--c-text)">Sipho Nkosi</div>
+            <div style="font-size:12px;color:var(--c-text-3)">May 2026 · Employee of the Month</div>
+            <div style="margin:10px 0;font-size:12px;color:var(--c-text-2);line-height:1.6">"Sipho's dedication to sustainable waste collection has set the standard for Zone 4."</div>
+            <div style="display:flex;justify-content:center;gap:20px">
+              <div style="text-align:center"><div style="font-family:'Sora',sans-serif;font-size:18px;font-weight:800;color:var(--c-green)">342</div><div style="font-size:10px;color:var(--c-text-3)">kg collected</div></div>
+              <div style="text-align:center"><div style="font-family:'Sora',sans-serif;font-size:18px;font-weight:800;color:#e65100">3,840</div><div style="font-size:10px;color:var(--c-text-3)">XP earned</div></div>
+              <div style="text-align:center"><div style="font-family:'Sora',sans-serif;font-size:18px;font-weight:800;color:#6a1b9a">#3</div><div style="font-size:10px;color:var(--c-text-3)">leaderboard</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">
+            <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+            Community Milestones
+          </div>
+          <div style="display:flex;flex-direction:column;gap:8px">
+            <div class="info-box green">
+              <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M8 21h8"/><path d="M12 17v4"/><path d="M7 4h10v5a5 5 0 0 1-10 0V4z"/></svg>
+              <div style="flex:1;font-size:12px">Team hit 10,000 kg total collection!</div>
+              <span style="font-size:11px;font-weight:700;white-space:nowrap">This Month</span>
+            </div>
+            <div class="info-box gold">
+              <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+              <div style="flex:1;font-size:12px">Zone 4 won the departmental leaderboard!</div>
+              <span style="font-size:11px;font-weight:700;white-space:nowrap">Last Week</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:8px;padding:9px 12px;background:var(--c-border-light);border-radius:var(--r-sm)">
+              <svg width="14" height="14" fill="none" stroke="var(--c-text-3)" stroke-width="2" viewBox="0 0 24 24"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/></svg>
+              <div style="flex:1;font-size:12px;color:var(--c-text-2)">Company planted 100 trees from XP milestone</div>
+              <span style="font-size:11px;color:var(--c-text-3);font-weight:600;white-space:nowrap">Last Month</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ====== TAB: HISTORY ====== -->
+  <div id="tab-history" class="tab-panel">
+    <div class="two-col">
+      <div class="card">
+        <div class="card-title">
+          <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          XP History
+        </div>
+        <div>
+          <div class="xp-hist-item"><div class="xp-hist-info"><span class="xp-hist-tag earn">Earn</span><span class="xp-hist-desc">Daily Check-in</span><div class="xp-hist-time">Today, 07:12</div></div><div class="xp-hist-amount earn">+50 XP</div></div>
+          <div class="xp-hist-item"><div class="xp-hist-info"><span class="xp-hist-tag earn">Earn</span><span class="xp-hist-desc">Transaction: 8.5 kg plastic</span><div class="xp-hist-time">Today, 06:48</div></div><div class="xp-hist-amount earn">+120 XP</div></div>
+          <div class="xp-hist-item"><div class="xp-hist-info"><span class="xp-hist-tag earn">Earn</span><span class="xp-hist-desc">Badge Unlocked: Plastic Hero</span><div class="xp-hist-time">Yesterday, 15:23</div></div><div class="xp-hist-amount earn">+0 XP</div></div>
+          <div class="xp-hist-item"><div class="xp-hist-info"><span class="xp-hist-tag earn">Earn</span><span class="xp-hist-desc">10-Day Streak Milestone Bonus</span><div class="xp-hist-time">2 days ago</div></div><div class="xp-hist-amount earn">+200 XP</div></div>
+          <div class="xp-hist-item"><div class="xp-hist-info"><span class="xp-hist-tag earn">Earn</span><span class="xp-hist-desc">Challenge: Collect 10 kg Today</span><div class="xp-hist-time">2 days ago</div></div><div class="xp-hist-amount earn">+150 XP</div></div>
+          <div class="xp-hist-item"><div class="xp-hist-info"><span class="xp-hist-tag deduct">Deduct</span><span class="xp-hist-desc">Reward Redemption: Coffee Voucher</span><div class="xp-hist-time">3 days ago</div></div><div class="xp-hist-amount deduct">−500 XP</div></div>
+          <div class="xp-hist-item"><div class="xp-hist-info"><span class="xp-hist-tag earn">Earn</span><span class="xp-hist-desc">Transaction: 6.2 kg cardboard</span><div class="xp-hist-time">3 days ago</div></div><div class="xp-hist-amount earn">+90 XP</div></div>
+          <div class="xp-hist-item"><div class="xp-hist-info"><span class="xp-hist-tag earn">Earn</span><span class="xp-hist-desc">Referral Bonus: Thabo Zulu</span><div class="xp-hist-time">5 days ago</div></div><div class="xp-hist-amount earn">+300 XP</div></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title">
+          <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/><line x1="12" y1="22" x2="12" y2="7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg>
+          Reward Redemption History
+        </div>
+        <table class="redemption-table">
+          <thead>
+            <tr><th>Reward</th><th>Date</th><th>Cost</th><th>Status</th></tr>
+          </thead>
+          <tbody id="redemptionTable">
+            <tr><td>Coffee Voucher</td><td style="color:var(--c-text-3)">28 May 2026</td><td style="color:#e65100;font-weight:600">500 XP</td><td><span class="status-pill approved">Approved</span></td></tr>
+            <tr><td>Movie Tickets</td><td style="color:var(--c-text-3)">15 May 2026</td><td style="color:#e65100;font-weight:600">800 XP</td><td><span class="status-pill approved">Approved</span></td></tr>
+            <tr><td>EcoCycle T-Shirt</td><td style="color:var(--c-text-3)">02 May 2026</td><td style="color:#e65100;font-weight:600">600 XP</td><td><span class="status-pill pending">Pending</span></td></tr>
+          </tbody>
+        </table>
+        <div style="margin-top:14px;padding:12px;background:var(--c-border-light);border-radius:var(--r-sm)">
+          <div style="font-size:11px;color:var(--c-text-3);margin-bottom:2px">Total XP spent on rewards</div>
+          <div style="font-family:'Sora',sans-serif;font-size:20px;font-weight:800;color:var(--c-red)" id="spentXP">1,900 XP</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<!-- ADMIN MODAL -->
+<div class="modal-overlay" id="adminModal">
+  <div class="modal" style="max-width:520px">
+    <div class="modal-header">
+      <div>
+        <div style="font-size:11px;font-weight:700;color:var(--c-green);text-transform:uppercase;letter-spacing:0.7px;margin-bottom:3px">Admin Panel</div>
+        <div style="font-family:'Sora',sans-serif;font-size:16px;font-weight:700">Rewards Management</div>
+      </div>
+      <button class="modal-close" onclick="closeModal('admin')">×</button>
+    </div>
+    <div class="admin-section">
+      <div class="admin-title"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>Award / Deduct XP</div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Select Picker</label>
+          <select class="form-select" id="adminPicker">
+            <option>Sipho Nkosi (You)</option>
+            <option>Nomsa Dlamini</option>
+            <option>Bongani Moyo</option>
+            <option>Thandi Khumalo</option>
+          </select>
+        </div>
+        <div class="form-group" style="max-width:110px">
+          <label class="form-label">XP Amount</label>
+          <input class="form-input" type="number" id="adminXPAmount" placeholder="200" min="0">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Reason</label>
+          <input class="form-input" type="text" id="adminReason" placeholder="e.g. Bonus for special collection event">
+        </div>
+      </div>
+      <div class="admin-btns">
+        <button class="admin-btn green" onclick="adminAwardXP()">
+          <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          Award XP
+        </button>
+        <button class="admin-btn red" onclick="adminDeductXP()">
+          <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          Deduct XP
+        </button>
+      </div>
+    </div>
+    <div class="admin-section">
+      <div class="admin-title"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/></svg>Pending Reward Approvals</div>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <div style="display:flex;align-items:center;gap:10px;padding:10px 12px;background:var(--c-white);border-radius:var(--r-sm);border:1px solid var(--c-border-light)">
+          <div style="flex:1"><div style="font-size:12px;font-weight:700">Sipho Nkosi</div><div style="font-size:11px;color:var(--c-text-3)">EcoCycle T-Shirt · 600 XP</div></div>
+          <button class="admin-btn green" style="padding:5px 10px;font-size:11px" onclick="approveRedemption(this,'EcoCycle T-Shirt')">
+            <svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" style="width:12px;height:12px"><path d="M20 6 9 17l-5-5"/></svg>
+            Approve
+          </button>
+          <button class="admin-btn red" style="padding:5px 10px;font-size:11px" onclick="rejectRedemption(this)">
+            <svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" style="width:12px;height:12px"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            Reject
+          </button>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;padding:10px 12px;background:var(--c-white);border-radius:var(--r-sm);border:1px solid var(--c-border-light)">
+          <div style="flex:1"><div style="font-size:12px;font-weight:700">Thandi Khumalo</div><div style="font-size:11px;color:var(--c-text-3)">Cash Voucher R100 · 1,000 XP</div></div>
+          <button class="admin-btn green" style="padding:5px 10px;font-size:11px" onclick="approveRedemption(this,'Cash Voucher')">
+            <svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" style="width:12px;height:12px"><path d="M20 6 9 17l-5-5"/></svg>
+            Approve
+          </button>
+          <button class="admin-btn red" style="padding:5px 10px;font-size:11px" onclick="rejectRedemption(this)">
+            <svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" style="width:12px;height:12px"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            Reject
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="admin-section">
+      <div class="admin-title"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09"/></svg>Configure XP Values</div>
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">XP per kg collected</label><input class="form-input" type="number" value="15"></div>
+        <div class="form-group"><label class="form-label">Daily check-in XP</label><input class="form-input" type="number" value="50"></div>
+        <div class="form-group"><label class="form-label">Referral bonus XP</label><input class="form-input" type="number" value="300"></div>
+      </div>
+      <button class="admin-btn purple" onclick="showToast('Settings Saved','XP values updated successfully',false)">
+        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg>
+        Save XP Settings
+      </button>
+    </div>
+    <div class="admin-section" style="margin-bottom:0">
+      <div class="admin-title"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M8 21h8"/><path d="M12 17v4"/><path d="M7 4h10v5a5 5 0 0 1-10 0V4z"/></svg>Feature Top Performer</div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Select Employee</label>
+          <select class="form-select"><option>Sipho Nkosi</option><option>Nomsa Dlamini</option><option>Bongani Moyo</option></select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Duration</label>
+          <select class="form-select"><option>This Month</option><option>This Week</option><option>Today</option></select>
+        </div>
+      </div>
+      <button class="admin-btn purple" onclick="showToast('Spotlight Set','Employee has been featured on the recognition wall',true);closeModal('admin')">
+        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        Feature Performer
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- BADGE MODAL -->
+<div class="modal-overlay" id="badgeModal">
+  <div class="modal" style="text-align:center;position:relative;max-width:360px">
+    <button class="modal-close" style="position:absolute;top:16px;right:16px" onclick="closeModal('badge')">×</button>
+    <div class="badge-modal-icon" id="badgeModalIcon">
+      <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/></svg>
+    </div>
+    <div style="font-family:'Sora',sans-serif;font-size:18px;font-weight:800;margin-bottom:4px;color:var(--c-text)" id="badgeModalName">Badge Name</div>
+    <div style="font-size:12px;font-weight:700;margin-bottom:8px" id="badgeModalRarity"></div>
+    <div style="font-size:13px;color:var(--c-text-2);margin-bottom:16px" id="badgeModalDesc">Description</div>
+    <button class="btn-ok" onclick="closeModal('badge')">
+      <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg>
+      Got it
+    </button>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast-container" id="toastContainer"></div>
+
+<script>
+let currentXP = 3840;
+const XP_LEVEL = 4500;
+let spentXP = 1900;
+
+window.addEventListener('load', () => {
+  setTimeout(() => {
+    document.getElementById('xpFill').style.width = ((currentXP / XP_LEVEL) * 100) + '%';
+    document.getElementById('milestoneProg').style.width = '58%';
+  }, 400);
+  buildTicker();
+  startAutoFeed();
+  startCountdown();
+  startDailyResetTimer();
+});
+
+function buildTicker() {
+  const events = [
+    'Nomsa Dlamini earned +90 XP · 6 kg plastic collected',
+    'Bongani Moyo unlocked: Ton Club badge',
+    'Priya Naidoo moved to #6 on leaderboard',
+    'Thandi Khumalo hit a 7-day streak',
+    'Joseph Sithole redeemed: Coffee Voucher',
+    'Zone 4 leads the department leaderboard this week',
+    'Earth Month event: 2× XP active until 31 May',
+  ];
+  const double = [...events, ...events];
+  const inner = document.getElementById('tickerInner');
+  inner.innerHTML = double.map(e => `<span style="padding-right:48px">${e}</span>`).join('');
+}
+
+function switchTab(name, btn) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('tab-' + name).classList.add('active');
+  btn.classList.add('active');
+}
+
+function updateXPDisplay() {
+  const fmt = currentXP.toLocaleString();
+  document.getElementById('totalXP').textContent = fmt;
+  document.getElementById('topbarXP').textContent = fmt + ' XP';
+  document.getElementById('lbXP').textContent = fmt + ' XP';
+  document.getElementById('xpCurrent').textContent = fmt;
+  document.getElementById('storeXPLabel').textContent = fmt + ' XP';
+  const pct = Math.min((currentXP / XP_LEVEL) * 100, 100);
+  document.getElementById('xpFill').style.width = pct + '%';
+  const needed = XP_LEVEL - currentXP;
+  document.getElementById('xpNote').textContent = needed > 0
+    ? needed.toLocaleString() + ' XP needed to reach Level 8 · Platinum Tier'
+    : 'Level 8 unlocked! Congratulations!';
+}
+
+function addXP(amount, msg) {
+  currentXP += amount;
+  updateXPDisplay();
+  showToast('+' + amount + ' XP Earned', msg || 'Keep going!', true);
+  addFeedItem('xp', '+' + amount + ' XP', msg || 'Challenge progress updated', 'Just now');
+}
+
+function claimBonus(btn) {
+  btn.disabled = true;
+  btn.innerHTML = '<svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" style="width:14px;height:14px"><path d="M20 6 9 17l-5-5"/></svg> Claimed today';
+  addXP(50, 'Daily check-in bonus claimed');
+  showToast('Streak Bonus Claimed', '+50 XP · Come back tomorrow to keep your streak', true);
+}
+
+function showBadge(name, desc, rarity) {
+  const icons = {
+    common: '<svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/></svg>',
+    rare:   '<svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/></svg>',
+    epic:   '<svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>',
+    legendary: '<svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polygon points="6 3 18 3 22 9 12 22 2 9"/></svg>',
+  };
+  const colors = {common:'var(--c-text-3)', rare:'#1565c0', epic:'#6a1b9a', legendary:'#e65100'};
+  document.getElementById('badgeModalIcon').innerHTML = icons[rarity] || icons.common;
+  document.getElementById('badgeModalIcon').style.color = colors[rarity];
+  document.getElementById('badgeModalIcon').style.borderColor = colors[rarity] + '66';
+  document.getElementById('badgeModalName').textContent = name;
+  document.getElementById('badgeModalDesc').textContent = desc;
+  document.getElementById('badgeModalRarity').innerHTML = `<span style="font-weight:700;color:${colors[rarity]};text-transform:capitalize">${rarity}</span> Badge`;
+  openModal('badge');
+}
+
+function openModal(id) { document.getElementById(id + 'Modal').classList.add('open'); }
+function closeModal(id) { document.getElementById(id + 'Modal').classList.remove('open'); }
+
+document.querySelectorAll('.modal-overlay').forEach(o => {
+  o.addEventListener('click', e => { if (e.target === o) o.classList.remove('open'); });
+});
+
+function showToast(title, msg, isSuccess) {
+  const c = document.getElementById('toastContainer');
+  const t = document.createElement('div');
+  t.className = 'toast' + (isSuccess ? ' success' : '');
+  t.innerHTML = `
+    <div class="toast-icon-wrap">
+      <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg>
+    </div>
+    <div class="toast-body"><strong>${title}</strong><span>${msg}</span></div>
+    <button class="toast-close" onclick="this.parentElement.remove()">×</button>`;
+  c.appendChild(t);
+  setTimeout(() => {
+    t.style.animation = 'toastOut .3s forwards';
+    setTimeout(() => t.remove(), 300);
+  }, 4500);
+}
+
+function addFeedItem(cls, title, desc, time) {
+  const feed = document.getElementById('feedList');
+  if (!feed) return;
+  const iconMap = {
+    xp: '<svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>',
+    badge: '<svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/></svg>',
+    rank:  '<svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/></svg>',
+    streak:'<svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg>',
+    redeem:'<svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/></svg>',
+  };
+  const div = document.createElement('div');
+  div.className = 'feed-item';
+  div.innerHTML = `<div class="feed-dot ${cls}">${iconMap[cls] || ''}</div><div class="feed-text"><strong>${title}</strong><span>${desc}</span></div><span class="feed-time">${time}</span>`;
+  feed.insertBefore(div, feed.firstChild);
+  if (feed.children.length > 8) feed.lastChild.remove();
+}
+
+const autoEvents = [
+  {cls:'xp',title:'+90 XP — Transaction Logged',desc:'Bongani Moyo collected 6 kg of cardboard'},
+  {cls:'badge',title:'Badge Unlocked: Early Bird',desc:'Nomsa Dlamini logged before 7am'},
+  {cls:'rank',title:'Leaderboard Update',desc:'Priya Naidoo moved to #6 on overall board'},
+  {cls:'streak',title:'7-Day Streak',desc:'Thandi Khumalo hit a 7-day streak'},
+  {cls:'redeem',title:'Reward Redeemed',desc:'Joseph Sithole redeemed a Coffee Voucher'},
+];
+let autoIdx = 0;
+function startAutoFeed() {
+  setInterval(() => {
+    const e = autoEvents[autoIdx++ % autoEvents.length];
+    addFeedItem(e.cls, e.title, e.desc, 'Just now');
+  }, 7000);
+}
+
+function filterChallenges(type, btn) {
+  document.querySelectorAll('#tab-challenges .filter-tabs .filter-tab').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.challenge-item').forEach(item => {
+    item.style.display = (type === 'all' || item.dataset.type === type) ? '' : 'none';
+  });
+}
+
+function filterStore(cat, btn) {
+  document.querySelectorAll('#tab-store .filter-tabs .filter-tab').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.reward-card').forEach(card => {
+    card.style.display = (cat === 'all' || card.dataset.category === cat) ? '' : 'none';
+  });
+}
+
+function filterBadges(rarity, btn) {
+  document.querySelectorAll('#tab-badges .filter-tabs .filter-tab').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.badge-item').forEach(item => {
+    item.style.display = (rarity === 'all' || item.dataset.rarity === rarity) ? '' : 'none';
+  });
+}
+
+function redeemReward(btn, name, cost) {
+  if (currentXP < cost) {
+    showToast('Not Enough XP', `You need ${cost.toLocaleString()} XP but have ${currentXP.toLocaleString()} XP`, false);
+    return;
+  }
+  currentXP -= cost;
+  spentXP += cost;
+  updateXPDisplay();
+  document.getElementById('spentXP').textContent = spentXP.toLocaleString() + ' XP';
+  btn.disabled = true;
+  btn.textContent = 'Requested';
+  showToast('Redemption Requested', name + ' — awaiting admin approval (24h)', true);
+  addFeedItem('redeem', 'Reward Requested: ' + name, 'Pending admin approval · ' + cost.toLocaleString() + ' XP spent', 'Just now');
+  const table = document.getElementById('redemptionTable');
+  if (table) {
+    const tr = document.createElement('tr');
+    const today = new Date().toLocaleDateString('en-ZA',{day:'2-digit',month:'short',year:'numeric'});
+    tr.innerHTML = `<td>${name}</td><td style="color:var(--c-text-3)">${today}</td><td style="color:#e65100;font-weight:600">${cost.toLocaleString()} XP</td><td><span class="status-pill pending">Pending</span></td>`;
+    table.insertBefore(tr, table.firstChild);
+  }
+}
+function adminAwardXP() {
+  const amount = parseInt(document.getElementById('adminXPAmount').value) || 0;
+  const reason = document.getElementById('adminReason').value || 'Admin award';
+  const picker = document.getElementById('adminPicker').value;
+  if (!amount) { showToast('Enter XP Amount', 'Please enter a valid XP amount', false); return; }
+  if (picker.includes('You')) addXP(amount, 'Admin award: ' + reason);
+  else showToast('+' + amount + ' XP Awarded', picker + ' · ' + reason, true);
+  document.getElementById('adminXPAmount').value = '';
+  document.getElementById('adminReason').value = '';
+}
+
+function adminDeductXP() {
+  const amount = parseInt(document.getElementById('adminXPAmount').value) || 0;
+  const reason = document.getElementById('adminReason').value || 'Admin deduction';
+  if (!amount) { showToast('Enter XP Amount', 'Please enter a valid XP amount', false); return; }
+  if (document.getElementById('adminPicker').value.includes('You')) {
+    currentXP = Math.max(0, currentXP - amount);
+    updateXPDisplay();
+  }
+  showToast('−' + amount + ' XP Deducted', reason, false);
+  document.getElementById('adminXPAmount').value = '';
+  document.getElementById('adminReason').value = '';
+}
+
+function approveRedemption(btn, name) {
+  btn.closest('div[style]').innerHTML = `<div style="flex:1;font-size:12px;color:var(--c-green);font-weight:600">Approved: ${name}</div>`;
+  showToast('Redemption Approved', name + ' has been processed', true);
+}
+
+function rejectRedemption(btn) {
+  btn.closest('div[style]').innerHTML = `<div style="flex:1;font-size:12px;color:var(--c-red);font-weight:600">Redemption declined</div>`;
+  showToast('Redemption Rejected', 'The request has been declined', false);
+}
+
+function switchLeaderboard(type, btn) {
+  document.querySelectorAll('#tab-leaderboard .filter-tab').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  const subtitles = {overall:'Overall · All time', weekly:'Rankings · This week', monthly:'Rankings · This month', department:'Department / zone rankings', improved:'Most improved this month'};
+  document.getElementById('lbSubtitle').textContent = subtitles[type] || '';
+  showToast('Leaderboard Updated', 'Showing: ' + (subtitles[type] || type), true);
+}
+
+function startCountdown() {
+  let totalSecs = 9273;
+  function update() {
+    const h = Math.floor(totalSecs / 3600);
+    const m = Math.floor((totalSecs % 3600) / 60);
+    const s = totalSecs % 60;
+    const str = String(h).padStart(2,'0') + ':' + String(m).padStart(2,'0') + ':' + String(s).padStart(2,'0');
+    ['countdownTimer','countdownTimer2'].forEach(id => {
+      const el = document.getElementById(id); if (el) el.textContent = str;
+    });
+    if (totalSecs > 0) totalSecs--;
+  }
+  update();
+  setInterval(update, 1000);
+}
+
+function startDailyResetTimer() {
+  function update() {
+    const now = new Date();
+    const tomorrow = new Date(now);
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    tomorrow.setHours(0,0,0,0);
+    let diff = Math.floor((tomorrow - now) / 1000);
+    const h = Math.floor(diff / 3600);
+    const m = Math.floor((diff % 3600) / 60);
+    const s = diff % 60;
+    const el = document.getElementById('dailyReset');
+    if (el) el.textContent = String(h).padStart(2,'0') + ':' + String(m).padStart(2,'0') + ':' + String(s).padStart(2,'0');
+  }
+  update();
+  setInterval(update, 1000);
+}
+</script>
+
+<script src="RewardsSystemDatabase.js"></script>
+
+</body>
+</html>
