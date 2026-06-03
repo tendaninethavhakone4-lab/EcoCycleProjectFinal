@@ -1,0 +1,194 @@
+/* ===== EcoCycle Auth — Shared Styles ===== */
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&display=swap');
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg:        #f7eee0;
+  --card-bg:   #ffffff;
+  --green:     #3a9e3f;
+  --green-dark:#2d7a30;
+  --text:      #1a1a1a;
+  --muted:     #7a7a6e;
+  --border:    #e4dfd4;
+  --input-bg:  #f9f7f3;
+  --radius-card: 20px;
+  --radius-input: 14px;
+  --shadow: 0 2px 24px rgba(0,0,0,0.07);
+}
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--bg);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px 16px;
+}
+
+/* ===== Page wrapper ===== */
+.auth-page {
+  width: 100%;
+  max-width: 440px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+}
+
+/* ===== Brand icon ===== */
+.brand-icon {
+  width: 72px;
+  height: 72px;
+  background: var(--green);
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 16px rgba(58,158,63,0.28);
+}
+
+/* ===== Heading block ===== */
+.auth-heading {
+  text-align: center;
+  margin-bottom: 28px;
+}
+.auth-heading h1 {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--text);
+  letter-spacing: -0.4px;
+  margin-bottom: 6px;
+}
+.auth-heading p {
+  font-size: 15px;
+  color: var(--muted);
+  font-weight: 400;
+}
+
+/* ===== Card ===== */
+.auth-card {
+  background: var(--card-bg);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow);
+  padding: 32px 28px;
+  width: 100%;
+}
+
+/* ===== Field ===== */
+.field {
+  margin-bottom: 20px;
+}
+.field label {
+  display: block;
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 8px;
+  letter-spacing: 0.1px;
+}
+.input-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+.input-icon {
+  position: absolute;
+  left: 14px;
+  color: #b0ad9e;
+  display: flex;
+  align-items: center;
+  pointer-events: none;
+}
+.input-wrap input {
+  width: 100%;
+  padding: 13px 14px 13px 42px;
+  background: var(--input-bg);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-input);
+  font-family: inherit;
+  font-size: 15px;
+  color: var(--text);
+  outline: none;
+  transition: border-color 0.18s, box-shadow 0.18s;
+  -webkit-appearance: none;
+}
+.input-wrap input::placeholder { color: #c0bdb0; }
+.input-wrap input:focus {
+  border-color: var(--green);
+  box-shadow: 0 0 0 3px rgba(58,158,63,0.12);
+  background: #fff;
+}
+
+/* ===== Button ===== */
+.btn-primary {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  padding: 14px;
+  background: var(--green);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius-input);
+  font-family: inherit;
+  font-size: 15.5px;
+  font-weight: 600;
+  cursor: pointer;
+  letter-spacing: 0.1px;
+  transition: background 0.16s, transform 0.1s, box-shadow 0.16s;
+  box-shadow: 0 2px 12px rgba(58,158,63,0.25);
+  margin-top: 4px;
+}
+.btn-primary:hover {
+  background: var(--green-dark);
+  box-shadow: 0 4px 18px rgba(58,158,63,0.32);
+}
+.btn-primary:active { transform: scale(0.98); }
+
+/* ===== Footer links ===== */
+.auth-footer {
+  text-align: center;
+  margin-top: 20px;
+  font-size: 14px;
+  color: var(--muted);
+}
+.auth-footer a {
+  color: var(--green);
+  font-weight: 600;
+  text-decoration: none;
+}
+.auth-footer a:hover { text-decoration: underline; }
+
+/* ===== Forgot password link ===== */
+.forgot-link {
+  display: block;
+  text-align: right;
+  font-size: 13px;
+  color: var(--muted);
+  text-decoration: none;
+  margin-top: -10px;
+  margin-bottom: 20px;
+}
+.forgot-link:hover { color: var(--green); }
+
+/* ===== Animate in ===== */
+.auth-card {
+  animation: slideUp 0.38s cubic-bezier(0.22,1,0.36,1) both;
+}
+.brand-icon, .auth-heading {
+  animation: fadeDown 0.32s ease both;
+}
+.auth-heading { animation-delay: 0.06s; }
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeDown {
+  from { opacity: 0; transform: translateY(-8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
